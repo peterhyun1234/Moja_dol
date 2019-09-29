@@ -5,12 +5,10 @@ Moja_dol project
 
 
 # 1. App_front
-* * *
 
 
 # 2. Server_backend
-* * *
 
 > ## 2.1 개발 일지
-* * *
-> ### 09.29
+
+>> ### * 09.29

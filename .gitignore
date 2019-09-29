@@ -1,0 +1,11 @@
+# no .png files
+*.png
+
+# no .a files
+*.a
+
+# no .pdf files
+*.pdf
+
+# no node_modules
+node_modules/

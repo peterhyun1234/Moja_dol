@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+body {font-family: 'Nanum Gothic', sans-serif;}
+
+#loginbox {position: absolute; width: 100%;     background-image: url('../image/backgroundimage.jpg');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;}
+.containerbox {width: 100%; height: 100vh; padding:100px 0;}
+.loginbox {background-color: #dcdcdc; box-shadow: 10px 10px 12px 0px rgba(0,0,0,0.5); width:500px; height:500px; margin: 0 auto; margin-top:50px;}
+.logobox {position: relative; height: 100px; }
+.logoimg {position: absolute; width: 300px; left: 20%; top: 15%;}
+
+#adminloginform {margin: 0 auto; width: 400px; padding-top: 50px;}
+.id, .pw {font-size:1.3em; border: none; padding-left:10px; margin-bottom: 20px; overflow:hidden; width:100%; height:50px;}
+.loginadminbtn {transition: ease all 0.1s; color: #053863; background-color: #fff; border: 0; width: 100%; height: 60px; font-size: 1.3em; font-weight: bold;}
+.loginadminbtn:hover {color: #fff; background-color:#053863}
+
+.mojadol {width: 150px; text-align: center; margin: 0 auto; margin-top: 110px;}

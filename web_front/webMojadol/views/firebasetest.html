@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+   
+    <title>파이어베이스연동</title>
+</head>
+<body>
+        <p>Getting started with Firebase</p>
+        <h1 id="bigOne"></h1>
+        <button id="BTN_GOOGLE_LOGIN" type="button" class="btn indigo">구글인증</button>
+        <span id="DB_MESSAGE" class="blue-text">(Loading..)</span>
+<input id="INPUT_MESSAGE" type="text" class="validate">
+<label for="INPUT_MESSAGE">recover message</label>
+<button id="BTN_UPDATE" type="button">modify</button>
+
+
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCRbCZMGG2Xrxr19e98oHGZAAgAV8nOeCY",
+    authDomain: "webtest-b218c.firebaseapp.com",
+    databaseURL: "https://webtest-b218c.firebaseio.com",
+    projectId: "webtest-b218c",
+    storageBucket: "",
+    messagingSenderId: "900147712475",
+    appId: "1:900147712475:web:a98af2a1f01cf2241317fe",
+    measurementId: "G-WTHK97RKWS"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+
+ $("#BTN_GOOGLE_LOGIN").click(function(){
+
+    //이메일연동
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result){
+    }).catch(function(error){
+        alert(error.message)
+        
+    });
+});
+ 
+//데이터쓰기
+//firebase.database().ref('/texttest/text123/text').set("test123");
+firebase.database().ref('/texttest/text123/text').push({"text": "xzxxzzx"});
+firebase.database().ref('/texttest/text123/text').push({"text" : "zzxxzz"});
+
+
+
+  firebase.database().ref('/texttest/text123/text').once('value',function(snapshot){
+    var message = snapshot.val();
+    $("#DB_MESSAGE").text(message);
+    console.log(message);
+    //console.log(snapshot.val());
+  });
+
+
+//데이터 수정
+$("#BTN_UPDATE").click(function(){
+    var new_message = $("#INPUT_MESSAGE").val();
+    firebase.database().ref("/texttest/text123/text").set(new_message);
+});
+
+</script>
+</body>
+</html>

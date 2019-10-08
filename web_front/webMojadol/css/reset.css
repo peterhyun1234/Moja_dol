@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+body {font-family: 'Nanum Gothic', sans-serif;}
+.container{margin-left:50px !important; margin-right:50px !important;}
+.menuname {font-weight: bold; top: 30px; font-size: 2em;  position: absolute;}
+.menuname p {border-bottom: 3px solid black;}

@@ -1,0 +1,10 @@
+@charset "utf-8";
+.pagination li { display:inline-block; padding:5px;}
+.memberlist { margin: 10px 0; padding: 10px 0; border-bottom: 1px solid gray; font-size: 1em;}
+.member ul {display: flex;}
+.member li{text-align:center; padding:0 50px; }
+.deletecheck, .blockcheck {width: 50px;}
+.memberId {width: 250px;}
+.membername {width: 150px;}
+.commentcnt {width: 100px;}
+.logintime {width: 250px;}

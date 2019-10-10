@@ -14,6 +14,13 @@
     <script src="/js/import.js"></script>
     <script src="/js/list.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>
+
+
+
     <!--css-->
     <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../css/reset.css" type="text/css">
@@ -38,42 +45,33 @@
     <section id="main_content">
         <div class="container">
             <div class="menuname">
-                <p>회원 관리</p>
+                <p>회원 목록</p>
             </div>
-            <div id="test-list">
-                <input type="text" class="search" placeholder="검색어를 입력하세요" />
-                <div class="titlelist">
 
-                </div>
-                <ul class="list">
-                    <li class="memberlist">
-                        <div class="member">
-                            <ul class="clearfix">
-                                <li class="deletecheck">
-                                    <input type="checkbox" class="custom-control-input " id="customSwitches">
-                                    <label class="custom-control-label" for="customSwitches"></label>
-                                </li>
-                                <li class="memberId">데모아이디1</li>
-                                <li class="membername">전현빈</li>
-                     
-                                <li class="logintime">2019:10:09</li>
-                                <li class="blockcheck">
-                                    <input type="checkbox" class="custom-control-input" id="customSwitches">
-                                    <label class="custom-control-label" for="customSwitches"></label>
-                                </li>
-                            </ul>
-
-                        </div>
-                    </li>
-                    <li><div class="member">Guㄹㄹybrush Threepwood</div></li>
-                    <li><div class="member">Guㄹㄹybrush Threepwood</div></li>
+            <div id = "test-list" class=" clearfix">
+                    <!-- 검색박스 -->
+                    <div class="searchBox">
+                        <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
+                    </div>
+                    <!--  //검색박스 -->
+                    
+                            <div class="memberlist attr">
+                                <span class="memberId" data-sort="memberId">회원아이디</span>
+                                <span class="membername" data-sort="membername">회원 이름</span>
+                                <span class="memberbirth" data-sort="memberbirth">생년월일</span>
+                            </div>  
 
 
-                </ul>
-                <ul class="pagination"></ul>
+                    <ul class="list clearfix">	
+                        <!--더미값-->
+                            <li class="memberlist"><span class="memberId">id12</span><span class="membername">이경기</span><span class="memberbirth">19960515</span></li>
+                            <li class="memberlist"><span class="memberId">id13</span><span class="membername">김청년</span><span class="memberbirth">19960515</span></li>
+                 </ul>
+    
+                    <!-- 자동 페이징 영역 -->
+                    <ul class="pagination"></ul>
             </div>
-        
-        </div>
+        </div>       
     </section>
     <!--//member box-->
 </body>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+   
+    <title>파이어베이스연동</title>
+</head>
+<body>
+        <p>Getting started with Firebase</p>
+        <h1 id="bigOne"></h1>
+        <div  class="datatext"></div>
+
+
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+<script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<!-- <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script> -->
+
+<script>
+
+
+
+// Initialize Cloud Firestore through Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyCRbCZMGG2Xrxr19e98oHGZAAgAV8nOeCY",
+  authDomain: "webtest-b218c.firebaseapp.com",
+  projectId: "webtest-b218c"
+});
+
+var db = firebase.firestore();
+
+db.collection("texttest").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(`${doc.ID} => ${doc.data()}`);
+    });
+});
+
+
+
+</script>
+</body>
+</html>

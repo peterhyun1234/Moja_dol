@@ -126,9 +126,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Router 정의
 const policyRouter = require('./router/policy');
 const userRouter=require('./router/user');
+const tempRouter=require('./router/temp');
 //Route 정의
 app.use('/policy', policyRouter);
 app.use('/user', userRouter);
+app.use('/temp', tempRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

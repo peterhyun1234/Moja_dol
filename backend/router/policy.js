@@ -6,8 +6,23 @@ var connection=require('../index.js').connection;
 
 router.get('/show_all_policies',function(req,res){
     
-    console.log('/policy//show_all_policies Processing completed');
+    console.log('/policy/show_all_policies Processing completed');
     connection.query('SELECT * from policy',function(err,data){
+        if(!err){
+            console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+router.get('/S_policy/:id',function(req,res){
+    var policy_params = req.params.id;
+    console.log('selected policy is ' + policy_params);
+    connection.query('SELECT * from policy where index = '+ policy_params,function(err,data){
         if(!err){
             console.log(data);
             res.send(data);

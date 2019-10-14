@@ -7,7 +7,7 @@ var connection=require('../index.js').connection;
 router.get('/show_all_users',function(req,res){
     connection.query('SELECT * from user',function(err,data){
         if(!err){
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {

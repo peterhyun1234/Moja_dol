@@ -17,7 +17,7 @@ ul {list-style: none;}
 .menulist li:after {position: absolute; left: 70px; content:''; background-color:#053863; transition: all 0.5s ease; width:0px; height:1px;}
 .menulist li:hover:after {width:160px;}
 
-.admintext {font-size: 1em; margin-top:120px;}
+.admintext {font-size: 1em; margin-top:40px;}
 
 .logoutbox {margin-top: 100px; height: 50px; width: 100%; }
 .loginbtn {transition: all 0.1s ease; border-radius: 15px; width: 180px;  height: 50px; background-color: #fff; font-weight:bold;}

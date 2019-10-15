@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+li.policylist:hover {background-color: #fbffd0;}
+.policylist {cursor: pointer; position:relative; border-bottom: 1px solid #d4d1d1; font-size: 1em; width: 100%; text-align: center; padding: 0 10px; padding-top:20px; display:inline-block;}
+.policylist span {padding:0 10px; margin: 0; display: inline-block; padding-bottom: 20px;}
+.attr {border-bottom: 2px solid gray; font-weight: bold;}
+
+.p_code {width: 150px;}
+.p_title {width: calc(100% - 600px)}
+.p_title input {cursor: pointer; text-align: center; width: 100%; text-overflow: ellipsis; border: none; background-color: transparent;}
+.crawling_data {width: 200px;}
+.expiration_flag {width: 150px;}
+
+/*상세 정책 내용*/
+.policy_detail {width: 100%; border: 1px solid blue;}

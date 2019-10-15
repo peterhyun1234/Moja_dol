@@ -7,3 +7,16 @@ input {outline: none;}
 .menuname {font-weight: bold; top: 53px; font-size: 2em;  position: absolute; box-shadow: 4px 6px 4px -1px rgba(0,0,0,0.5);}
 .menuname p { margin:0;}
 
+/*list*/
+.pagination li { display:inline-block; padding:5px;}
+
+.search{height:40px; font-size: 1em; float: right; text-align: center; width: 250px; padding: 0 10px; border: none; border-bottom: 1px solid black;}
+
+.list {padding: 0;}
+.titlelist{padding-top:50px;}
+.titlelist ul{margin-top: 10px; padding: 0;}
+
+.pagination{float: right; padding-right: 50px; font-size: 1.1em;}
+.pagination li.active {font-weight: bold;}
+.pagination a {color: #000;}
+.pagination li.active a {color: blue;}

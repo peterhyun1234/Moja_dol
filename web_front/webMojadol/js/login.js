@@ -5,28 +5,33 @@ $(document).ready(function(){
 function logincheck(){
     var id = $(".id").val();
     var pw = $(".pw").val();
-    if(id == "admin"){
 
-        if(pw == "admin"){
-            $(location).attr("href", "member.html");
-        }
-        else {
-            if(pw == ""){
-                alert("비밀번호를 입력해주세요");
-            }
-            else {
-                alert("올바른 비밀번호를 입력해주세요");
-            }
-        }
-    }
-    else {
-        if(id == ""){
-            alert("아이디를 입력해주세요");
-        }
-        else {
-            alert("올바른 아이디를 입력해주세요");
-        }
-    }
+    var admin = {"id" : id, "password" : pw};
+
+    //alert(id + "ff" + admin.id + admin.password);
+
+//패스 맞추기
+        $.ajax({
+            url : "http://49.236.136.213:3000/web_admin/certificate",
+            type : "post",
+            data : admin,
+            success : function(data) {
+                
+                if(data == 1){
+                    alert("관리자 로그인에 성공하였습니다.");
+                    $(location).attr("href", "member.html");
+                }
+                else {
+                    alert("로그인 정보를 확인해주십시오." + data)
+                }
+                
+            },
+            error: function(request,status,error){
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+               }
+    
+        });
+
 }
 
    

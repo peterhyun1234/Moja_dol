@@ -34,16 +34,99 @@
         <!--header include-->
         <header role="header" data-include="header.html"></header>
         
-        <!--member box-->
+         <!--policy box-->
         <section id="main_content">
             <div class="container">
                 <div class="menuname">
                     <p>정책 게시물 관리</p>
                 </div>
-    
-            
-            </div>
+
+                <div id = "test-list" class=" clearfix">
+                        <!-- 검색박스 -->
+                        <div class="searchBox">
+                            <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
+                        </div>
+                        <!--  //검색박스 -->
+
+                                <div class="policylist attr">
+                                    <span class="p_code" data-sort="p_code">정책코드</span>
+                                    <span class="p_title" data-sort="p_title">제목</span>
+                                    <span class="crawling_data" data-sort="crawling_data">데이터 수집 날짜</span>
+                                    <span class="expiration_flag" data-sort="expiration_flag">정책 만료여부</span>
+                                </div>  
+
+                        <ul class="list clearfix">	
+                            <!--더미값-->
+                            <li class="policylist ">
+                                <span class="p_code" data-sort="p_code">CP1432</span>
+                                <span class="p_title" data-sort="p_title">
+                                    <input type="text" value="대학생미취업청년 채무조정제도" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:04:23</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">만료</span>
+                            </li>
+                            <li class="policylist">
+                                <span class="p_code" data-sort="p_code">CP9832</span>
+                                <span class="p_title" data-sort="p_title">
+                                <input type="text" value="양주시청년센터 면접정장 무료대여" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:09:30</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">진행중</span>
+                            </li>
+                            <li class="policylist">
+                                <span class="p_code" data-sort="p_code">CP3333</span>
+                                <span class="p_title" data-sort="p_title">
+                                <input type="text" value="데모 정책 1" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:09:30</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">진행중</span>
+                            </li>                            
+                            <li class="policylist">
+                                <span class="p_code" data-sort="p_code">CP4444</span>
+                                <span class="p_title" data-sort="p_title">
+                                    <input type="text" value="데모 정책 2" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:09:30</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">진행중</span>
+                            </li>
+                            <li class="policylist">
+                                <span class="p_code" data-sort="p_code">CP5555</span>
+                                <span class="p_title" data-sort="p_title">
+                                    <input type="text" value="데모 정책 3" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:09:30</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">진행중</span>
+                            </li>
+                            <li class="policylist">
+                                <span class="p_code" data-sort="p_code">CP6666</span>
+                                <span class="p_title" data-sort="p_title">
+                                    <input type="text" value="데모 정책 4" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:09:30</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">진행중</span>
+                            </li>
+                            <li class="policylist">
+                                <span class="p_code" data-sort="p_code">CP7777</span>
+                                <span class="p_title" data-sort="p_title">
+                                    <input type="text" value="데모 정책 5" readonly/>
+                                </span>
+                                <span class="crawling_data" data-sort="crawling_data">2019:09:30</span>
+                                <span class="expiration_flag" data-sort="expiration_flag">진행중</span>
+                            </li>
+                                
+
+                    </ul>
+                    
+                        <!-- 자동 페이징 영역 -->
+                        <ul class="pagination"></ul>
+                </div>
+                <div class="policy_detail">
+                    <div class="detail_p_code"></div>
+                    <div class="detail_title"></div>
+                </div>
+
+            </div>    
         </section>
-        <!--//member box-->
-    </body>
-    </html>
+        <!--//policy box-->
+</body>
+</html>

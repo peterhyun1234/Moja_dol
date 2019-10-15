@@ -34,16 +34,161 @@
         <!--header include-->
         <header role="header" data-include="header.html"></header>
         
-        <!--member box-->
+        <!--request box-->
         <section id="main_content">
             <div class="container">
                 <div class="menuname">
                     <p>회원 요청 관리</p>
                 </div>
-    
-            
-            </div>
+
+                <div id = "test-list" class=" clearfix">
+                        <!-- 검색박스 -->
+                        <div class="searchBox">
+                            <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
+                        </div>
+                        <!--  //검색박스 -->
+                                <div class="requestlist attr">
+                                    <span class="req_code" data-sort="req_code">요청번호</span>
+                                    <span class="userID" data-sort="userID">회원아이디</span>
+                                    <span class="req_category" data-sort="req_category">카테고리</span>
+                                    <span class="request_time" data-sort="request_time">요청시간</span>
+                                    <span class="request_comment" data-sort="request_comment">요청내용</span>
+                                    <span class="request_flag" data-sort="request_flag">처리여부</span>
+                                </div>  
+
+                        <ul class="list clearfix">	
+                            <!--더미값-->
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">1</span>
+                                    <span class="userID" data-sort="userID">testID1</span>
+                                    <span class="req_category" data-sort="req_category">수정요청</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:09:23:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="청년 취업수당 정책에 대해서 의문점이 생겨 수정요청 드립니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">청년 취업수당 정책에 대해서 의문점이 생겨 수정요청 드립니다.
+                                                청년 취업수당 정책에 대해서 의문점이 생겨 수정요청 드립니다.
+                                                청년 취업수당 정책에 대해서 의문점이 생겨 수정요청 드립니다.
+                                                청년 취업수당 정책에 대해서 의문점이 생겨 수정요청 드립니다.
+                                        </div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">2</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">3</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">4</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">5</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">6</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">7</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                                <li class="requestlist">
+                                    <span class="req_code" data-sort="req_code">8</span>
+                                    <span class="userID" data-sort="userID">hades12</span>
+                                    <span class="req_category" data-sort="req_category">불만</span>
+                                    <span class="request_time" data-sort="request_time">2019:10:19:17:40</span>
+                                    <span class="request_comment" data-sort="request_comment">
+                                        <input type="text" value="게시글 중에 가끔 안맞는 정보가 있는 것 같습니다." readonly/>
+                                    </span>
+                                    <div class="hover_commentBox">
+                                        <div class="hover_comment">게시글 중에 가끔 안맞는 정보가 있는 것 같습니다.</div>
+                                    </div>
+                                    <span class="request_flag" data-sort="request_flag">
+                                        <input type="checkbox" checked data-toggle="toggle">
+                                    </span>
+                                </li>
+                    </ul>
+        
+                        <!-- 자동 페이징 영역 -->
+                        <ul class="pagination"></ul>
+                </div>
+            </div>       
         </section>
-        <!--//member box-->
+        <!--//request box-->
     </body>
     </html>

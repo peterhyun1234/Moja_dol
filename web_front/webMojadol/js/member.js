@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  
+  test();
   firebasedatacall();
   
 
@@ -18,36 +18,37 @@ function firebasedatacall(){
     measurementId: "G-WTHK97RKWS"
   };
 // Initialize Firebase 초기화
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
 
-//test db 연동
-var textlist = firebase.database().ref('/texttest/text123');
-var index = 0;
-textlist.child('text').once('value', function(snapshot){
- snapshot.forEach(function(member) {
-     index++;
-     var uid = member.key; // uid 받아옴 
-     var name = member.val().name;
-     var id = member.val().id;
-     var birth = member.val().birth;
-     console.log(index+ "++" + name+ "++" + id + "++" + birth);
+  //test db 연동
+  var textlist = firebase.database().ref('/texttest/text123');
+  var index = 0;
+  textlist.child('text').once('value', function(snapshot){
+  snapshot.forEach(function(member) {
+      index++;
+      var uid = member.key; // uid 받아옴 
+      var name = member.val().name;
+      var id = member.val().id;
+      var birth = member.val().birth;
+      console.log(index+ "++" + name+ "++" + id + "++" + birth);
 
-    var element =   '<li class="memberlist">'+ 
-                        '<span class="memberId">' + id + '</span>'+
-                        '<span class="membername">' + name + '</span>'+
-                        '<span class="memberbirth">' + birth + '</span>'+
-                    '</li>';        
-           
+      var element =   '<li class="memberlist">'+ 
+                          '<span class="memberId">' + id + '</span>'+
+                          '<span class="membername">' + name + '</span>'+
+                          '<span class="memberbirth">' + birth + '</span>'+
+                      '</li>';        
+            
 
 
-    $(".list").append(element);
+      $(".list").append(element);
 
+    });
+
+    portfolioPageSetting();
   });
-
-  portfolioPageSetting();
-});
 }
+
 function portfolioPageSetting(){
 	// 사용되는 리스트는 무조건 ID 로 선언 
 	var options = {
@@ -62,4 +63,43 @@ function portfolioPageSetting(){
 		var userList = new List('test-list', options); // 위 옵션에 따라 만들어진 리스트 
 
 	
+}
+
+
+
+function test() {
+  LoadingWithMask('/image/Spinner.gif');
+  setTimeout("closeLoadingWithMask()", 3000);
+}
+               
+function LoadingWithMask(gif) {
+  //화면의 높이와 너비를 구하기
+  var maskHeight = $(document).height();
+  var maskWidth  = window.document.body.clientWidth;
+   
+  //화면에 출력할 마스크
+  var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'><div id='loadingImg'></div></div>";
+  var loadingImg ='';
+    
+  loadingImg +=" <img src='"+ gif +"' style='left:50%; top:50%; transform: translate(-50%, -50%); position: absolute; display: block; margin: 0px auto;'/>";
+
+  $('body').append(mask)
+
+  $('#mask').css({
+          'width' : maskWidth,
+          'height': maskHeight,
+          'opacity' :'0.3'
+  });
+
+  //마스크 표시
+  $('#mask').show();
+
+  //로딩중 이미지 표시
+  $('#loadingImg').append(loadingImg);
+  $('#loadingImg').show();
+}
+
+function closeLoadingWithMask() {
+  $('#mask, #loadingImg').hide();
+  $('#mask, #loadingImg').empty(); 
 }

@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+li.requestlist:hover {background-color: #fbffd0;}
+.requestlist {position:relative; border-bottom: 1px solid #d4d1d1; font-size: 1em; width: 100%; text-align: center; padding: 0 10px; padding-top:20px; display:inline-block;}
+.requestlist span {padding:0 10px; margin: 0; display: inline-block; padding-bottom: 20px;}
+.attr {border-bottom: 2px solid gray; font-weight: bold;}
+
+.req_code {width:10%;}
+.userID {width:14%;}
+.req_category {width:12%;}
+.request_time {width:17%;}
+.request_comment {width:34%;}
+.request_comment input {width: 100%; text-overflow: ellipsis; border: none; background-color: transparent;}
+.hover_commentBox{ display: none; transition: ease all 0.1s; z-index: 10; top: 85%; left: 65%; position: absolute; width: 0px; border: 1px solid #000; background-color: #f0f7ff; padding: 10px; text-align: left; min-height: 100px;}
+.hover_commentBox.active {display: block; width:350px;}
+
+.request_flag {width:10%;}
+.request_flag input {width: 20px; height: 20px;}

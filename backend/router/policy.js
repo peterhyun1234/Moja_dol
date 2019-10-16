@@ -38,12 +38,14 @@ router.get('/pic1',function(req,res){
 
     console.log('/policy/pic1 Processing completed');
 
-    var filename = 'policy_icon1.png';
+    var filename = 'icons/policy_icon1.png';
     fs.readFile(filename, function(err, data)
     {
         if(!err){
+	    console.log('reafile complete');
             res.writeHead(200, {"Content-Type": "image/png"});
-            res.write(data);
+            //res.write(data);
+	    res.end(data);
             //res.send(data);
         }
         else {
@@ -58,12 +60,13 @@ router.get('/pic2',function(req,res){
 
     console.log('/policy/pic2 Processing completed');
 
-    var filename = 'policy_icon2.png';
+    var filename = 'icons/policy_icon2.png';
     fs.readFile(filename, function(err, data)
     {
         if(!err){
-            res.writeHead(200, {"Content-Type": "image/png"});
-            res.write(data);
+            res.writeHead(200, {"Content-Type": "text/html"});
+            //res.write(data);
+            res.end(data);
             //res.send(data);
         }
         else {
@@ -78,13 +81,14 @@ router.get('/pic3',function(req,res){
 
     console.log('/policy/pic3 Processing completed');
 
-    var filename = 'policy_icon3.png';
+    var filename = 'icons/policy_icon3.png';
     fs.readFile(filename, function(err, data)
     {
         if(!err){
-            res.writeHead(200, {"Content-Type": "image/png"});
-            res.write(data);
+            res.writeHead(200, {"Content-Type": "text/html"});
+            //res.write(data);
             //res.send(data);
+            res.end(data);
         }
         else {
             console.log(err);

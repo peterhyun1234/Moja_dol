@@ -17,6 +17,18 @@ router.get('/show_all_users',function(req,res){
     });
 });
 
+router.get('/info',function(req,res){
+    connection.query('SELECT id, password from admin_web',function(err,data){
+        if(!err){
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
 
 /*
 router.post('/signup',function(req,res){

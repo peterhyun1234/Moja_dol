@@ -3,7 +3,7 @@ module.exports=(function(){
     return{
         local:{
             host:'localhost',
-            user:'HB_JEON',
+            user:'root',
             password:'page159!',
             port:3306,  
             database:'mojadol_DB00'

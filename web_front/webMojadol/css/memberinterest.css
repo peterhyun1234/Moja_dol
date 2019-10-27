@@ -5,5 +5,5 @@ li.interestlist:hover {background-color: #fbffd0;}
 .interestlist span {padding:0 10px; margin: 0; display: inline-block; padding-bottom: 20px;}
 .attr {border-bottom: 2px solid gray; font-weight: bold;}
 
-.userID {width: 170px;}
+.userID {width: 300px;}
 .interest{width:150px;}

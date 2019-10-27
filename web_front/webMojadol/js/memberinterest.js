@@ -1,6 +1,12 @@
 $(document).ready(function(){
+    var intres = $(".interest").text();
+    if(intres == 0) {
+        $(".interest").text("관심없음");
+    }
+
     listPageSetting();
-	click_detail_policy();
+
+
 });
 
 function listPageSetting(){
@@ -8,7 +14,7 @@ function listPageSetting(){
 	var options = {
 			// 구분조건나열
 			valueNames: [
-                'p_code', 'p_title', 'crawling_data', 'expiration_flag'    //검색을 위한 키워드
+                'userID'    //검색을 위한 키워드
 			],
 			page: 6,			 // 한 페이지 출력 영상 개수 
 			pagination: true	 // 자동 페이징 여부 
@@ -16,12 +22,4 @@ function listPageSetting(){
 	
 		var userList = new List('test-list', options); // 위 옵션에 따라 만들어진 리스트 	
 }
-function click_detail_policy(){
-    $(".policylist").click(function(){
-		
-        //alert($(this).children(".p_code").text());
-        var p_code = $(this).children(".p_code").text();
-		$(".detail_p_code").text(p_code);
-		console.log(p_code);
-    });
-}
+

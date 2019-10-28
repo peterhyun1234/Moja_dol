@@ -17,8 +17,6 @@
         <activity android:name=".TestActivity"/>
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".testServerActivity"/>
-        <activity android:name=".ProfileActivity"/>
-        <activity android:name=".realTestActivity"/>
         <activity android:name=".MainActivity">
 
         <intent-filter>

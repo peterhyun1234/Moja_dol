@@ -13,6 +13,7 @@ public class PolicyListActivity extends AppCompatActivity {
 
     TextView tv_userEmail;
     Button btn_policy1, btn_policy2, btn_policy3, btn_logout;
+    Button serverButton;
     Button btn_testButton;
     Button realServerButton;
     SharedPreferences sharedPreferences;
@@ -32,6 +33,7 @@ public class PolicyListActivity extends AppCompatActivity {
         btn_logout = findViewById(R.id.btn_logout);
         btn_testButton=findViewById(R.id.testButton);
         realServerButton=findViewById(R.id.realServerButton);
+
 
         tv_userEmail.setText(userEmail);
 
@@ -85,6 +87,7 @@ public class PolicyListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
 

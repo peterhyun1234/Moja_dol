@@ -1,6 +1,5 @@
 package com.example.firebase_20190925;
 
-import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -18,9 +16,6 @@ import com.example.firebase_20190925.model.UserModel;
 import com.example.firebase_20190925.service.IApiService;
 import com.example.firebase_20190925.service.RestClient;
 import com.facebook.stetho.Stetho;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,7 +28,6 @@ public class testServerActivity extends AppCompatActivity {
     private ImageView img_finder;
     private ImageView img_download;
     private ImageView img_profile;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,12 +35,12 @@ public class testServerActivity extends AppCompatActivity {
         Stetho.initializeWithDefaults(this);
         setContentView(R.layout.activity_home);
 
-        ImageView img=findViewById(R.id.image_test);
+     //   ImageView img=findViewById(R.id.image_test);
         img_home=findViewById(R.id.tab_home);
         img_finder=findViewById(R.id.tab_finder);
         img_download=findViewById(R.id.tab_download);
         img_profile=findViewById(R.id.tab_profile);
-        Glide.with(testServerActivity.this).load("http://49.236.136.213:3000/policy/pic1").into(img);
+     //   Glide.with(testServerActivity.this).load("https://loremflickr.com/320/240/dog").into(img);
 
 
 
@@ -61,23 +55,8 @@ public class testServerActivity extends AppCompatActivity {
                         try {
                             //UserAdapter ua = new UserAdapter(response.body());
                             //String tmp=response.body()
-                                String result=response.body().toString();
-                                Log.d("받아온 데이터", "성공" + response.body().toString());
-                                Log.d("받아오기", "성공");
-                            try{
-                                JSONArray jsonArray=new JSONArray(result);
-                                String tmp;
-//                                for(int i=0;i<jsonArray.length();i++)
-//                                {
-//                                    JSONObject jsonObject=jsonArray.getJSONObject(i);
-//                                    tmp=jsonObject.getString("name");
-//                                    Log.d("받아온 이름",tmp);
-//                                }
-                            }
-                            catch (Exception e)
-                            {
-                                e.printStackTrace();
-                            }
+                            Log.d("받아온 데이터","성공"+response.body().toString());
+                            Log.d("받아오기","성공");
                             // Log.d("받아온 데이터","성공"+response.body().);
                             // Log.d("바디명",""+tmp);
 //                            mRecyclerView.setAdapter(ua);
@@ -122,8 +101,6 @@ public class testServerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("이미지","프로필");
-                Intent intent=new Intent(testServerActivity.this,ProfileActivity.class);
-                startActivity(intent);
             }
         });
     }

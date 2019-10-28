@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, userEmail + "님, 환영합니다.", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(MainActivity.this, testServerActivity.class);
+        Intent intent = new Intent(MainActivity.this, PolicyListActivity.class);
         startActivity(intent);
         finish();
     }

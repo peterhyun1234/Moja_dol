@@ -43,7 +43,7 @@ public class TestActivity extends AppCompatActivity {
                         try {
                             UserAdapter ua = new UserAdapter(response.body());
                             //String tmp=response.body()
-                            Log.d("받아온 데이터123","성공"+response.body().toString());
+                            Log.d("받아온 데이터","성공"+response.body());
                             Log.d("받아오기","성공");
                            // Log.d("받아온 데이터","성공"+response.body().);
                            // Log.d("바디명",""+tmp);

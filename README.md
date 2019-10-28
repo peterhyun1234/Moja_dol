@@ -1,14 +1,21 @@
-Moja_dol project
-=============
-나만의 청년 정책
--------------
+# mojadol
+청년정책 추천 서비스 - 나만의 청년 정책
+-------------------------------------
+## 1. Start node server
+    
+### 1.1. Start node server with exit state(background)    
+    nohup npm start &
+### 1.2. Start node server with auto_modifying state
+    nodemon index.js
+    superviser index.js
+    
+## 2. Android application
 
 
-## 1. App_front
+## 3. Web page
 
 
-## 2. Server_backend
-
-###   2.1 개발 일지
-
-####     09.29
+## 4. Crawling with airflow
+    
+    airflow adress : http://49.236.136.213:8080
+    

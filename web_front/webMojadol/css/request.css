@@ -12,7 +12,8 @@ li.requestlist:hover {background-color: #fbffd0;}
 .request_comment {width:34%;}
 .request_comment input {width: 100%; text-overflow: ellipsis; border: none; background-color: transparent;}
 .hover_commentBox{ display: none; transition: ease all 0.1s; z-index: 10; top: 85%; left: 65%; position: absolute; width: 0px; border: 1px solid #000; background-color: #f0f7ff; padding: 10px; text-align: left; min-height: 100px;}
-.hover_commentBox.active {display: block; width:350px;}
+.requestlist:hover .hover_commentBox {display:block; width:350px;}
 
 .request_flag {width:10%;}
 .request_flag input {width: 20px; height: 20px;}
+

@@ -6,19 +6,19 @@ $(document).ready(function(){
 		   //alert('성공');
 			$.each(data, function(idx, content){
 				//alert(idx + ":"+content.name);
-				var string = '<li class="requestlist">'+
+				var string = '<li class="requestlist tt">'+
 							 '<span class="req_code" data-sort="req_code">'+ content.req_code +'</span>'+
 							 '<span class="userID" data-sort="userID">'+ content.req_uID +'</span>'+
 							 '<span class="req_category" data-sort="req_category">'+ content.req_category +'</span>'+    
 							 '<span class="request_time" data-sort="request_time">'+ content.req_time +'</span>'+   
-							 '<span class="request_comment" data-sort="request_comment"><input type="text" value="' +content.req_contents +  '" readonly/></span>'+   
+							 '<span class="request_comment content" data-sort="request_comment"><input type="text" value="' +content.req_contents +  '" readonly/></span>'+   
 							 '<div class="hover_commentBox"><div class="hover_comment">' +content.req_contents +  '</div></div>';
 
-				if(content.req_flag == null){
-					var flag = '<span class="request_flag" data-sort="request_flag"><input type="checkbox" checked data-toggle="toggle"></span></li>';
+				if(content.req_flag == null || content.req_flag == 0){
+					var flag = '<span class="request_flag" data-sort="request_flag"><input type="checkbox" id="test" unchecked data-toggle="toggle" onclick="modifyflag(this.id)"></span></li>';
 				}
 				else {
-					var flag = '<span class="request_flag" data-sort="request_flag"><input type="checkbox" unchecked data-toggle="toggle"></span></li>';
+					var flag = '<span class="request_flag" data-sort="request_flag"><input type="checkbox" id="test" checked data-toggle="toggle"  onclick="modifyflag(this.id)"></span></li>';
 				}             
 				
 				string = string + flag;
@@ -54,11 +54,63 @@ function portfolioPageSetting(){
 }
 
 function hover_request_comment(){
-    $(".request_comment").hover(function(){
-        $(this).parent().children("div").addClass("active");
-    }, function(){
-        $(".hover_commentBox").removeClass("active");
-    }
-    );
+
 }
 
+function modifyflag(me){
+	//alert("체크 누름" + me + "여부"+ $(me).is(":checked"));
+
+
+	var string = "input:checkbox[id='"+me+"']";
+	var recode = $(me).parent().html();
+	alert(recode + "코드");
+
+	if($(string).is(":checked") == ture){
+		// 원래는 false 였음
+		/* $.ajax({
+			url : "http://49.236.136.213:3000/request/change_flag",
+			type : "post",
+			data : admin,
+			success : function(data) {
+				
+				if(data == 1){
+					alert("관리자 로그인에 성공하였습니다.");
+					$(location).attr("href", "member.html");
+				}
+				else {
+					alert("로그인 정보를 확인해주십시오." + data)
+				}
+				
+			},
+			error: function(request,status,error){
+				alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+			}
+	
+		});  */
+	}
+	else {
+		//원래는 true 였음
+	}
+
+	/*$("input:checkbox[id='ID']").is(":checked") == true : false */
+/* 	$.ajax({
+		url : "http://49.236.136.213:3000/web_admin/certificate",
+		type : "post",
+		data : admin,
+		success : function(data) {
+			
+			if(data == 1){
+				alert("관리자 로그인에 성공하였습니다.");
+				$(location).attr("href", "member.html");
+			}
+			else {
+				alert("로그인 정보를 확인해주십시오." + data)
+			}
+			
+		},
+		error: function(request,status,error){
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		}
+
+	}); */
+}

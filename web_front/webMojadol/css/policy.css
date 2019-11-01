@@ -13,3 +13,17 @@ li.policylist:hover {background-color: #fbffd0;}
 
 /*상세 정책 내용*/
 .policy_detail {width: 100%; border: 1px solid blue;}
+
+/*댓글 */
+.policy_review p {display: inline-block; text-align:center;}
+.review_listBox {width:100%; height:50px; padding:0; }
+.review_listBox.top {background-color: powderblue;  font-weight:bold; display: flex; align-items: center;}
+.review_list {border-bottom: 1px solid #000; padding: 0; width: 100%; background-color: #e4e4e4; height: 40px;}
+
+.review_code {width: 80px;}
+.review_uID {width:250px;}
+.contents{width: calc(100% - 630px);}
+.req_time {width: 200px;}
+.deletebtn {width: 100px;}
+
+

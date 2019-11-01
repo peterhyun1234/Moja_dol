@@ -15,7 +15,10 @@
     superviser index.js
     
 ## 2. Android application
-
+    Check SdkVersion 16
+    Check Internet network service environment
+    
+    Run -> Run app
 
 ## 3. Web page
 

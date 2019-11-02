@@ -13,6 +13,7 @@ function callinterst(){
                 //alert(idx + ":"+content.name);
                 var string = '<li class="interestlist">'+
                             '<span class="userID" data-sort="userID">' + content.uID + '</span>'+
+                            '<span class="age" data-sort="age">'+ content.age +'</span>'+
                             '<span class="job interest" data-sorst="job">' + content.Employment_Sup_priority + '</span>'+
                             '<span class="found interest" data-sorst="found">' + content.Startup_sup_priority + '</span>'+
                             '<span class="Life_welfare_priority interest" data-sorst="life">' + content.Life_welfare_priority + '</span>'+

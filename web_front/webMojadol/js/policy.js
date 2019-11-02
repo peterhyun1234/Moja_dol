@@ -67,7 +67,7 @@ function click_detail_policy(){
 
 		$(".detail_p_code").text()
 
-		var title;
+/* 		var title;
 		var uri;
 		var apply_start;
 		var apply_end;
@@ -76,7 +76,7 @@ function click_detail_policy(){
 		var application_target;
 		var location;
 		var crawing_date;
-		var expiration_flag;
+		var expiration_flag; */
 
 		//특정 정책 코드에 대한 내용들 출력하기 
 		$.ajax({
@@ -86,6 +86,7 @@ function click_detail_policy(){
 			//alert('성공');
 				$.each(data, function(idx, content){
 					if(content.p_code == p_code){
+						$(".policy_detail").html("");
 						var beforedate = content.crawing_date;
 						var cut = beforedate.split("T");
 						var date = cut[0];
@@ -96,18 +97,21 @@ function click_detail_policy(){
 						expiration_flag = "진행중";
 						if(content.expiration_flag != 0) expiration_flag = "만료";
 
-						title = content.title;
-						uri = content.uri;
-						apply_start = content.apply_start;
-						apply_end = content.apply_end;
-						start_age = content.start_age;
-						end_age = content.end_age;
-						application_target = content.application_target;
-						location = content.location;
-						crawing_date = content.crawing_date;
-						//$(".detail_title").text(title);
-						$(".uri").text(uri);
-						alert(uri + "인뎃스 " + idx);
+						var string = '<div class="detail_p_code">'+ p_code +'</div>'+
+									'<div class="detail_title">'+content.title +'</div>'+
+									'<div class="uri">'+ content.uri +'</div>'+
+									'<div class="apply_start">'+ content.apply_start +'</div>'+
+									'<div class="apply_end">'+  content.apply_end +'</div>'+
+									'<div class="start_age">'+ content.start_age +'</div>'+
+									'<div class="end_age">'+ content.end_age +'</div>'+
+									'<div class="application_target">'+ content.application_target +'</div>'+
+									'<div class="location">'+ content.location +'</div>'+
+									'<div class="crawing_date">'+ content.crawing_date +'</div>'+
+									'<div class="expiration_flag">'+ expiration_flag +'</div>';
+
+						$(".policy_detail").append(string); 
+
+						console.log(content);
 
 					}
 				});
@@ -129,7 +133,7 @@ function click_detail_policy(){
 						 crawing_date
 						 expiration_flag */
 
-
+	//특정 정책 코드 오리지널 테이블 가져오기
 	var code = {"p_code" : p_code};
 	$.ajax({
 		url: "http://49.236.136.213:3000/policy/origin_table",
@@ -145,6 +149,8 @@ function click_detail_policy(){
 		}
 	});
 
+
+	//특정 정책 코드 댓글 가져오기 
 	$.ajax({
 		url: "http://49.236.136.213:3000/review/selected_review",
 		type: "POST",
@@ -168,7 +174,7 @@ function click_detail_policy(){
 							'<p class="review_uID">' + content.review_uID + '</p>'+
 							'<p class="contents">' + content.contents + '</p>'+
 							'<p class="req_time">' + retime + '</p>'+
-							'<p class="deletebtn"><input type="button" class="delete_btn" value="삭제"/></p>'+
+							'<p class="deletebtn"><input type="button" id="'+ content.p_code+'" class="delete_btn" value="삭제" onclick="delete_review(this)"/></p>'+
 							'</li>';
 				$(".review_listBox.bottom").append(string); 
 
@@ -185,4 +191,36 @@ function click_detail_policy(){
 
 
     });
+}
+
+// 정책 내용 수정하기
+//정책 만료여부 변겅
+
+//댓글삭제
+function delete_review(me){
+	var p_code = me.id;
+	var review_code =  $(me).parent().siblings(".review_code").text();
+	//alert(review_code + me.id);
+	//review_code
+
+	var data = {"p_code" : p_code, "review_code" : review_code};
+
+	if(confirm("댓글을 삭제하시겠습니까?")){
+		$.ajax({
+			url : "http://49.236.136.213:3000/review/delete_review",
+			type : "post",
+			data : data,
+			success : function(data) {
+				//alert("댓글 삭제 성공");
+				location.reload();
+			},
+			error: function(request,status,error){
+				alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+			}
+	
+		}); 
+	 }
+	 else {
+		 alert("댓글 삭제가 취소되었습니다.");
+	 }
 }

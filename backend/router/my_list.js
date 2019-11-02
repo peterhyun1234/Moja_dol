@@ -46,6 +46,28 @@ router.post("/store_in_mylist", function (req, res, next) {
     });
 });
 
+router.post("/delete", function (req, res, next) {
+
+    var recv_uID = req.body.uID;
+    var recv_s_p_code = req.body.s_p_code;
+
+    var SQL = 'DELETE FROM stored_policy where ' +
+    'uID = \'' + recv_uID + '\' AND '
+    's_p_code = ' + recv_s_p_code;
+
+    console.log(SQL);
+    //절 차 
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
 
 
 module.exports = router;

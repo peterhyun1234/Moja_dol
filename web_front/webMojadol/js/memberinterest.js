@@ -1,13 +1,34 @@
 $(document).ready(function(){
-    var intres = $(".interest").text();
-    if(intres == 0) {
-        $(".interest").text("관심없음");
-    }
-
-    listPageSetting();
-
-
+	callinterst();
 });
+
+
+function callinterst(){
+	$.ajax({
+        url: "http://49.236.136.213:3000/user/show_all_users",
+        type: "GET",
+        success: function(data){
+           //alert('성공');
+            $.each(data, function(idx, content){
+                //alert(idx + ":"+content.name);
+                var string = '<li class="interestlist">'+
+                            '<span class="userID" data-sort="userID">' + content.uID + '</span>'+
+                            '<span class="job interest" data-sorst="job">' + content.Employment_Sup_priority + '</span>'+
+                            '<span class="found interest" data-sorst="found">' + content.Startup_sup_priority + '</span>'+
+                            '<span class="Life_welfare_priority interest" data-sorst="life">' + content.Life_welfare_priority + '</span>'+
+                            '<span class="Residential_financial_priority interest" data-sorst="dwelling">' + content.Residential_financial_priority + '</span>' +
+                            '</li>';
+
+                $(".list").append(string);
+
+            });
+            listPageSetting();
+        },
+        error: function(){
+            alert("데이터베이스 에러");
+        }
+    });
+}
 
 function listPageSetting(){
 	// 사용되는 리스트는 무조건 ID 로 선언 

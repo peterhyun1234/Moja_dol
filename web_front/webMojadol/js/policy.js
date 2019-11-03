@@ -21,7 +21,7 @@ $(document).ready(function(){
 							 '<span class="p_code" data-sort="p_code">'+ content.p_code +'</span>'+
 							 '<span class="p_title" data-sort="p_title"><input type="text" value="'+ content.title +'" readonly/></span>'+
 							 '<span class="crawling_data" data-sort="crawling_data">'+ retime +'</span>'+   
-							  '<span class="expiration_flag" data-sort="expiration_flag">' + expiration +  '</span></li>';
+							  '<span class="expiration_flag" data-sort="expiration_flag">' + expiration +  "ff" + content.expiration_flag+'</span></li>';
 
 				$(".list").append(string); 
  
@@ -84,33 +84,72 @@ function click_detail_policy(){
 			type: "POST",
 			success: function(data){
 			//alert('성공');
+
+			$(".detail_title").text("");
+			$(".crawing_date").text(""); // 크롤링 날짜
+			$(".policy_contents").text(""); // 내용
+			$(".application_target").text(""); // 대상
+			$(".location").text(""); // 지역
+			$(".uri").text(""); // 링크
+			$(".third_line").text(""); 
+			$(".expiration_flag2").text("");
+
 				$.each(data, function(idx, content){
 					if(content.p_code == p_code){
-						$(".policy_detail").html("");
+
 						var beforedate = content.crawing_date;
 						var cut = beforedate.split("T");
 						var date = cut[0];
 						var cut2 = cut[1].split(".000Z");
 						var time = cut2[0];
 						var retime = date + " " + time;
-						//alert(retime);
-						expiration_flag = "진행중";
-						if(content.expiration_flag != 0) expiration_flag = "만료";
 
-						var string = '<div class="detail_p_code">'+ p_code +'</div>'+
-									'<div class="detail_title">'+content.title +'</div>'+
-									'<div class="uri">'+ content.uri +'</div>'+
-									'<div class="apply_start">'+ content.apply_start +'</div>'+
-									'<div class="apply_end">'+  content.apply_end +'</div>'+
-									'<div class="start_age">'+ content.start_age +'</div>'+
-									'<div class="end_age">'+ content.end_age +'</div>'+
-									'<div class="application_target">'+ content.application_target +'</div>'+
-									'<div class="location">'+ content.location +'</div>'+
-									'<div class="crawing_date">'+ content.crawing_date +'</div>'+
-									'<div class="expiration_flag">'+ expiration_flag +'</div>';
+						if(content.apply_start != null){
+							var apply_start = content.apply_start;
+							var cut1 = apply_start.split("T");
+							var date1 = cut1[0];
+						}else {
+							date1 = "";
+						}
 
-						$(".policy_detail").append(string); 
+						if(content.apply_end != null){
+							var apply_end = content.apply_end;
+							var cut2 = apply_end.split("T");
+							var date2 = cut2[0];
+						}else {
+							date2 = "";
+						}
 
+						var string = '<p class="third title">신청기간</p> '+
+									 '<div class="apply">'+
+									 '<input type="text" class="apply_start" value="'+ date1 +'">'+
+									 '<p style="margin:0;">~</p><input type="text" class="apply_end" value="'+  date2 +'"></div>'+
+									 '<p class="third title">대상 연령</p><div class="age">'+
+									 '<input type="text" class="start_age" value="'+ content.start_age +'">'+
+									 '<p style="margin:0;">~</p><input type="text" class="end_age" value="'+ content.end_age +'"></div>';
+							
+						$(".third_line").append(string); 
+						
+
+						
+						$(".crawing_date").append(date); // 크롤링 날짜
+						$(".detail_title").append(content.title); // 제목
+						$(".policy_contents").append(content.contents); // 내용
+						
+						$(".application_target").append(content.application_target); // 대상
+						$(".location").append(content.location); // 지역
+						$(".uri").append(content.uri); // 링크
+				
+
+						if(content.expiration_flag == 0){
+							var string2 = '<input type="checkbox" unchecked="true" data-toggle="toggle" onclick="modifyflag(this.id)" id="expiration'+content.p_code+'"></input>';
+						}
+						else {
+							var string2 = '<input type="checkbox" checked="true" data-toggle="toggle" onclick="modifyflag(this.id)" id="expiration'+content.p_code+'"></input>';
+						}  
+				
+						$(".expiration_flag2").append(string2);
+						
 						console.log(content);
 
 					}
@@ -194,7 +233,67 @@ function click_detail_policy(){
 }
 
 // 정책 내용 수정하기
+function modifypolicy(){
+	alert("수정");
+	var title = $(".detail_title").text();
+	var contents = $(".policy_contents").text();
+	
+	var uri = $(".uri").text();
+
+
+	var apply_start = $(".apply_start").val();
+	var apply_end = $(".apply_end").val();
+	var start_age = $(".start_age").val();
+	var end_age = $(".end_age").val();
+	var application_target = $(".application_target").text();
+	var location = $(".location").text();
+
+	alert(uri);
+	alert(apply_start);
+	alert(title+"+"+
+		contents + "+"+
+		uri+"+"+
+		apply_start+"+"+
+		apply_end+"+"+
+		start_age+"+"+
+		end_age+"+"+
+		application_target+"+"+
+		location);
+
+}
+
 //정책 만료여부 변겅
+function modifyflag(me){
+	var cut = me.split("expiration");
+	var p_code = cut[1];
+	var expiration_flag;
+	var string = "input:checkbox[id='expiration']";
+	
+
+	if($(string).is(":checked") == true)  expiration_flag = 0; //만료 - 원래 노체크였으면 1로해서 보냄(누르는 순간 checked로 되어 true로 출력되는 것임)
+	else expiration_flag=1; // 원래 체크였으면 0으로 해서 보냄
+	
+	var expiration = {"p_code" :  p_code, "expiration_flag" :  expiration_flag};
+
+	//alert(me + "여부" + p_code + "flag : " + $(string).is(":checked"));
+
+	alert(expiration.p_code + "fff" + expiration.expiration_flag);
+	console.log("c출력?"+expiration);
+ 	 $.ajax({
+		url : "http://49.236.136.213:3000/request/change_flag",
+		type : "post",
+		data : expiration,
+		success : function(data) {
+			alert("수정 성공????????" + data);
+			location.reload();
+
+		},
+		error: function(request,status,error){
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		}
+
+	});   
+}
 
 //댓글삭제
 function delete_review(me){

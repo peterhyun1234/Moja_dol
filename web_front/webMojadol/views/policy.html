@@ -71,7 +71,7 @@
                         <ul class="pagination"></ul>
                 </div>
                 <div class="policy_detail">
-                    <div class="detail_p_code"></div>
+                    <div class="detail_p_code">0</div>
                     <div class="detail_title"></div>
                     <div class="uri"></div>
                     <div class="apply_start"></div>
@@ -83,7 +83,111 @@
                     <div class="crawing_date"></div>
                     <div class="expiration_flag"></div>
                 </div>
+                <div class="policy_detailBox clearfix">
+                    <p class="modify_title">정책 수정하기</p>
+                    <ul>
+                        <li class="first_line clearfix">
+                            <p class="first title">정책코드</p>
+                            <p class="detail_p_code"></p>
+                            <p class="first title">정책 만료여부</p>
+                            <p class="expiration_flag2">
+                            <!--     <select id = "expiration">
+                                    <option >선택</option>
+                                    <option data="0">진행중</option>
+                                    <option data="1">만료</option>
+                                </select>
+                                <input type="checkbox" unchecked="" data-toggle="toggle" onclick="modifyflag(this.id)" id="expiration"> -->
+                            </p>
+                        </li>
+                        <li class="second_line clearfix">
+                            <p class="second title">대상</p>
+                            <textarea class="application_target"></textarea>
+                        </li>
+                        <li class="third_line clearfix">
+                            <p class="third title">신청기간</p> 
+                            <div class="apply">
+                                <input type="text" class="apply_start" value="">
+                                <p style="margin:0;">~</p>
+                                <input type="text" class="apply_end" value="">
+                            </div>  
+                            <p class="third title">대상 연령</p> 
+                            <div class="age">
+                                <input type="text" class="start_age" value="">
+                                <p style="margin:0;">~</p>
+                                <input type="text" class="end_age" value="">
+                            </div>          
+                        </li>
+                        <li class="fourth_line clearfix">
+                            <p class="fourth title">정책 수집 날짜</p>
+                            <p class="crawing_date"></p>
+                            <p class="second title">시행 지역</p>
+                            <input type="text" class="location" value="">
+                        </li>
+                        <li class="fifth_line clearfix">
+                            <p class="fifth title">제목</p>
+                            <textarea class="detail_title"></textarea>
+                        </li>
+                        <li class="sixth_line clearfix">
+                            <p class="sixth title">내용</p>
+                            <textarea class="policy_contents"></textarea>
+                        </li>
+                        <li class="seventh_line clearfix">
+                            <p class="seventh title">연결 링크</p>
+                            <textarea class="uri"></textarea>
+                        </li>
+                        <li class="last_line clearfix">
+                            <div class="origin_data">
+                                    <p class="last title">원본 내용</p>
+                                    <div class="origin_policy">
+                                        더미 데이터<!-- <br>
+                                        
+                                        ○ 지원내용
+                                            행복추구, 삶의 질 향상, 건강 수준 향상 등 청년의 사회적 기본권 보장을 지원하는 경기도형 기본소득제도입니다. 최대 연 100만원까지, 분기별로 나눠 시군별 지역화폐(카드형 등)로 지급됩니다.
+                                            
+                                            ○ 지원대상
+                                            경기도 거주 만24세 청년으로, ① 3년 이상 주민등록을 두고 계속 거주 또는 ② 합산 10년 이상 주민등록을 두게 되는 경우
+                                            
+                                                ○ 2019년 지급기준 및 대상
+                                                 
+                                                분기별	지급기준일	지급대상자 생년월일	신청기간	지급 개시
+                                                1분기	2019.1.1	'94.1.2~'95.1.1	4.8~5.10	5.10
+                                                2분기	2019.4.1	'94.4.2~'95.4.1	6.1~6.30	7.20
+                                                3분기	2019.7.1	'94.7.2~'95.7.1	9.1~9.30	10.20
+                                                4분기	2019.10.1	'94.10.2~'95.10.1	11.1~11.30	12.20
+                                                ※ 분기별 지급대상자 생년월일을 참고하여 매분기 신청
+                                                
+                                                ○ 지급방법
+                                                - 기  준 일 : 매분기 시작 월 1일
+                                                - 지급조건 : (조건1) 만 24세 청년 (조건2) 신청일 현재 도내 3년 이상 주민등록을 두고 계속 거주
+                                                - 지급형식 : 시군 지역화폐(전자카드, 모바일)
+                                                  (사용지역) 주소지 지역 시군內에서만 사용 원칙
+                                                  (사 용 처) 전통시장 및 소상공인 업체(백화점, 대형마트, SSM, 유흥업소 등은 제외)
+                                                - 분기당 25만원(최대 연 100만원)
+                                                
+                                                ○ 신청절차
+                                                온라인 접수 (http://apply.jobaba.net)
+                                                
+                                                ○ 제출서류 
+                                                - 신청서
+                                                - 개인정보활용동의서
+                                                - 주민등록초본(신청일 현재 발급분) : 최근5년(주민등록 계속 3년이상) 또는 전체(주민등록 합산 10년이상) 주소변동사항
+                                                ※ 발생일, 신고일, 변동사유, 주민등록번호 뒷자리 포함
+                                                ☞ 신청기간은 9시 이후부터 24시간 신청 가능
+                                                ☞ 단, 마감일은 18:00시 까지 신청작성 및 첨부서류 업로드 완료해야 함
+                                                ☞ 첨부파일은 pdf파일, jpg파일, png파일로 제한
+                                                
+                                                ○ 문의처
+                                                - 신청절차 등 : 주소지 시군 청년복지 담당부서, 경기도 콜센터(031-120)
+                                                - 온라인시스템 : 경기도일자리재단 -->
+                                    </div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                    <input type="button" value="수정하기" class="modifypolicybtn" onclick="modifypolicy()"/>
+                </div>
 
+                <p class="review_title">댓글 목록</p>
                 <div class="policy_review">
                     <li class="review_listBox top clearfix">
                             <p class="review_code">댓글번호</p>
@@ -103,3 +207,54 @@
         <!--//policy box-->
 </body>
 </html>
+
+
+<!--더미데이터-->
+<!-- <li class="first_line clearfix">
+        <p class="first title">정책코드</p>
+        <p class="detail_p_code">31</p>
+        <p class="first title">정책 만료여부</p>
+        <p class="expiration_flag">
+            <select id = "expiration">
+                <option >선택</option>
+                <option data="0">진행중</option>
+                <option data="1">만료</option>
+            </select>
+        </p>
+    </li>
+    <li class="second_line clearfix">
+        <p class="second title">대상</p>
+        <textarea class="application_target">4년제 대학교 재학생</textarea>
+    </li>
+    <li class="third_line clearfix">
+        <p class="third title">신청기간</p> 
+        <div class="apply">
+            <input type="text" class="apply_start" value="2019-10-01">
+            <p style="margin:0;">~</p>
+            <input type="text" class="apply_end" value="2019-12-31">
+        </div>  
+        <p class="third title">대상 연령</p> 
+        <div class="age">
+            <input type="text" class="start_age" value="19">
+            <p style="margin:0;">~</p>
+            <input type="text" class="end_age" value="34">
+        </div>          
+    </li>
+    <li class="fourth_line clearfix">
+        <p class="fourth title">정책 수집 날짜</p>
+        <p class="crawing_date">2019-10-26 06:44:32</p>
+        <p class="second title">시행 지역</p>
+        <input type="text" class="location" value="전국">
+    </li>
+    <li class="fifth_line clearfix">
+        <p class="fifth title">제목</p>
+        <textarea class="detail_title">취업 지원금 지원 제도</textarea>
+    </li>
+    <li class="sixth_line clearfix">
+        <p class="sixth title">내용</p>
+        <textarea class="policy_contents">개발도상국에 대한 주요 무상원조사업의 하나로 개발도상국의 수요를 바탕으로 우리가 비교우위에 있는 공공행정, 교육, 농림수산, 보건, 산업에너지 5개 분야 30여개 직종에서 활동</textarea>
+    </li>
+    <li class="seventh_line clearfix">
+        <p class="seventh title">연결 링크</p>
+        <textarea class="uri">https://www.youthcenter.go.kr/jynEmpSptNew/jynEmpSptGuide.do?bizId=201808160009</textarea>
+    </li> -->

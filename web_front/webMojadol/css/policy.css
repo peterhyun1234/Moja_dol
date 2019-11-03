@@ -11,19 +11,59 @@ li.policylist:hover {background-color: #fbffd0;}
 .crawling_data {width: 200px;}
 .expiration_flag {width: 150px;}
 
-/*상세 정책 내용*/
+/*상세 정책 내용 수정*/
+.modify_title { border-radius: 15px; width: 100%; text-align: center; margin-bottom: 35px; height: 80px; background-color: #053863; color: #fff; font-weight: bold; font-size: 1.5em; line-height: 3.1;}
 .policy_detail {width: 100%; border: 1px solid blue;}
+.policy_detailBox {font-size: 1em;}
+.policy_detailBox ul{padding:0; margin: 0;}
+.policy_detailBox li {border-bottom: 1px solid #053863;}
+.policy_DetailBox p {padding:0; margin:0; }
+.title{border-bottom: 1px solid #fff; float:left; width: 200px; background-color: #053863; color: #fff; font-weight: bold; text-align: center;
+    height: 45px; display: flex; align-items: center; text-align: center; margin: 0; justify-content: center;}
+    
+.first_line {border-top: 2px solid #053863; }    
+.first_line p{float: left; margin:0; line-height:2.7; text-align: center;}
+.first {width:200px;}
+.detail_p_code {width: 120px; height: 44px;}
+#expiration {border: none; border-bottom: 1px solid #053863; width: 100px; height: 40px; text-align: center;}
+.expiration_flag2 input { width: 20px; height: 20px; margin-left: 15px; vertical-align: middle;}
+
+
+.third_line input {float: left; text-align: center; height: 45px;}
+.third_line p {float:left; line-height: 2.7; }
+
+.fourth_line p {float:left; line-height:2.7; text-align:center; margin:0; height: 44px;}
+.fourth_line input {width: calc(100% - 650px); float: left; text-align: center; border: none; height: 45px;}
+.crawing_date {width:250px;}
+
+.second_line textarea, .fifth_line textarea, .seventh_line textarea {width: calc(100% - 200px); line-height:2.7; text-align: center; height: 44px; border: none; float: left;}
+
+.sixth.title {width: 100%;}
+.policy_contents {width:100%; min-height:200px;}
+
+.last_line {border-bottom: 2px solid #053863 !important;}
+.last {width: 100%;}
+
+.origin_data {float:left; width:100%;}
+.origin_policy {float: left; min-height: 100px;}
+
+.modifypolicybtn {font-size: 1.1em; transition: all 0.2s ease; float: right; margin: 10px; border: 2px solid #053863; background-color: transparent; padding: 10px 40px; border-radius: 10px; font-weight: bold;}
+.modifypolicybtn:hover {color:#ffffff; background-color: #ff2f0b;}
 
 /*댓글 */
-.policy_review p {display: inline-block; text-align:center;}
-.review_listBox {width:100%; height:50px; padding:0; }
-.review_listBox.top {background-color: powderblue;  font-weight:bold; display: flex; align-items: center;}
-.review_list {border-bottom: 1px solid #000; padding: 0; width: 100%; background-color: #e4e4e4; height: 40px;}
+.review_title {margin-top: 100px; border-radius: 15px; width: 100%; text-align: center; margin-bottom: 35px; height: 45px; background-color: #053863; color: #fff; font-weight: bold; font-size: 1.1em; line-height: 2.2;}
+.policy_review p {display: inline-block; text-align:center; margin-bottom: 0;}
+.review_listBox {width:100%; padding:0; font-size: 0.8em; }
+.review_listBox.top {color: #fff; background-color: #053863; font-weight:bold; display: flex; align-items: center; height:45px;}
+.review_list {display: flex; align-items: center;border-bottom: 1px solid #000; padding: 0; width: 100%; background-color: #ececec; min-height: 40px;}
 
 .review_code {width: 80px;}
 .review_uID {width:250px;}
 .contents{width: calc(100% - 630px);}
 .req_time {width: 200px;}
 .deletebtn {width: 100px;}
+.delete_btn {background-color: #ffffff; transition: all 0.1s ease; border: 2px solid #053863; border-radius: 30px; padding: 2px 10px;}
+.delete_btn:hover {background-color: #d5f2ff;}
+
 
 

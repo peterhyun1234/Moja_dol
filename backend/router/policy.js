@@ -97,18 +97,32 @@ router.post("/modify_policy", function (req, res, next) {
     var recv_location = req.body.location;	
     var recv_date = req.body.crawing_date;
     var recv_flag = req.body.expiration_flag;
+    var temp_date;
+    
 
+    if(recv_date != null){
+        temp_date = recv_Astart;
+        recv_Astart = '\''+ temp_date +'\'';
+    }
+    if(recv_date != null){
+        temp_date = recv_Aend;
+        recv_Aend = '\''+ temp_date +'\'';
+    }
+    if(recv_date != null){
+        temp_date = recv_date;
+        recv_date = '\''+ temp_date +'\'';
+    }
     var SQL = 'UPDATE policy SET '+
     'title = \'' + recv_title +	'\'' +
     ',uri = \''	+ recv_uri + '\'' +
-    //',apply_start = \'' + recv_Astart + '\'' +
-    //',apply_end = \''	+ recv_Aend + '\'' +
+    ',apply_start = ' + recv_Astart + 
+    ',apply_end = '	+ recv_Aend + 
     ',start_age = '	+ recv_startA +
     ',end_age = ' + recv_endA +
     ',contents = \''+ recv_contents + '\'' +
     ',application_target = \''+ recv_Atarget + '\'' +
     ',location = \''+ recv_location + '\'' +	
-    //',crawing_date = \''	+ recv_date + '\'' +
+    ',crawing_date = '	+ recv_date + 
     ',expiration_flag = '+ recv_flag +
     ' WHERE p_code = '+ recv_code ;
 

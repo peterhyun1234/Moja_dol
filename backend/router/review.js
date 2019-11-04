@@ -10,7 +10,7 @@ router.get('/:id', function (req, res) {
    //console.log('selected review is ' + policy_params);
    connection.query('SELECT * from review where p_code = ' + policy_params, function (err, data) {
        if (!err) {
-           console.log(data);
+           //console.log(data);
            res.send(data);
        }
        else {
@@ -44,12 +44,20 @@ router.post("/write_review", function (req, res, next) {
    var recv_id = req.body.review_uID;
    var recv_code = req.body.p_code;
    var recv_contents = req.body.contents;
+   var recv_date  = req.body.review_time;
+   var temp_date;
+
+   if(recv_date != null){
+      temp_date = recv_date;
+      recv_date = '\''+ temp_date +'\'';
+  }
    
-   var SQL = 'INSERT INTO review (p_code, review_uID, contents)'+
+   var SQL = 'INSERT INTO review (p_code, review_uID, contents, review_time)'+
    'VALUES (' +
    recv_code +
    ',\'' + recv_id + '\'' +
    ',\'' + recv_contents + '\'' +
+   ',' + recv_date + 
    ')';
 
    console.log(SQL);

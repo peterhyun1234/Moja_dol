@@ -27,10 +27,18 @@ router.post("/store_in_mylist", function (req, res, next) {
 
     var recv_uID = req.body.uID;
     var recv_s_p_code = req.body.s_p_code;
+    var recv_date  = req.body.s_p_time;
+    var temp_date;
+ 
+    if(recv_date != null){
+       temp_date = recv_date;
+       recv_date = '\''+ temp_date +'\'';
+   }
 
-    var SQL = 'INSERT INTO stored_policy (uID, s_p_code) VALUES(' +
+    var SQL = 'INSERT INTO stored_policy (uID, s_p_code, s_p_time) VALUES(' +
     '\'' + recv_uID + '\''
-    ', ' + recv_s_p_code + ')';
+    ', ' + recv_s_p_code + 
+    ', ' + recv_date + ')';
 
     console.log(SQL);
     //절 차 

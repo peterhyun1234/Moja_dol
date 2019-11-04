@@ -13,7 +13,11 @@
 ### 1.3. Start node server with auto_modifying state
     nodemon index.js
     superviser index.js
-    
+### 1.4. Start node server with auto_modifying state(Daemon process)
+    nohup nodemon </dev/null &
+----------------------------------------   
+
+
 ## 2. Android application
     Check SdkVersion 16
     Check Internet network service environment

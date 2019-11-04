@@ -28,7 +28,7 @@ router.post("/certificate", function (req, res, next) {
    connection.query(SQL, function (err, data) {
       console.log(data);
       if (data.length == '1') {
-         console.log("비밀번호 일치");
+         //console.log("비밀번호 일치");
          res.send('1');
       }
       else {

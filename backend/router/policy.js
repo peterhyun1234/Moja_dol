@@ -10,7 +10,7 @@ router.get('/show_all_policies', function (req, res) {
     //console.log('/policy/show_all_policies Processing completed');
     connection.query('SELECT * from policy', function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -28,7 +28,7 @@ router.post("/show_all_policies", function (req, res, next) {
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -49,7 +49,7 @@ router.post("/origin_table", function (req, res, next) {
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -72,7 +72,7 @@ router.post("/change_to_expiration", function (req, res, next) {
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -101,22 +101,22 @@ router.post("/modify_policy", function (req, res, next) {
     var SQL = 'UPDATE policy SET '+
     'title = \'' + recv_title +	'\'' +
     ',uri = \''	+ recv_uri + '\'' +
-    ',apply_start = ' + recv_Astart +
-    ',apply_end = '	+ recv_Aend +
+    //',apply_start = \'' + recv_Astart + '\'' +
+    //',apply_end = \''	+ recv_Aend + '\'' +
     ',start_age = '	+ recv_startA +
     ',end_age = ' + recv_endA +
     ',contents = \''+ recv_contents + '\'' +
     ',application_target = \''+ recv_Atarget + '\'' +
     ',location = \''+ recv_location + '\'' +	
-    ',crawing_date = '	+ recv_date +
+    //',crawing_date = \''	+ recv_date + '\'' +
     ',expiration_flag = '+ recv_flag +
-    'WHERE p_code = '+ recv_code ;
+    ' WHERE p_code = '+ recv_code ;
 
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -130,11 +130,11 @@ router.post("/modify_policy", function (req, res, next) {
 //간략하게 보여주는 정책
 router.get('/selected_policies', function (req, res) {
 
-    console.log('/policy/selected_policies Processing completed');
+    //console.log('/policy/selected_policies Processing completed');
     // 다음에 post로 구현!
     connection.query('SELECT p_code, title, uri, apply_start, apply_end  from policy', function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -150,7 +150,7 @@ router.get('/:id', function (req, res) {
     console.log('selected policy is ' + policy_params);
     connection.query('SELECT * from policy where p_code = ' + policy_params, function (err, data) {
         if (!err) {
-            console.log(data);
+            //console.log(data);
             res.send(data);
         }
         else {
@@ -167,7 +167,7 @@ router.get('/pic1', function (req, res) {
     var filename = 'icons/policy_icon1.png';
     fs.readFile(filename, function (err, data) {
         if (!err) {
-            console.log('reafile complete');
+           // console.log('reafile complete');
             res.writeHead(200, { "Content-Type": "image/png" });
             //res.write(data);
             res.end(data);

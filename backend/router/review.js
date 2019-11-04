@@ -43,13 +43,13 @@ router.post("/selected_review", function (req, res, next) {
 router.post("/write_review", function (req, res, next) {
    var recv_id = req.body.review_uID;
    var recv_code = req.body.p_code;
-   var recv_comments = req.body.comments;
+   var recv_contents = req.body.contents;
    
-   var SQL = 'INSERT INTO PLAYER (p_code, review_uID, contents)'+
-   + 'VALUES (' +
-   + recv_code +
+   var SQL = 'INSERT INTO review (p_code, review_uID, contents)'+
+   'VALUES (' +
+   recv_code +
    ',\'' + recv_id + '\'' +
-   ',\'' + recv_comments + '\'' +
+   ',\'' + recv_contents + '\'' +
    ')';
 
    console.log(SQL);

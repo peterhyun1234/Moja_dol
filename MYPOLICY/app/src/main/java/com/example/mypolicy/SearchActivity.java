@@ -49,41 +49,122 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private String mClassName = getClass().getName().trim();
     private RecyclerView mRecyclerView;
 
-    private Spinner spinner2;
-    ArrayList<String> arrayList;
+    private Spinner spinner1;
+    ArrayList<String> locationList;
     ArrayAdapter<String> arrayAdapter;
 
+    private Spinner spinner2;
+    ArrayList<String> categoryList;
+
+    private Spinner spinner3;
+    ArrayList<String> ageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-            arrayList = new ArrayList<>();
-            arrayList.add("철수");
-            arrayList.add("영희");
-            arrayList.add("람휘");
-            arrayList.add("녹지");
-            arrayList.add("치치");
-            arrayList.add("양가");
-            arrayList.add("용병");
+        locationList = new ArrayList<>();
+        locationList.add("전국");
+        locationList.add("경기");
+        locationList.add("가평군");
+        locationList.add("고양시");
+        locationList.add("과천시");
+        locationList.add("광명시");
+        locationList.add("광주시");
+        locationList.add("구리시");
+        locationList.add("군포시");
+        locationList.add("김포시");
+        locationList.add("남양주시");
+        locationList.add("동두천시");
+        locationList.add("부천시");
+        locationList.add("성남시");
+        locationList.add("수원시");
+        locationList.add("시흥시");
+        locationList.add("안산시");
+        locationList.add("안성시");
+        locationList.add("안양시");
+        locationList.add("양평군");
+        locationList.add("여주시");
+        locationList.add("연천군");
+        locationList.add("오산시");
+        locationList.add("용인시");
+        locationList.add("의왕시");
+        locationList.add("의정부시");
+        locationList.add("이천시");
+        locationList.add("파주시");
+        locationList.add("평택시");
+        locationList.add("포천시");
+        locationList.add("하남시");
+        locationList.add("화성시");
 
             arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                     android.R.layout.simple_spinner_dropdown_item,
-                    arrayList);
+                    locationList);
 
-            spinner2 = (Spinner)findViewById(R.id.spinner2);
-            spinner2.setAdapter(arrayAdapter);
-            spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            spinner1 = (Spinner)findViewById(R.id.spinner1);
+            spinner1.setAdapter(arrayAdapter);
+            spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Toast.makeText(getApplicationContext(),arrayList.get(i)+"가 선택되었습니다.",
+                    Toast.makeText(getApplicationContext(),locationList.get(i)+"가 선택되었습니다.",
                             Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
                 }
             });
+
+        categoryList = new ArrayList<>();
+        categoryList.add("상관없음");
+        categoryList.add("취업지원금, 서류/면접 지원, 취업지원 프로그램");
+        categoryList.add("시설/공간 제공, 정책 자금, 멘토링/컨설팅, 사업화");
+        categoryList.add("학자금, 대출/이자, 생활보조(금), 결혼/육아, 교통지원");
+        categoryList.add("기숙사/생활관, 주택지원, 주거환경지원, 고용장려금, 기업지원금");
+        //4.1. Employment_Sup(취업지원) - 취업지원금, 서류/면접 지원, 취업지원 프로그램
+        //4.2. Startup_sup(창업지원) - 시설/공간 제공, 정책 자금, 멘토링/컨설팅, 사업화
+        //4.3. Life_welfare(생활, 복지) - 학자금, 대출/이자, 생활보조(금), 결혼/육아, 교통지원
+        //4.4. Residential_financial(주거, 금융) - 기숙사/생활관, 주택지원, 주거환경지원, 고용장려금, 기업지원금
+        arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                categoryList);
+
+        spinner2 = (Spinner)findViewById(R.id.spinner2);
+        spinner2.setAdapter(arrayAdapter);
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(),categoryList.get(i)+"가 선택되었습니다.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        ageList = new ArrayList<>();
+        ageList.add("상관없음");
+        ageList.add("청년(18세~34세)");
+        ageList.add("중.장년층(35세~65세)");
+        ageList.add("어르신(65세 이상)");
+
+
+        arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                ageList);
+
+        spinner3 = (Spinner)findViewById(R.id.spinner3);
+        spinner3.setAdapter(arrayAdapter);
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(),ageList.get(i)+"가 선택되었습니다.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
 
         init();

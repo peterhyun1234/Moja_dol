@@ -73,8 +73,7 @@
                     ﻿
 
                     <Spinner
-                        android:id="@+id/spinner2"
-                        android:background="@drawable/custom_spinner"
+                        android:id="@+id/spinner1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -104,12 +103,14 @@
                         android:text="분야"
                         android:textSize="17sp" />
 
-                    <EditText
+                    <Spinner
+                        android:id="@+id/spinner2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/search_box"
-                        android:padding="5dp" />
+                        android:padding="5dp"
+
+                        android:spinnerMode="dropdown"></Spinner>
                 </LinearLayout>
 
                 <LinearLayout
@@ -131,12 +132,14 @@
                         android:text="연령"
                         android:textSize="17sp" />
 
-                    <EditText
+                    <Spinner
+                        android:id="@+id/spinner3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/search_box"
-                        android:padding="5dp" />
+                        android:padding="5dp"
+
+                        android:spinnerMode="dropdown"></Spinner>
                 </LinearLayout>
 
                 <LinearLayout

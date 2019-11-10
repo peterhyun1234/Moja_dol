@@ -33,5 +33,5 @@
     
     중복제거
     Overlap coefficient 사용 
-    ![web](https://wikimedia.org/api/rest_v1/media/math/render/svg/e131b74ad4940a763904822eed7b74a843d27ba0)
+    https://wikimedia.org/api/rest_v1/media/math/render/svg/e131b74ad4940a763904822eed7b74a843d27ba0
    

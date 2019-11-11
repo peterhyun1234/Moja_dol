@@ -45,6 +45,7 @@ const reviewRouter=require('./router/review');
 const web_adminRouter=require('./router/web_admin');
 const my_listRouter=require('./router/my_list');
 const searchRouter=require('./router/search');
+const interestRouter=require('./router/interest');
 
 //Route 정의
 app.use('/policy', policyRouter);
@@ -55,6 +56,7 @@ app.use('/review', reviewRouter);
 app.use('/web_admin', web_adminRouter);
 app.use('/my_list', my_listRouter);
 app.use('/search', searchRouter);
+app.use('/interest', interestRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

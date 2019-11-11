@@ -17,3 +17,7 @@ li.requestlist:hover {background-color: #fbffd0;}
 .request_flag {width:90px;}
 .request_flag input {width: 20px; height: 20px;}
 
+.gmail_btn{width: 200px; height: 70px; color: #053863; border: 3px solid #053863; display: flex; align-items: center; padding: 0 35px; border-radius: 15px; font-size: 1em; font-weight: bold;}
+.gmail_btn a{color: #053863;}
+.gmail_btn a:hover {border:none; text-decoration:none;}
+.gmail_btn:hover {background-color: #007bff; text-decoration:none;}

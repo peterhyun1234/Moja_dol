@@ -21,11 +21,11 @@ $(document).ready(function(){
 							 '<span class="p_code" data-sort="p_code">'+ content.p_code +'</span>'+
 							 '<span class="p_title" data-sort="p_title"><input type="text" value="'+ content.title +'" readonly/></span>'+
 							 '<span class="crawling_data" data-sort="crawling_data">'+ retime +'</span>'+   
-							  '<span class="expiration_flag" data-sort="expiration_flag">' + expiration +  "ff" + content.expiration_flag+'</span></li>';
+							  '<span class="expiration_flag" data-sort="expiration_flag">' + expiration + '</span></li>';
 
 				$(".list").append(string); 
  
-				console.log(content);
+				//console.log(content);
 			});
 
 			listPageSetting();
@@ -37,6 +37,7 @@ $(document).ready(function(){
 		}
 	});
 
+	//writepolicy();
    
 	
 });
@@ -56,7 +57,7 @@ function listPageSetting(){
 }
 
 
-
+//정책 클릭시 (1)상세정보 받아오기 (2)오리지널 테이블 내용 받아오기 (3)정책의 댓글 받아오기
 function click_detail_policy(){
     $(".policylist").click(function(){
 		
@@ -65,18 +66,9 @@ function click_detail_policy(){
 		$(".detail_p_code").text(p_code);
 		console.log(p_code);
 
-		$(".detail_p_code").text()
+		$(".detail_p_code").text();
 
-/* 		var title;
-		var uri;
-		var apply_start;
-		var apply_end;
-		var start_age;
-		var end_age;
-		var application_target;
-		var location;
-		var crawing_date;
-		var expiration_flag; */
+
 
 		//특정 정책 코드에 대한 내용들 출력하기 
 		$.ajax({
@@ -93,6 +85,7 @@ function click_detail_policy(){
 			$(".uri").text(""); // 링크
 			$(".third_line").text(""); 
 			$(".expiration_flag2").text("");
+			
 
 				$.each(data, function(idx, content){
 					if(content.p_code == p_code){
@@ -107,7 +100,10 @@ function click_detail_policy(){
 						if(content.apply_start != null){
 							var apply_start = content.apply_start;
 							var cut1 = apply_start.split("T");
-							var date1 = cut1[0];
+							var startdate = cut1[0];
+							var starttime2 = cut1[1].split(".000Z");
+							var starttime = starttime2[0];
+							var start = startdate + " " + starttime;
 						}else {
 							date1 = "";
 						}
@@ -115,15 +111,18 @@ function click_detail_policy(){
 						if(content.apply_end != null){
 							var apply_end = content.apply_end;
 							var cut2 = apply_end.split("T");
-							var date2 = cut2[0];
+							var enddate = cut2[0];
+							var endtime2 = cut2[1].split(".000Z");
+							var endtime = endtime2[0];
+							var end = enddate + " " + endtime;
 						}else {
 							date2 = "";
 						}
 
 						var string = '<p class="third title">신청기간</p> '+
 									 '<div class="apply">'+
-									 '<input type="text" class="apply_start" value="'+ date1 +'">'+
-									 '<p style="margin:0;">~</p><input type="text" class="apply_end" value="'+  date2 +'"></div>'+
+									 '<input type="text" class="apply_start" value="'+ start +'">'+
+									 '<p style="margin:0;">~</p><input type="text" class="apply_end" value="'+  end +'"></div>'+
 									 '<p class="third title">대상 연령</p><div class="age">'+
 									 '<input type="text" class="start_age" value="'+ content.start_age +'">'+
 									 '<p style="margin:0;">~</p><input type="text" class="end_age" value="'+ content.end_age +'"></div>';
@@ -132,26 +131,17 @@ function click_detail_policy(){
 						
 
 						
-						$(".crawing_date").append(date); // 크롤링 날짜
+						$(".crawing_date").append(retime); // 크롤링 날짜
 						$(".detail_title").append(content.title); // 제목
 						$(".policy_contents").append(content.contents); // 내용
 						
 						$(".application_target").append(content.application_target); // 대상
 						$(".location").append(content.location); // 지역
 						$(".uri").append(content.uri); // 링크
-				
+						$(".expiration_flag2").append(content.expiration_flag);
 
-						if(content.expiration_flag == 0){
-							var string2 = '<input type="checkbox" unchecked="true" data-toggle="toggle" onclick="modifyflag(this.id)" id="expiration'+content.p_code+'"></input>';
-						}
-						else {
-							var string2 = '<input type="checkbox" checked="true" data-toggle="toggle" onclick="modifyflag(this.id)" id="expiration'+content.p_code+'"></input>';
-						}  
-				
-						$(".expiration_flag2").append(string2);
-						
 						console.log(content);
-
+						
 					}
 				});
 			},
@@ -160,28 +150,51 @@ function click_detail_policy(){
 			}
 		});
 
+
 	
-/*						title
-						 uri
-						 apply_start
-						 apply_end
-						 start_age
-						 end_age
-						 application_target
-						 location
-						 crawing_date
-						 expiration_flag */
+	var code = {"p_code" : p_code};
+	//특정 정책 코드 interest 정보 가져오기  카테고리
+	$(".interest_flag1").text("");
+	$(".interest_flag2").text("");
+	$(".interest_flag3").text("");
+	$(".interest_flag4").text("");
+
+	$.ajax({
+		url: "http://49.236.136.213:3000/interest/show_interest",
+		type: "POST",
+		data: code,
+		success: function(data){
+		//alert('성공');
+			$.each(data, function(idx, data){
+				console.log("데이터" + idx);
+				//console.log("datadata" + data.Startup_sup);
+				$(".interest_flag1").text(data.Employment_sup);
+				$(".interest_flag2").text(data.Startup_sup);
+				$(".interest_flag3").text(data.Life_welfare);
+				$(".interest_flag4").text(data.Residential_finance);	
+				
+			});
+
+		},
+		error: function(request,status,error){
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		}
+	});
+
+
+
 
 	//특정 정책 코드 오리지널 테이블 가져오기
-	var code = {"p_code" : p_code};
+	$(".origin_policy").text("");
+
 	$.ajax({
 		url: "http://49.236.136.213:3000/policy/origin_table",
 		type: "POST",
 		data: code,
 		success: function(data){
 		   //alert('성공');
-			console.log(data);
-							
+			//console.log(data);
+			$(".origin_policy").append(data.Ucontents);				
 		},
 		error: function(request,status,error){
 			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
@@ -200,12 +213,12 @@ function click_detail_policy(){
 
 		   $.each(data, function(idx, content){
 					
-				var beforedate = content.req_time;
+				var beforedate = content.review_time;
 				var cut = beforedate.split("T");
 				var date = cut[0];
 				var cut2 = cut[1].split(".000Z");
 				var time = cut2[0];
-				var retime = date + " " + time;
+				var retime = date + " " + time; 
 				//alert(retime);
 
 				var string = '<li class="review_list  clearfix">'+
@@ -217,7 +230,8 @@ function click_detail_policy(){
 							'</li>';
 				$(".review_listBox.bottom").append(string); 
 
-				console.log(content);
+				//console.log(content);
+				//alert(content.review_code + retime);
 
 			});
 		},
@@ -229,70 +243,119 @@ function click_detail_policy(){
 
 
 
-    });
+	});
+	
 }
+
 
 // 정책 내용 수정하기
 function modifypolicy(){
-	alert("수정");
-	var title = $(".detail_title").text();
-	var contents = $(".policy_contents").text();
-	
-	var uri = $(".uri").text();
+	//alert("수정");
+	var p_code = $(".detail_p_code").text();
+	var crawing_date = $(".crawing_date").text();
 
+	var expiration_flag = $(".expiration_flag2").val();
+	var application_target = $(".application_target").val();
+	var title = $(".detail_title").val();
+	var contents = $(".policy_contents").val();
+	var uri = $(".uri").val();
+	var location = $(".location").val();
 
 	var apply_start = $(".apply_start").val();
 	var apply_end = $(".apply_end").val();
 	var start_age = $(".start_age").val();
 	var end_age = $(".end_age").val();
-	var application_target = $(".application_target").text();
-	var location = $(".location").text();
 
-	alert(uri);
-	alert(apply_start);
-	alert(title+"+"+
-		contents + "+"+
-		uri+"+"+
-		apply_start+"+"+
-		apply_end+"+"+
-		start_age+"+"+
-		end_age+"+"+
-		application_target+"+"+
-		location);
 
-}
-
-//정책 만료여부 변겅
-function modifyflag(me){
-	var cut = me.split("expiration");
-	var p_code = cut[1];
-	var expiration_flag;
-	var string = "input:checkbox[id='expiration']";
+		if(p_code == "null" || p_code == "undefined") p_code=null;
+		if(crawing_date == "null" || crawing_date == "undefined") crawing_date=null;
+		if(expiration_flag == "null" || expiration_flag == "undefined") expiration_flag=null;
+		if(application_target == "null" || application_target == "undefined" || application_target == " " || application_target == "") application_target=null;
+		if(title == "null" || title == "undefined") title=null;
+		if(contents == "null" || contents == "undefined") contents=null;
 	
+		if(uri == "null" || uri == "undefined") uri=null;
+		if(location == "null" || location == "undefined" || location==" " || location=="") location=null;
+		if(apply_start == "null" || apply_start == "undefined") apply_start=null;
+		if(apply_end == "null" || apply_end == "undefined") apply_end=null;
+		if(start_age == "null" || start_age == "undefined") start_age=null;
+		if(end_age == "null" || end_age == "undefined") end_age=null;
+		
+	var policy = 
+		{
+			"p_code": p_code,
+			"title": title,
+			"uri": uri,
+			"apply_start": apply_start,
+			"apply_end": apply_end,
+			"start_age": start_age,
+			"end_age": end_age,
+			"contents": contents,
+			"application_target": application_target,
+			"location": location,
+			"crawing_date": crawing_date,
+			"expiration_flag": expiration_flag
+		};
 
-	if($(string).is(":checked") == true)  expiration_flag = 0; //만료 - 원래 노체크였으면 1로해서 보냄(누르는 순간 checked로 되어 true로 출력되는 것임)
-	else expiration_flag=1; // 원래 체크였으면 0으로 해서 보냄
-	
-	var expiration = {"p_code" :  p_code, "expiration_flag" :  expiration_flag};
-
-	//alert(me + "여부" + p_code + "flag : " + $(string).is(":checked"));
-
-	alert(expiration.p_code + "fff" + expiration.expiration_flag);
-	console.log("c출력?"+expiration);
- 	 $.ajax({
-		url : "http://49.236.136.213:3000/request/change_flag",
+		
+	var policy1 = '"p_code":"'+ p_code + '", "title" : "' + title + '"' + ', "uri" : "' + uri +'",'+	
+	'"apply_start":"'+ apply_start + '", "apply_end" : "' + apply_end + '"' + ', "start_age" : "' + start_age +'",'+
+	'"end_age":"'+ end_age + '", "contents" : "' + contents + '"' + ', "application_target" : "' + application_target +'",'+
+	'"location":"'+ location + '", "crawing_date" : "' + crawing_date + '"' + ', "expiration_flag" : "' + expiration_flag +'"';
+			
+	console.log( policy);
+	//console.log(policy.title);
+ 	$.ajax({
+		url : "http://49.236.136.213:3000/policy/modify_policy",
 		type : "post",
-		data : expiration,
+		data : policy,
 		success : function(data) {
-			alert("수정 성공????????" + data);
-			location.reload();
-
+			alert("정책을 수정하였습니다.");
+			
 		},
 		error: function(request,status,error){
 			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		}
+	}); 	 
 
-	});   
+
+
+	//정책 interest 수정
+	var Employment_Sup = $(".interest_flag1").val();
+	var Startup_sup = $(".interest_flag2").val();
+	var Life_welfare = $(".interest_flag3").val();
+	var Residential_financial = $(".interest_flag4").val();
+
+	if(Employment_Sup == "null" || Employment_Sup == "undefined") Employment_Sup=null;
+	if(Startup_sup == "null" || Startup_sup == "undefined") Startup_sup=null;
+	if(Life_welfare == "null" || Life_welfare == "undefined") Life_welfare=null;
+	if(Residential_financial == "null" || Residential_financial == "undefined") Residential_financial=null;
+
+	var policy_interest = 
+	{
+		"p_code": p_code,
+		"Employment_sup": Employment_Sup,
+		"Startup_sup": Startup_sup,
+		"Life_welfare": Life_welfare,
+		"Residential_finance": Residential_financial
+	};	
+
+	$.ajax({
+		url : "http://49.236.136.213:3000/interest/modify_interest",
+		type : "post",
+		data : policy_interest,
+		success : function(data) {
+			alert("정책 카테고리를 수정하였습니다.");
+			
+		},
+		error: function(request,status,error){
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		}
+	}); 
+
+
+
+	setTimeout('location.reload()',1000); 
 }
 
 //댓글삭제
@@ -323,3 +386,4 @@ function delete_review(me){
 		 alert("댓글 삭제가 취소되었습니다.");
 	 }
 }
+

@@ -98,13 +98,47 @@ router.post("/modify_policy", function (req, res, next) {
     var recv_date = req.body.crawing_date;
     var recv_flag = req.body.expiration_flag;
     var temp_date;
+    var temp_string;
     
+    if(recv_code.length == 0) recv_code = null;
+    if(recv_title.length == 0) recv_title = null;
+    else {
+        temp_string = recv_title;
+        recv_title = '\''+ temp_string +'\''
+    };
+    if(recv_uri.length == 0) recv_uri = null;
+    else {
+        temp_string = recv_uri;
+        recv_uri = '\''+ temp_string +'\''
+    };
+    if(recv_Astart.length == 0) recv_Astart = null;
+    if(recv_Aend.length == 0) recv_Aend = null;
+    if(recv_startA.length == 0) recv_startA = null;
+    if(recv_endA.length == 0) recv_endA = null;
+    if(recv_contents.length == 0) recv_contents = null;
+    else {
+        temp_string = recv_contents;
+        recv_contents = '\''+ temp_string +'\''
+    };
+    if(recv_Atarget.length == 0) recv_Atarget = null;
+    else {
+        temp_string = recv_Atarget;
+        recv_Atarget = '\''+ temp_string +'\''
+    };
+    if(recv_location.length == 0) recv_location = null;
+    else {
+        temp_string = recv_location;
+        recv_location = '\''+ temp_string +'\''
+    };
+    if(recv_date.length == 0) recv_date = null;
+    if(recv_flag.length == 0) recv_flag = null;
 
-    if(recv_date != null){
+
+    if(recv_Astart != null){
         temp_date = recv_Astart;
         recv_Astart = '\''+ temp_date +'\'';
     }
-    if(recv_date != null){
+    if(recv_Aend != null){
         temp_date = recv_Aend;
         recv_Aend = '\''+ temp_date +'\'';
     }
@@ -112,19 +146,20 @@ router.post("/modify_policy", function (req, res, next) {
         temp_date = recv_date;
         recv_date = '\''+ temp_date +'\'';
     }
+
     var SQL = 'UPDATE policy SET '+
-    'title = \'' + recv_title +	'\'' +
-    ',uri = \''	+ recv_uri + '\'' +
+    'title = ' + recv_title +	
+    ',uri = '	+ recv_uri + 
     ',apply_start = ' + recv_Astart + 
     ',apply_end = '	+ recv_Aend + 
     ',start_age = '	+ recv_startA +
     ',end_age = ' + recv_endA +
-    ',contents = \''+ recv_contents + '\'' +
-    ',application_target = \''+ recv_Atarget + '\'' +
-    ',location = \''+ recv_location + '\'' +	
+    ',contents = '+ recv_contents + 
+    ',application_target = '+ recv_Atarget + 
+    ',location = '+ recv_location + 
     ',crawing_date = '	+ recv_date + 
-    ',expiration_flag = '+ recv_flag +
-    ' WHERE p_code = '+ recv_code ;
+    ',expiration_flag = ' + recv_flag +
+    ' WHERE p_code = ' + recv_code ;
 
     console.log(SQL);
     //절 차 

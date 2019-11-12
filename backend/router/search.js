@@ -8,15 +8,16 @@ var connection = require('../index.js').connection;
 
 router.post("/test", function (req, res, next) {
    
-
-
-    //1. 연령 분류(무조건 청년)
-    //2. 성별 분류 필요 없음
-
-
     //3. 지역
-    // 지역 3~4 length의 경우 맨뒤 시, 군만 짤라서 ㄱㄱ
-    var recv_location = req.body.location;
+    var recv_location;
+    var temp_location = req.body.location;
+    var location_length = temp_location.length;
+    // 지역 3~4 length의 경우 맨뒤 시, 군만 짤라서 ㄱㄱ 
+    if(location_length == 3 || location_length == 4)
+    {
+        recv_location = temp_location.substring(0, location_length-1);
+        //console.log(recv_location);
+    }
 
     //4. 분야 (4개도 세분화해서 ㄱㄱ)
         //4.0. 상관 없음.
@@ -24,76 +25,55 @@ router.post("/test", function (req, res, next) {
         //4.2. Startup_sup(창업지원) - 시설/공간 제공, 정책 자금, 멘토링/컨설팅, 사업화
         //4.3. Life_welfare(생활, 복지) - 학자금, 대출/이자, 생활보조(금), 결혼/육아, 교통지원
         //4.4. Residential_financial(주거, 금융) - 기숙사/생활관, 주택지원, 주거환경지원, 고용장려금, 기업지원금
-    //5. 연령
-        //4.1. Employment_Sup(취업지원) - 취업지원금, 서류/면접 지원, 취업지원 프로그램
-        //4.2. Startup_sup(창업지원) - 시설/공간 제공, 정책 자금, 멘토링/컨설팅, 사업화
-        //4.3. Life_welfare(생활, 복지) - 학자금, 대출/이자, 생활보조(금), 결혼/육아, 교통지원  
-    //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
-    var recv_title = req.body.title;
-    var recv_contents = req.body.contents;
-
-    var recv_Atarget = req.body.application_target;
     
-    if(recv_code.length == 0) recv_code = null;
-    if(recv_title.length == 0) recv_title = null;
-    else {
-        temp_string = recv_title;
-        recv_title = '\''+ temp_string +'\''
-    };
-    if(recv_uri.length == 0) recv_uri = null;
-    else {
-        temp_string = recv_uri;
-        recv_uri = '\''+ temp_string +'\''
-    };
-    if(recv_Astart.length == 0) recv_Astart = null;
-    if(recv_Aend.length == 0) recv_Aend = null;
-    if(recv_startA.length == 0) recv_startA = null;
-    if(recv_endA.length == 0) recv_endA = null;
-    if(recv_contents.length == 0) recv_contents = null;
-    else {
-        temp_string = recv_contents;
-        recv_contents = '\''+ temp_string +'\''
-    };
-    if(recv_Atarget.length == 0) recv_Atarget = null;
-    else {
-        temp_string = recv_Atarget;
-        recv_Atarget = '\''+ temp_string +'\''
-    };
-    if(recv_location.length == 0) recv_location = null;
-    else {
-        temp_string = recv_location;
-        recv_location = '\''+ temp_string +'\''
-    };
-    if(recv_date.length == 0) recv_date = null;
-    if(recv_flag.length == 0) recv_flag = null;
+        // 성범아 이거 category에 스트링으로 "01010" 이런 식으로 보내주라
+        // 예를 들어서 4.1 이랑 4.4에 관련된 거 찾고 싶으면 "01001"
+        // 4.2 이랑 4.4에 관련된 거 찾고 싶으면 "00101"
+        // "4.0. 상관없음"이면 "1xxxx" > x는 0이든 1이든 상관없다는 의미
+    
+    var recv_category = req.body.category; 
 
+    //console.log('category:' + recv_category);
 
-    if(recv_Astart != null){
-        temp_date = recv_Astart;
-        recv_Astart = '\''+ temp_date +'\'';
+    var recv_Employment_sup = req.body.Employment_sup;
+    var recv_Startup_sup = req.body.Startup_sup;
+    var recv_Life_welfare = req.body.Life_welfare;
+    var recv_Residential_finance = req.body.Residential_finance;
+
+    if(recv_category[0] == 1)
+    {   
+        recv_Employment_sup = 1;
+        recv_Startup_sup = 1;
+        recv_Life_welfare = 1;
+        recv_Residential_finance = 1;
     }
-    if(recv_Aend != null){
-        temp_date = recv_Aend;
-        recv_Aend = '\''+ temp_date +'\'';
-    }
-    if(recv_date != null){
-        temp_date = recv_date;
-        recv_date = '\''+ temp_date +'\'';
+    else
+    {
+        recv_Employment_sup = recv_category[1];
+        recv_Startup_sup = recv_category[2];
+        recv_Life_welfare = recv_category[3];
+        recv_Residential_finance = recv_category[4];
     }
 
-    var SQL = 'UPDATE policy SET '+
-    'title = ' + recv_title +	
-    ',uri = '	+ recv_uri + 
-    ',apply_start = ' + recv_Astart + 
-    ',apply_end = '	+ recv_Aend + 
-    ',start_age = '	+ recv_startA +
-    ',end_age = ' + recv_endA +
-    ',contents = '+ recv_contents + 
-    ',application_target = '+ recv_Atarget + 
-    ',location = '+ recv_location + 
-    ',crawing_date = '	+ recv_date + 
-    ',expiration_flag = ' + recv_flag +
-    ' WHERE p_code = ' + recv_code ;
+    //console.log('category:' + recv_category);
+
+    //console.log('recv_Employment_sup:' + recv_Employment_sup);
+    //console.log('recv_Startup_sup:' + recv_Startup_sup);
+    //console.log('recv_Life_welfare:' + recv_Life_welfare);
+    //console.log('recv_Residential_finance:' + recv_Residential_finance);
+
+        
+    //5. 연령
+        // integer
+    var recv_age = req.body.age;
+
+    //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
+    var recv_keyword = req.body.keyword;
+    
+    // 키워드 필터링
+ 
+
+    var SQL = 'select * from origin_policy';
 
     console.log(SQL);
     //절 차 

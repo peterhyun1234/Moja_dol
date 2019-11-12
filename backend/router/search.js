@@ -55,7 +55,36 @@ router.post("/test", function (req, res, next) {
         recv_Residential_finance = recv_category[4];
     }
 
-    //console.log('category:' + recv_category);
+    var temp_info = ' ';
+
+    if(recv_Employment_sup == 1)
+    {
+        //console.log('recv_Employment_sup:' + recv_Employment_sup);
+        temp_info = temp_info + 'Employment_sup = 1 OR ';
+        //console.log(temp_info);
+    }
+    if(recv_Startup_sup == 1)
+    {
+        //console.log('recv_Startup_sup:' + recv_Startup_sup);
+        temp_info = temp_info + 'Startup_sup = 1 OR ';
+        //console.log(temp_info);
+    }
+    if(recv_Life_welfare == 1)
+    {
+        //console.log('recv_Life_welfare:' + recv_Life_welfare);
+        temp_info = temp_info + 'Life_welfare = 1 OR ';
+        //console.log(temp_info);
+    }
+    if(recv_Residential_finance == 1)
+    {
+        //console.log('recv_Residential_finance:' + recv_Residential_finance);
+        temp_info = temp_info + 'Residential_finance = 1 OR ';
+        //console.log(temp_info);
+    }
+    //console.log(temp_info);
+    var category_info = temp_info.substring(0, temp_info.length-3);
+
+    //console.log('category_info:' + category_info);
 
     //console.log('recv_Employment_sup:' + recv_Employment_sup);
     //console.log('recv_Startup_sup:' + recv_Startup_sup);
@@ -63,17 +92,26 @@ router.post("/test", function (req, res, next) {
     //console.log('recv_Residential_finance:' + recv_Residential_finance);
 
         
-    //5. 연령
-        // integer
+    //5. 연령 - integer
     var recv_age = req.body.age;
 
     //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
     var recv_keyword = req.body.keyword;
     
     // 키워드 필터링
- 
+    var regex = /[가-힣]+/g; 
+    
+    var match = recv_keyword.match(regex);
 
-    var SQL = 'select * from origin_policy';
+    // for (var i = 0; i < match.length; i++)
+    // {
+    //     console.log(match[i]);
+    // }
+
+    var SQL = 'SELECT policy.* ' +
+    'FROM policy NATURAL JOIN interest ' +
+    'WHERE' +
+    category_info;
 
     console.log(SQL);
     //절 차 

@@ -80,3 +80,17 @@ app.use('/files', express.static(__dirname + '/files'));
 
 module.exports = app;
 module.exports = router;
+
+const gracfulCleanJob = () => new Promise((resolve, reject) => {
+  setTimeout(() => {
+      // cleaning job done
+      resolve();
+  }, 3000);
+});
+
+process.on('SIGINT', function() {
+  console.log("Caught interrupt signal");
+  gracfulCleanJob().then(() => {
+      process.exit();
+  })
+});

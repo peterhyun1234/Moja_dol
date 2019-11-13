@@ -45,10 +45,10 @@ router.post("/test", function (req, res, next) {
 
     //console.log('category:' + recv_category);
 
-    var recv_Employment_sup = req.body.Employment_sup;
-    var recv_Startup_sup = req.body.Startup_sup;
-    var recv_Life_welfare = req.body.Life_welfare;
-    var recv_Residential_finance = req.body.Residential_finance;
+    var recv_Employment_sup;
+    var recv_Startup_sup;
+    var recv_Life_welfare;
+    var recv_Residential_finance;
 
     if (recv_category[0] == 1) {
         recv_Employment_sup = 1;
@@ -119,22 +119,22 @@ router.post("/test", function (req, res, next) {
 
     for (var i = 0; i < match.length; i++)
     {
-        //console.log(match[i]);
+        
         title, contents 
         keyword_SQL = keyword_SQL + 
         'OR title LIKE \"%' + match[i] + '%\" ' +
         'OR contents LIKE \"%' + match[i] + '%\" ';
     }
-
-
+    console.log(keyword_SQL);
 
     var SQL = 'SELECT policy.* ' +
     'FROM policy NATURAL JOIN interest ' +
     'WHERE' +
-    category_SQL +
-    age_SQL +
-    location_SQL +
-    keyword_SQL;
+    category_SQL;
+    
+    // age_SQL +
+    // location_SQL +
+    // keyword_SQL
 
     console.log(SQL);
     connection.query(SQL, function (err, data) {

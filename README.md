@@ -28,13 +28,15 @@
     $ npm init --yes
     $ npm install express mysql --save --save-exact
 > https://poiemaweb.com/nodejs-mysql
-### 4.1.2. Start node server with exit state(background)    
+#### 4.1.2. Start node server with exit state(background)    
     $ nohup npm start &
     $ exit
-### 4.1.3. Start node server with auto_modifying state(Daemon process)
+#### 4.1.3. Start node server with auto_modifying state(Daemon process)
     $ nohup nodemon </dev/null &
     $ exit
 ### 4.2. MySQL
+
+#### 4.2.1. SQL with added ability to sort by search goodness   
 ```java
 SELECT keywords,
   (

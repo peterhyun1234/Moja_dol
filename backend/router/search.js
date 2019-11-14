@@ -4,6 +4,7 @@ var router = express.Router();
 
 var connection = require('../index.js').connection;
 
+
 router.post("/test", function (req, res, next) {
 
     //3. 지역
@@ -17,14 +18,14 @@ router.post("/test", function (req, res, next) {
         recv_location = temp_location.substring(0, location_length - 1);
         //console.log(recv_location);
     }
-    else
-    {
+    else {
         recv_location = temp_location;
     }
 
+
     var location_SQL = '';
-    if(recv_location != 0) // "상관없음"이 아닌 경우
-        location_SQL = 'AND location LIKE \"%' + recv_location + '%\" ';
+    if (recv_location != 0) // "상관없음"이 아닌 경우
+        location_SQL = 'AND (location LIKE \"%' + recv_location + '%\" OR location = \'전국\') ';
 
 
 
@@ -63,7 +64,7 @@ router.post("/test", function (req, res, next) {
         recv_Residential_finance = recv_category[4];
     }
 
-    var temp_info = ' ';
+    var temp_info = ' (';
 
     if (recv_Employment_sup == 1) {
         //console.log('recv_Employment_sup:' + recv_Employment_sup);
@@ -87,6 +88,7 @@ router.post("/test", function (req, res, next) {
     }
     //console.log(temp_info);
     var category_SQL = temp_info.substring(0, temp_info.length - 3);
+    category_SQL = category_SQL + ') ';
 
     //console.log('category_info:' + category_info);
 
@@ -108,35 +110,46 @@ router.post("/test", function (req, res, next) {
     }
 
     //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
-    var recv_keyword = req.body.keyword;
+    var match_score_SQL = req.body.keyword;
 
-    // 키워드 필터링
+    //키워드 필터링
     var regex = /[가-힣]+/g;
 
-    var match = recv_keyword.match(regex);
+    var match = match_score_SQL.match(regex);
 
-    var keyword_SQL = '';
+    var match_score_SQL = '';
+    var keyword_SQL = 'AND (';
 
-    for (var i = 0; i < match.length; i++)
-    {
-        
-        title, contents 
-        keyword_SQL = keyword_SQL + 
-        'OR title LIKE \"%' + match[i] + '%\" ' +
-        'OR contents LIKE \"%' + match[i] + '%\" ';
+    for (var i = 0; i < match.length; i++) {
+        //console.log(match[i]);
+        //title, contents 
+        match_score_SQL = match_score_SQL + '(title LIKE \"%' + match[i] + '%\")' + '+' + '(contents LIKE \"%' + match[i] + '%\") ' + '+ ';
+        keyword_SQL = keyword_SQL + 'title LIKE \"%' + match[i] + '%\" OR contents LIKE \"%' + match[i] + '%\" OR ';
+        //console.log(match_score_SQL);
     }
-    console.log(keyword_SQL);
+    match_score_SQL = match_score_SQL.substring(0, match_score_SQL.length - 2);
+    keyword_SQL = keyword_SQL.substring(0, keyword_SQL.length - 3);
+    keyword_SQL = keyword_SQL + ') ';
+    //console.log('match_score_SQL: ' + match_score_SQL);
+    //console.log('category_SQL: ' + category_SQL);
+    //console.log('age_SQL: ' + age_SQL);
+    //console.log('location_SQL: ' + location_SQL);
+    //console.log('keyword_SQL: ' + keyword_SQL);
 
-    var SQL = 'SELECT policy.* ' +
-    'FROM policy NATURAL JOIN interest ' +
-    'WHERE' +
-    category_SQL;
-    
-    // age_SQL +
-    // location_SQL +
-    // keyword_SQL
+
+    var SQL = 'SELECT policy.*, ' +
+    match_score_SQL + ' AS match_score ' +
+    'FROM policy NATURAL JOIN interest WHERE ' + 
+    category_SQL +
+    age_SQL +
+    location_SQL +
+    keyword_SQL +
+    'ORDER BY match_score DESC';
+
+    //var SQL = 'SELECT * FROM policy';
 
     console.log(SQL);
+
     connection.query(SQL, function (err, data) {
         if (!err) {
             //console.log(data);

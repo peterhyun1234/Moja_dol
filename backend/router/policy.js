@@ -209,6 +209,26 @@ router.get('/:id', function (req, res) {
     });
 });
 
+//정책 추천
+router.post("/referral", function (req, res, next) {
+
+
+    var SQL = 'SELECT * FROM policy';
+
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
 router.get('/pic1', function (req, res) {
 
     //console.log('/policy/pic1 Processing completed');

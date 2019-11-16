@@ -106,8 +106,6 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 //================================시간할것=================================================//
 
 
-
-
         Call<ArrayList<Policy>> call=iApiService.showselectedPolicy(position);
         Call<ArrayList<Review>> reviewcall=iApiService.showReview(position);
 
@@ -164,19 +162,6 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 
                         }
 
-
-//                        String applyStart=jsonObject.getString("apply_start");
-//                        if( applyStart==null)
-//                        {
-//                            tv_applyStart.setText("기한제한 없음");
-//                        }
-
-
-
-
-
-                        //Log.d("각각정보세부",""+jsonObject);
-
                     }catch(JSONException e)
                     {
                         e.printStackTrace();
@@ -185,7 +170,6 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void onFailure(Call<ArrayList<Policy>> call, Throwable t) {
-
                 }
             });
         }catch(Exception e)

@@ -18,6 +18,8 @@ public class Policy {
     Date crawing_date;
     int expiration_flag;
 
+
+
     public int getP_code() {
         return p_code;
     }

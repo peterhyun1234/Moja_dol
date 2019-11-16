@@ -36,10 +36,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         holder.id.setText(rList.get(position).getReview_uID());
         holder.comment.setText(rList.get(position).getContents());
-        //String tmp=rList.get(position).getReview_time().toString();
-        //StringBuilder sb=new StringBuilder();
-
-        //Log.d("시간시간",""+);
 
     }
 

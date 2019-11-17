@@ -1,6 +1,7 @@
 package com.example.mypolicy;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,9 +14,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +30,7 @@ import com.example.mypolicy.model.Policy;
 import com.example.mypolicy.service.IApiService;
 import com.example.mypolicy.service.RestClient;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -49,8 +55,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private String mClassName = getClass().getName().trim();
     private RecyclerView mRecyclerView;
 
+    final String[] categories = new String[]{"전체","취업지원","창업지원","생활/복지","주거/금융"};
+    Button btn_select_category, btn_search;
+    TextView tv_categories;
+    EditText et_age, et_keyword;
     Spinner sp_do, sp_si;
     ArrayList<String> search_region = new ArrayList<>();
+    String search_category = "10000";
+    String selected_categories = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +104,86 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
 
+        tv_categories = findViewById(R.id.tv_categories);
+        btn_select_category = findViewById(R.id.btn_select_category);
+        btn_search = findViewById(R.id.btn_search);
         sp_do = findViewById(R.id.sp_do);
         sp_si = findViewById(R.id.sp_si);
+        et_age = findViewById(R.id.et_search_age);
+        et_keyword = findViewById(R.id.et_search_keyword);
+
+        btn_select_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search_category = "10000";
+                final boolean[] selected = new boolean[]{false, false, false, false, false};
+                AlertDialog.Builder dialog = new AlertDialog.Builder(SearchActivity.this);
+                dialog.setTitle("정책 유형 선택")
+                        .setMultiChoiceItems(
+                                categories,
+                                new boolean[]{false, false, false, false, false},
+                                new DialogInterface.OnMultiChoiceClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                                        if(isChecked){
+                                            selected[position] = true;
+                                        }
+                                        else {
+                                            selected[position] = false;
+                                        }
+                                    }
+                                }
+                        )
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String txt = "";
+                                selected_categories = "선택한 카테고리: ";
+                                if(selected[0]){
+                                    txt = "10000";
+                                    selected_categories += "전체";
+                                    for(int j = 1;j<5;j++){
+                                        selected[j] = false;
+                                    }
+                                }
+                                else {
+                                    for(int j=0;j<5;j++){
+                                        if(selected[j]){
+                                            txt += "1";
+                                            selected_categories += categories[j] + ", ";
+                                        }
+                                        else
+                                            txt += "0";
+                                    }
+                                    if(txt.equals("00000")){
+                                        txt = "10000";
+                                        selected_categories = "";
+                                    }
+                                    else {
+                                        selected_categories = selected_categories.substring(0,selected_categories.length()-2);
+                                    }
+                                }
+
+                                //Toast.makeText(mContext, txt, Toast.LENGTH_SHORT).show();
+                                search_category = txt;
+                                tv_categories.setText(selected_categories);
+                            }
+                        })
+                        .setNeutralButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                search_category = "10000";
+                                selected_categories = "";
+                                tv_categories.setText(selected_categories);
+                            }
+                        });
+                dialog.create();
+                dialog.show();
+            }
+        });
+
+
+
         search_region.add("전체");
         search_region.add("전체");
 
@@ -130,7 +220,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 sp_si.setAdapter(adapter);
                 sp_si.setSelection(0);
-                selectRegion();
             }
 
             @Override
@@ -144,7 +233,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String region = parent.getItemAtPosition(position).toString();
                 search_region.set(1,region);
-                selectRegion();
             }
 
             @Override
@@ -152,11 +240,23 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
             }
         });
-    }
 
-    // 서버로 query 보내기
-    private void selectRegion(){
-        //Toast.makeText(mContext, search_region.get(0)+"-"+search_region.get(1), Toast.LENGTH_SHORT).show();
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int age = Integer.parseInt(et_age.getText().toString());
+                String keyword = et_keyword.getText().toString();
+
+                // ------------------ 서버로 req 보내기 --------------------------
+                // 정책유형: search_category (String - ex: "00101")
+                // 지역: search_region (ArrayList<String> - ex: {"서울", "강남구"})
+                // 나이: age (int)
+                // 키워드: keyword (String)
+
+
+
+            }
+        });
     }
 
     @Override

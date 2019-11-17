@@ -46,8 +46,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp">
 
@@ -67,17 +66,39 @@
                         android:layout_height="wrap_content"
                         android:textSize="17sp"
                         android:text="정책유형"/>
-                    <EditText
+                    <Button
+                        android:id="@+id/btn_select_category"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:padding="5dp"
-                        android:background="@drawable/search_box"/>
+                        android:layout_height="30dp"
+                        android:padding="3dp"
+                        android:text="선택"
+                        android:textSize="17sp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:background="#ffffff"
+                        />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="7dp">
+                    <TextView
+                        android:id="@+id/tv_categories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="#929292"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:padding="5dp">
@@ -108,9 +129,14 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="#929292"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:padding="5dp">
@@ -119,25 +145,57 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_search"/>
                     <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:textSize="17sp"
                         android:text="나이"/>
                     <EditText
+                        android:id="@+id/et_search_age"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:padding="5dp"
+                        android:inputType="numberDecimal"
+                        android:background="@drawable/search_box"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="17sp"
+                        android:text="키워드"/>
+                    <EditText
+                        android:id="@+id/et_search_keyword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:padding="5dp"
                         android:background="@drawable/search_box"/>
+
                 </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="#929292"/>
+
+                <Button
+                    android:id="@+id/btn_search"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="검색"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorLight"
+                    android:background="@color/colorPrimaryDark"
+                    />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"

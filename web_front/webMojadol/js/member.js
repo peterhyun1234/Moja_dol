@@ -1,7 +1,8 @@
 $(document).ready(function () {
   test();
-  firebasedatacall();
+  //firebasedatacall();
 
+  firebasetest1112();
   //firebasetest();
 });
 
@@ -33,6 +34,62 @@ function firebasetest() {
 
 
 }
+
+function firebasetest1112(){
+//firestore로 연동해둠
+
+//TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries 
+
+  // Your web app's Firebase configuration
+/*   var firebaseConfig = {
+    apiKey: "AIzaSyBVPzAuytd4KfhPAS6vtPAicrlMbAhwdEo",
+    authDomain: "mojadol-firestore.firebaseapp.com",
+    databaseURL: "https://mojadol-firestore.firebaseio.com",
+    projectId: "mojadol-firestore",
+    storageBucket: "mojadol-firestore.appspot.com",
+    messagingSenderId: "282603155923",
+    appId: "1:282603155923:web:5ddf2ab8a5f3ec19a87f26"
+  };  */
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyDo--9OT4OtrahZiX8pO9AzBzfCDJXzhuI",
+    authDomain: "mypolicy-d626b.firebaseapp.com",
+    databaseURL: "https://mypolicy-d626b.firebaseio.com",
+    projectId: "mypolicy-d626b",
+    storageBucket: "mypolicy-d626b.appspot.com",
+    messagingSenderId: "419848304732",
+    appId: "1:419848304732:web:920baedb134498ad02ce99"
+  }; 
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  var db = firebase.firestore();
+
+  //collection 앞에 컬렉션 이름 맞추기 
+  db.collection("user").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+       // console.log(doc.id, '=>', doc.data(), doc.data().birth);
+
+        var age = doc.data().age;
+        var id = doc.id;
+        var name = doc.data().name;
+
+        console.log(doc.id + "++" + name + "++" + id + "++" + age);
+
+        var element = '<li class="memberlist">' +
+        '<span class="memberId">' + id + '</span>' +
+        '<span class="membername">' + name + '</span>' +
+        '<span class="memberbirth">' + age + '</span>' +
+        '</li>';
+
+         $(".list").append(element);
+    });
+
+    listPageSetting();
+  });
+}
+
 function firebasedatacall() {
 
   // firebase 키 연동 
@@ -48,13 +105,6 @@ function firebasedatacall() {
   }; 
 
   
-/*    var firebaseConfig = {
-     apiKey: "AIzaSyD9xq1Ouw2kWbkx7ikSlGHeEf9lJFJi-RU",
-     authDomain: "fir-20190925.firebaseapp.com",
-     databaseURL: "https://fir-20190925.firebaseio.com",
-     storageBucket: "",
-
-   }; */
 
   // Initialize Firebase 초기화
   firebase.initializeApp(firebaseConfig);
@@ -106,6 +156,8 @@ function listPageSetting() {
 }
 
 
+
+//로딩 마스크
 
 function test() {
   LoadingWithMask('/image/Spinner3.gif');

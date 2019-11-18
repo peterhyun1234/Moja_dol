@@ -108,7 +108,7 @@ function modifyflag(me){
 	
 	var request = {"req_code" : req_code, "req_flag" : req_flag};
 
-	alert(me + "여부" + string + "flag : " + $(string).is(":checked"));
+	//alert(me + "여부" + string + "flag : " + $(string).is(":checked"));
 
 	 $.ajax({
 		url : "http://49.236.136.213:3000/request/change_flag",

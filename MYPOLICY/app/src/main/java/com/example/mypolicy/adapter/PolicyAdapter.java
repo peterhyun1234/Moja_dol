@@ -8,16 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mypolicy.DataParser;
 import com.example.mypolicy.R;
 import com.example.mypolicy.model.Policy;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class PolicyAdapter extends RecyclerView.Adapter<PolicyViewHolder> {
     DataParser dataParser;

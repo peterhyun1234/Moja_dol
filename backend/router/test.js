@@ -43,9 +43,7 @@ router.post("/test", function (req, res, next) {
     else {
         location_SQL = "AND (do LIKE '" + arr_location[0] + "%') AND (si LIKE '" + arr_location[1] + "%')";
     }
-    
-    if(location_SQL.length == 0)
-        location_SQL = ' ';
+
 
     //4. 분야 (4개도 세분화해서 ㄱㄱ)
     //4.0. 상관 없음.
@@ -123,7 +121,6 @@ router.post("/test", function (req, res, next) {
     // req.body.category : "01010" (string)
     var recv_category = req.body.category;
 
-
     if(recv_category[0] == 1){
         recv_category = "11111";
     }
@@ -136,10 +133,6 @@ router.post("/test", function (req, res, next) {
     category_SQL_temp = category_SQL_temp.substr(0, category_SQL_temp.length-3) + ") ";
     category_SQL = category_SQL_temp;
 
-    if(recv_category.length == 0)
-        category_SQL = ' ';
-
-
 
     //5. 연령 - 
     //5.0 연령 제한 없음( "age = 0"으로 보내주면 ㄳㄳ)
@@ -147,30 +140,20 @@ router.post("/test", function (req, res, next) {
     var recv_age = req.body.age;
     var age_SQL = '';
 
-    if (recv_age != 0 && recv_age != null)   // "연령 제한 없음"이 아니면
+    if (recv_age != 0)   // "연령 제한 없음"이 아니면
     {
         age_SQL = 'AND ' + 'end_age >= ' + recv_age + ' AND ' + 'start_age <= ' + recv_age + ' ';
     }
 
     //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
     var match_score_SQL = req.body.keyword;
-    //var keyword_length = match_score_SQL.length;
- 
-    //keword input이 없을 때
-    if(match_score_SQL == null || match_score_SQL.length == 0)
-    {
-        match_score_SQL = ' ';
-        keyword_SQL = '';
-    }
-    else
-    {
 
-   //키워드 필터링
+    //키워드 필터링
     var regex = /[가-힣]+/g;
 
     var match = match_score_SQL.match(regex);
 
-    var match_score_SQL = ', ';
+    var match_score_SQL = '';
     var keyword_SQL = 'AND (';
 
     for (var i = 0; i < match.length; i++) {
@@ -181,11 +164,8 @@ router.post("/test", function (req, res, next) {
         //console.log(match_score_SQL);
     }
     match_score_SQL = match_score_SQL.substring(0, match_score_SQL.length - 2);
-    match_score_SQL = match_score_SQL + ' AS match_score ';
     keyword_SQL = keyword_SQL.substring(0, keyword_SQL.length - 3);
-    keyword_SQL = keyword_SQL + ') ORDER BY match_score DESC';
-    }
-
+    keyword_SQL = keyword_SQL + ') ';
     //console.log('match_score_SQL: ' + match_score_SQL);
     //console.log('category_SQL: ' + category_SQL);
     //console.log('age_SQL: ' + age_SQL);
@@ -200,13 +180,14 @@ router.post("/test", function (req, res, next) {
     // ORDER BY match_score DESC
 
     
-    var SQL = 'SELECT policy.*' +
-    match_score_SQL +
+    var SQL = 'SELECT policy.*, ' +
+    match_score_SQL + ' AS match_score ' +
     'FROM policy NATURAL JOIN interest WHERE ' + 
     category_SQL +
     age_SQL +
     location_SQL +
-    keyword_SQL;
+    keyword_SQL +
+    'ORDER BY match_score DESC';
 
     //var SQL = 'SELECT * FROM policy';
 

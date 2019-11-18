@@ -57,7 +57,6 @@ app.use('/web_admin', web_adminRouter);
 app.use('/my_list', my_listRouter);
 app.use('/search', searchRouter);
 app.use('/interest', interestRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

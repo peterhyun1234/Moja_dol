@@ -209,6 +209,34 @@ router.get('/:id', function (req, res) {
     });
 });
 
+//정책 추천
+router.post("/referral", function (req, res, next) {
+
+    var recv_uID = "peterhyun1234@gmail.com";
+
+    var SQL = "SELECT policy.*," + 
+	"(Employment_sup*Employment_Sup_priority + Startup_sup*Startup_sup_priority + Life_welfare*Life_welfare_priority + Residential_finance*Residential_financial_priority) AS total_priority " +
+	"FROM policy NATURAL JOIN interest, user " +
+	"WHERE (uID = '" + recv_uID + "') AND " +
+	"(start_age <= user.age AND user.age <= end_age) AND " +
+	"expiration_flag <> 1 " +
+	"ORDER BY total_priority DESC, apply_end ASC " +
+	"LIMIT 10";
+
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
 router.get('/pic1', function (req, res) {
 
     //console.log('/policy/pic1 Processing completed');

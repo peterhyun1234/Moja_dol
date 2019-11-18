@@ -94,7 +94,8 @@ router.post("/modify_policy", function (req, res, next) {
     var recv_endA = req.body.end_age;	
     var recv_contents = req.body.contents;
     var recv_Atarget = req.body.application_target;
-    var recv_location = req.body.location;	
+    var recv_dor = req.body.dor;
+    var recv_si = req.body.si;	
     var recv_date = req.body.crawing_date;
     var recv_flag = req.body.expiration_flag;
     var temp_date;
@@ -125,10 +126,15 @@ router.post("/modify_policy", function (req, res, next) {
         temp_string = recv_Atarget;
         recv_Atarget = '\''+ temp_string +'\''
     };
-    if(recv_location.length == 0) recv_location = null;
+    if(recv_dor.length == 0) recv_dor = null;
     else {
-        temp_string = recv_location;
-        recv_location = '\''+ temp_string +'\''
+        temp_string = recv_dor;
+        recv_dor = '\''+ temp_string +'\''
+    };
+    if(recv_si.length == 0) recv_si = null;
+    else {
+        temp_string = recv_si;
+        recv_si = '\''+ temp_string +'\''
     };
     if(recv_date.length == 0) recv_date = null;
     if(recv_flag.length == 0) recv_flag = null;
@@ -156,7 +162,8 @@ router.post("/modify_policy", function (req, res, next) {
     ',end_age = ' + recv_endA +
     ',contents = '+ recv_contents + 
     ',application_target = '+ recv_Atarget + 
-    ',location = '+ recv_location + 
+    ',dor = '+ recv_dor +     
+    ',si = '+ recv_si + 
     ',crawing_date = '	+ recv_date + 
     ',expiration_flag = ' + recv_flag +
     ' WHERE p_code = ' + recv_code ;
@@ -209,13 +216,13 @@ router.get('/:id', function (req, res) {
     });
 });
 
-//정책 추천
+//정책 추천 - 어플리케이션 HOME 화면
 router.post("/referral", function (req, res, next) {
 
-    var recv_uID = "peterhyun1234@gmail.com";
+    var recv_uID = req.body.uID;
 
     var SQL = "SELECT policy.*," + 
-	"(Employment_sup*Employment_Sup_priority + Startup_sup*Startup_sup_priority + Life_welfare*Life_welfare_priority + Residential_finance*Residential_financial_priority) AS total_priority " +
+	"(Employment_sup*Employment_sup_priority + Startup_sup*Startup_sup_priority + Life_welfare*Life_welfare_priority + Residential_finance*Residential_financial_priority) AS total_priority " +
 	"FROM policy NATURAL JOIN interest, user " +
 	"WHERE (uID = '" + recv_uID + "') AND " +
 	"(start_age <= user.age AND user.age <= end_age) AND " +

@@ -1,3 +1,4 @@
+
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
@@ -10,25 +11,41 @@ router.post("/test", function (req, res, next) {
     //3. 지역
     // 3.0. 상관없음 ("location = 0"으로 보내주면 ㄳㄳ) 
 
-    var recv_location;
-    var temp_location = req.body.location;
-    var location_length = temp_location.length;
-    // 지역 3~4 length의 경우 맨뒤 시, 군만 짤라서 ㄱㄱ 
-    if (location_length == 3 || location_length == 4) {
-        recv_location = temp_location.substring(0, location_length - 1);
-        //console.log(recv_location);
+    // var recv_location;
+    // var temp_location = req.body.location;
+    // var location_length = temp_location.length;
+    // // 지역 3~4 length의 경우 맨뒤 시, 군만 짤라서 ㄱㄱ 
+    // if (location_length == 3 || location_length == 4) {
+    //     recv_location = temp_location.substring(0, location_length - 1);
+    //     //console.log(recv_location);
+    // }
+    // else {
+    //     recv_location = temp_location;
+    // }
+
+
+    // var location_SQL = '';
+    // if (recv_location != 0) // "상관없음"이 아닌 경우
+    //     location_SQL = 'AND (location LIKE \"%' + recv_location + '%\" OR location = \'전국\') ';
+
+
+    // -------------------- 3. 지역 -----------------------
+    
+    var arr_location = req.body.location;
+    var location_SQL;
+
+    if(arr_location[0]=="전체"){
+        location_SQL = '';
+    }
+    else if(arr_location[1]=="전체"){
+        location_SQL = "AND (do LIKE '" + arr_location[0] + "%')";
     }
     else {
-        recv_location = temp_location;
+        location_SQL = "AND (do LIKE '" + arr_location[0] + "%') AND (si LIKE '" + arr_location[1] + "%')";
     }
-
-
-    var location_SQL = '';
-    if (recv_location != 0) // "상관없음"이 아닌 경우
-        location_SQL = 'AND (location LIKE \"%' + recv_location + '%\" OR location = \'전국\') ';
-
-
-
+    
+    if(location_SQL.length == 0)
+        location_SQL = ' ';
 
     //4. 분야 (4개도 세분화해서 ㄱㄱ)
     //4.0. 상관 없음.
@@ -42,60 +59,86 @@ router.post("/test", function (req, res, next) {
     // 4.2 이랑 4.4에 관련된 거 찾고 싶으면 "00101"
     // "4.0. 상관없음"이면 "1xxxx" > x는 0이든 1이든 상관없다는 의미
 
+    
+    // var recv_category = req.body.category;
+
+    // //console.log('category:' + recv_category);
+
+    // var recv_Employment_sup;
+    // var recv_Startup_sup;
+    // var recv_Life_welfare;
+    // var recv_Residential_finance;
+
+    // if (recv_category[0] == 1) {
+    //     recv_Employment_sup = 1;
+    //     recv_Startup_sup = 1;
+    //     recv_Life_welfare = 1;
+    //     recv_Residential_finance = 1;
+    // }
+    // else {
+    //     recv_Employment_sup = recv_category[1];
+    //     recv_Startup_sup = recv_category[2];
+    //     recv_Life_welfare = recv_category[3];
+    //     recv_Residential_finance = recv_category[4];
+    // }
+
+
+    // var temp_info = ' (';
+
+    // if (recv_Employment_sup == 1) {
+    //     //console.log('recv_Employment_sup:' + recv_Employment_sup);
+    //     temp_info = temp_info + 'Employment_sup = 1 OR ';
+    //     //console.log(temp_info);
+    // }
+    // if (recv_Startup_sup == 1) {
+    //     //console.log('recv_Startup_sup:' + recv_Startup_sup);
+    //     temp_info = temp_info + 'Startup_sup = 1 OR ';
+    //     //console.log(temp_info);
+    // }
+    // if (recv_Life_welfare == 1) {
+    //     //console.log('recv_Life_welfare:' + recv_Life_welfare);
+    //     temp_info = temp_info + 'Life_welfare = 1 OR ';
+    //     //console.log(temp_info);
+    // }
+    // if (recv_Residential_finance == 1) {
+    //     //console.log('recv_Residential_finance:' + recv_Residential_finance);
+    //     temp_info = temp_info + 'Residential_finance = 1 OR ';
+    //     //console.log(temp_info);
+    // }
+    // //console.log(temp_info);
+    // var category_SQL = temp_info.substring(0, temp_info.length - 3);
+    // category_SQL = category_SQL + ') ';
+
+    // //console.log('category_info:' + category_info);
+
+    // //console.log('recv_Employment_sup:' + recv_Employment_sup);
+    // //console.log('recv_Startup_sup:' + recv_Startup_sup);
+    // //console.log('recv_Life_welfare:' + recv_Life_welfare);
+    // //console.log('recv_Residential_finance:' + recv_Residential_finance);
+
+    // -------------------- 4. 분야 -----------------------
+    var categoryList = ["Employment_sup", "Startup_sup", "Life_welfare", "Residential_finance"];
+    var category_SQL_temp = "(";
+
+    // req.body.category : "01010" (string)
     var recv_category = req.body.category;
 
-    //console.log('category:' + recv_category);
 
-    var recv_Employment_sup;
-    var recv_Startup_sup;
-    var recv_Life_welfare;
-    var recv_Residential_finance;
+    if(recv_category[0] == 1){
+        recv_category = "11111";
+    }
+    
+    for(var i=1;i<5;i++){
+        if(recv_category[i]==1){
+            category_SQL_temp += categoryList[i-1] + " = 1 OR ";
+        }
+    }
+    category_SQL_temp = category_SQL_temp.substr(0, category_SQL_temp.length-3) + ") ";
+    category_SQL = category_SQL_temp;
 
-    if (recv_category[0] == 1) {
-        recv_Employment_sup = 1;
-        recv_Startup_sup = 1;
-        recv_Life_welfare = 1;
-        recv_Residential_finance = 1;
-    }
-    else {
-        recv_Employment_sup = recv_category[1];
-        recv_Startup_sup = recv_category[2];
-        recv_Life_welfare = recv_category[3];
-        recv_Residential_finance = recv_category[4];
-    }
+    if(recv_category.length == 0)
+        category_SQL = ' ';
 
-    var temp_info = ' (';
-
-    if (recv_Employment_sup == 1) {
-        //console.log('recv_Employment_sup:' + recv_Employment_sup);
-        temp_info = temp_info + 'Employment_sup = 1 OR ';
-        //console.log(temp_info);
-    }
-    if (recv_Startup_sup == 1) {
-        //console.log('recv_Startup_sup:' + recv_Startup_sup);
-        temp_info = temp_info + 'Startup_sup = 1 OR ';
-        //console.log(temp_info);
-    }
-    if (recv_Life_welfare == 1) {
-        //console.log('recv_Life_welfare:' + recv_Life_welfare);
-        temp_info = temp_info + 'Life_welfare = 1 OR ';
-        //console.log(temp_info);
-    }
-    if (recv_Residential_finance == 1) {
-        //console.log('recv_Residential_finance:' + recv_Residential_finance);
-        temp_info = temp_info + 'Residential_finance = 1 OR ';
-        //console.log(temp_info);
-    }
-    //console.log(temp_info);
-    var category_SQL = temp_info.substring(0, temp_info.length - 3);
-    category_SQL = category_SQL + ') ';
-
-    //console.log('category_info:' + category_info);
-
-    //console.log('recv_Employment_sup:' + recv_Employment_sup);
-    //console.log('recv_Startup_sup:' + recv_Startup_sup);
-    //console.log('recv_Life_welfare:' + recv_Life_welfare);
-    //console.log('recv_Residential_finance:' + recv_Residential_finance);
 
 
     //5. 연령 - 
@@ -104,20 +147,30 @@ router.post("/test", function (req, res, next) {
     var recv_age = req.body.age;
     var age_SQL = '';
 
-    if (recv_age != 0)   // "연령 제한 없음"이 아니면
+    if (recv_age != 0 && recv_age != null)   // "연령 제한 없음"이 아니면
     {
         age_SQL = 'AND ' + 'end_age >= ' + recv_age + ' AND ' + 'start_age <= ' + recv_age + ' ';
     }
 
     //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
     var match_score_SQL = req.body.keyword;
+    //var keyword_length = match_score_SQL.length;
+ 
+    //keword input이 없을 때
+    if(match_score_SQL == null || match_score_SQL.length == 0)
+    {
+        match_score_SQL = ' ';
+        keyword_SQL = '';
+    }
+    else
+    {
 
-    //키워드 필터링
+   //키워드 필터링
     var regex = /[가-힣]+/g;
 
     var match = match_score_SQL.match(regex);
 
-    var match_score_SQL = '';
+    var match_score_SQL = ', ';
     var keyword_SQL = 'AND (';
 
     for (var i = 0; i < match.length; i++) {
@@ -128,8 +181,11 @@ router.post("/test", function (req, res, next) {
         //console.log(match_score_SQL);
     }
     match_score_SQL = match_score_SQL.substring(0, match_score_SQL.length - 2);
+    match_score_SQL = match_score_SQL + ' AS match_score ';
     keyword_SQL = keyword_SQL.substring(0, keyword_SQL.length - 3);
-    keyword_SQL = keyword_SQL + ') ';
+    keyword_SQL = keyword_SQL + ') ORDER BY match_score DESC';
+    }
+
     //console.log('match_score_SQL: ' + match_score_SQL);
     //console.log('category_SQL: ' + category_SQL);
     //console.log('age_SQL: ' + age_SQL);
@@ -137,14 +193,20 @@ router.post("/test", function (req, res, next) {
     //console.log('keyword_SQL: ' + keyword_SQL);
 
 
-    var SQL = 'SELECT policy.*, ' +
-    match_score_SQL + ' AS match_score ' +
+    // SQL example (category, location 검색)
+    //SELECT policy.*, AS match_score FROM policy NATURAL JOIN interest 
+    // WHERE (Employment_sup = 1 OR Startup_sup = 1 OR Life_welfare = 1)
+    // AND (do LIKE '서울%') AND (si LIKE '강남%')
+    // ORDER BY match_score DESC
+
+    
+    var SQL = 'SELECT policy.*' +
+    match_score_SQL +
     'FROM policy NATURAL JOIN interest WHERE ' + 
     category_SQL +
     age_SQL +
     location_SQL +
-    keyword_SQL +
-    'ORDER BY match_score DESC';
+    keyword_SQL;
 
     //var SQL = 'SELECT * FROM policy';
 

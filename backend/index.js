@@ -3,6 +3,23 @@ var createError = require('http-errors');
 var path = require('path');
 const bodyParser = require('body-parser');
 const router = express.Router();
+var http = require('http');
+var fs = require('fs');
+
+// 관리자 웹화면
+var admin_web = http.createServer(function(request,response){
+    var url = request.url;
+    if(request.url == '/'){
+      url = '/views/login.html';
+    }
+    if(request.url == '/favicon.ico'){
+      return response.writeHead(404);
+    }
+    response.writeHead(200);
+    response.end(fs.readFileSync(__dirname + url));
+ 
+});
+admin_web.listen(3030);
 
 
 // mysql 연동
@@ -16,6 +33,7 @@ var fs = require('fs');
 
 app.set('port', process.env.PORT || 3000);
 
+// URL REST-API SERVER
 app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
@@ -33,27 +51,6 @@ app.use((req, res, next) =>{
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-//관리자 web페이지
-app.get('/', function (request, response) {
-  fs.readFile('/views/login.html', function (error, data) {
-    if (error) {
-      console.log(error);
-    }
-    else {
-      response.writeHead(200);
-      response.end(data);
-    }
-  });
-    // var url = request.url;
-    //   if(request.url == '/'){
-    //     url = '/views/login.html';
-    //   }
-    //   if(request.url == '/favicon.ico'){
-    //     return response.writeHead(404);
-    //   }
-    //   response.writeHead(200);
-    //   response.end(fs.readFileSync(__dirname + url));
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

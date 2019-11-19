@@ -81,7 +81,8 @@ function click_detail_policy(){
 			$(".crawing_date").text(""); // 크롤링 날짜
 			$(".policy_contents").text(""); // 내용
 			$(".application_target").text(""); // 대상
-			$(".location").text(""); // 지역
+			$(".dor").text(""); // 지역 도
+			$(".si").text(""); // 지역 시
 			$(".uri").text(""); // 링크
 			$(".third_line").text(""); 
 			$(".expiration_flag2").text("");
@@ -136,7 +137,8 @@ function click_detail_policy(){
 						$(".policy_contents").append(content.contents); // 내용
 						
 						$(".application_target").append(content.application_target); // 대상
-						$(".location").append(content.location); // 지역
+						$(".dor").append(content.dor); // 지역 도
+						$(".si").append(content.si); // 지역 시
 						$(".uri").append(content.uri); // 링크
 						$(".expiration_flag2").append(content.expiration_flag);
 
@@ -259,7 +261,8 @@ function modifypolicy(){
 	var title = $(".detail_title").val();
 	var contents = $(".policy_contents").val();
 	var uri = $(".uri").val();
-	var location = $(".location").val();
+	var dor = $(".dor").val();
+	var si = $(".si").val();
 
 	var apply_start = $(".apply_start").val();
 	var apply_end = $(".apply_end").val();
@@ -275,7 +278,8 @@ function modifypolicy(){
 		if(contents == "null" || contents == "undefined") contents=null;
 	
 		if(uri == "null" || uri == "undefined") uri=null;
-		if(location == "null" || location == "undefined" || location==" " || location=="") location=null;
+		if(dor == "null" || dor == "undefined" || dor==" " || dor=="") dor=null;
+		if(si == "null" || si == "undefined" || si==" " || si=="") si=null;
 		if(apply_start == "null" || apply_start == "undefined") apply_start=null;
 		if(apply_end == "null" || apply_end == "undefined") apply_end=null;
 		if(start_age == "null" || start_age == "undefined") start_age=null;
@@ -292,8 +296,9 @@ function modifypolicy(){
 			"end_age": end_age,
 			"contents": contents,
 			"application_target": application_target,
-			"location": location,
-			"crawing_date": crawing_date,
+			"dor": dor,
+			"si": si,
+		//"crawing_date": crawing_date,
 			"expiration_flag": expiration_flag
 		};
 
@@ -301,7 +306,7 @@ function modifypolicy(){
 	var policy1 = '"p_code":"'+ p_code + '", "title" : "' + title + '"' + ', "uri" : "' + uri +'",'+	
 	'"apply_start":"'+ apply_start + '", "apply_end" : "' + apply_end + '"' + ', "start_age" : "' + start_age +'",'+
 	'"end_age":"'+ end_age + '", "contents" : "' + contents + '"' + ', "application_target" : "' + application_target +'",'+
-	'"location":"'+ location + '", "crawing_date" : "' + crawing_date + '"' + ', "expiration_flag" : "' + expiration_flag +'"';
+	'"dor":"'+ dor + '", "si":"'+ si /* + '", "crawing_date" : "' + crawing_date + '"' */ + ', "expiration_flag" : "' + expiration_flag +'"';
 			
 	console.log( policy);
 	//console.log(policy.title);
@@ -314,6 +319,7 @@ function modifypolicy(){
 			
 		},
 		error: function(request,status,error){
+			alert("수정 에러");
 			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		}
 	}); 	 

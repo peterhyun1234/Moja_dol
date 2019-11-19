@@ -27,12 +27,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mypolicy.adapter.PolicyAdapter;
 import com.example.mypolicy.model.Policy;
+import com.example.mypolicy.model.SearchData;
 import com.example.mypolicy.service.IApiService;
 import com.example.mypolicy.service.RestClient;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,15 +63,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     private String mClassName = getClass().getName().trim();
     private RecyclerView mRecyclerView;
-
+    final HashMap <String,Object> searchHashMap=new HashMap<>();
     final String[] categories = new String[]{"전체","취업지원","창업지원","생활/복지","주거/금융"};
     Button btn_select_category, btn_search;
     TextView tv_categories;
-    EditText et_age, et_keyword;
-    Spinner sp_do, sp_si;
-    ArrayList<String> search_region = new ArrayList<>();
+    EditText et_keyword;
+    Spinner sp_do, sp_si, sp_age;
+    ArrayList<String> search_region =new ArrayList<>();
     String search_category = "10000";
     String selected_categories = "";
+    String selected_age = "전체";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +86,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mRecyclerView=findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+        final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
         Call<ArrayList<Policy>> call=iApiService.showAllPolicies();
+
 
         try{
             call.enqueue(new Callback<ArrayList<Policy>>() {
                 @Override
                 public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
                     try{
+                        Log.d("시작로그",""+new Gson().toJson(response.body()));
                         PolicyAdapter pa=new PolicyAdapter(response.body());
                         mRecyclerView.setAdapter(pa);
                     }catch(Exception e)
@@ -109,7 +121,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         btn_search = findViewById(R.id.btn_search);
         sp_do = findViewById(R.id.sp_do);
         sp_si = findViewById(R.id.sp_si);
-        et_age = findViewById(R.id.et_search_age);
+        sp_age = findViewById(R.id.sp_age);
         et_keyword = findViewById(R.id.et_search_keyword);
 
         btn_select_category.setOnClickListener(new View.OnClickListener() {
@@ -241,17 +253,50 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+        sp_age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selected_age = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                selected_age = "전체";
+            }
+        });
+
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int age = Integer.parseInt(et_age.getText().toString());
-                String keyword = et_keyword.getText().toString();
+                Toasty.info(SearchActivity.this, "검색중입니다....", Toast.LENGTH_SHORT, true).show();
 
-                // ------------------ 서버로 req 보내기 --------------------------
-                // 정책유형: search_category (String - ex: "00101")
-                // 지역: search_region (ArrayList<String> - ex: {"서울", "강남구"})
-                // 나이: age (int)
-                // 키워드: keyword (String)
+                int age;
+                if(selected_age.equals("전체"))
+                    age = 0;
+                else
+                    age = Integer.parseInt(selected_age);
+
+                String keyword = et_keyword.getText().toString();
+                Bundle extras=new Bundle();
+                Intent intent=new Intent(SearchActivity.this,SearchKeywordActivity.class);
+                extras.putStringArrayList("search_region",search_region);
+                extras.putString("search_category",search_category);
+                extras.putInt("age",age);
+                extras.putString("keyword",keyword);
+                intent.putExtras(extras);
+                startActivity(intent);
+//                final Call<ArrayList<SearchData>> postSearchcall=iApiService.postSearchKeyword(search_region,search_category,age,keyword);
+//                Log.d("모르겠다","search_region: "+search_region);
+//                Log.d("모르겠다","search_category: "+search_category);
+//                Log.d("모르겠다","age: "+age);
+//                Log.d("모르겠다","keyword: "+keyword);
+
+
+//                 ------------------ 서버로 req 보내기 --------------------------
+//                 정책유형: search_category (String - ex: "00101")
+//                 지역: search_region (ArrayList<String> - ex: {"서울", "강남구"})
+//                 나이: age (int)
+//                 키워드: keyword (String)
 
 
 

@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,7 +81,6 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
     final HashMap<String,Object> postReviewhashMap=new HashMap<>();//댓글을 보내는
     final HashMap<String,Object> getReviewhashMap=new HashMap<>();//댓글을 보는
     final HashMap<String,Object> postSavehashMap=new HashMap<>();
-
     SharedPreferences sharedPreferences;
     long now;
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
@@ -134,7 +134,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 
         final Call<ArrayList<Policy>> call=iApiService.showselectedPolicy(position);
         final Call<ArrayList<Review>> reviewCall=iApiService.postShowReview(getReviewhashMap);
-        final Call<JSONObject> postSaveCall=iApiService.storeinMyList(postSavehashMap);
+         final Call<JSONObject> postSaveCall=iApiService.storeinMyList(postSavehashMap);
 
         //각각 에 대한 상세정보 받는부분
 
@@ -161,7 +161,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             tv_age_start.setText("제한없음");
                         }
                         else
-                            tv_age_start.setText(age+"살");
+                        tv_age_start.setText(age+"살");
 
                         String age_end=Integer.toString(jsonObject.getInt("end_age"));
                         if(age_end.equals("0"))
@@ -169,7 +169,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             tv_age_end.setText("제한없음");
                         }
                         else
-                            tv_age_end.setText(age_end+"살");
+                        tv_age_end.setText(age_end+"살");
 
                         String url=jsonObject.getString("uri");
                         tv_uri.setText(url);
@@ -193,9 +193,10 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                                     startSB.append(kor_mon[i]);
                                 }
                             }
+                            startSB.append(" ");
                             startSB.append(splited[1]+"일");
 
-                            tv_applyStart.setText(startSB.toString());
+                           tv_applyStart.setText(startSB.toString());
                         }
                         else {
                             tv_applyStart.setText("공고후 확인 신청 바람");
@@ -216,6 +217,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                                     endSB.append(kor_mon[i]);
                                 }
                             }
+                            endSB.append(" ");
                             endSB.append(splited2[1]+"일");
 
                             tv_applyEnd.setText(endSB.toString());
@@ -302,7 +304,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                     postReview.enqueue(new Callback<JSONObject>() {
                         @Override
                         public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                            Toast.makeText(DetailPolicyActivity.this, "댓글 작성완료", Toast.LENGTH_SHORT).show();
+                            Toasty.info(DetailPolicyActivity.this, "댓글 작성완료!!", Toast.LENGTH_SHORT, true).show();
 
                         }
 
@@ -330,8 +332,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                         @Override
                         public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                             Log.d("저장","결과"+new Gson().toJson(response.body()));
-                            Toast.makeText(DetailPolicyActivity.this, "정책 저장완료", Toast.LENGTH_SHORT).show();
-
+                            Toasty.info(DetailPolicyActivity.this, "정책 저장 완료!!", Toast.LENGTH_SHORT, true).show();
                         }
 
                         @Override

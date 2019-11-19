@@ -24,7 +24,7 @@ router.get('/:id', function (req, res) {
 
 router.post("/selected_review", function (req, res, next) {
    var recv_code = req.body.p_code;
-   var SQL = 'SELECT * FROM review WHERE p_code = ' + recv_code ;
+   var SQL = 'SELECT * FROM review WHERE p_code = ' + recv_code;
 
    console.log(SQL);
    //console.log(recv_id + ", " + recv_password);

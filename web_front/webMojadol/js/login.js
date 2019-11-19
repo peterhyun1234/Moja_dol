@@ -22,7 +22,7 @@ function logincheck(){
                     $(location).attr("href", "member.html");
                 }
                 else {
-                    alert("로그인 정보를 확인해주십시오." + data)
+                    alert("로그인 정보를 확인해주십시오.");
                 }
                 
             },

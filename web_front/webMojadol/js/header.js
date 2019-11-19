@@ -1,6 +1,7 @@
 $(document).ready(function(){
     testimgclick();
-    hoversubmenu();        
+    hoversubmenu();    
+    clicklogo();    
 });
 
 function testimgclick(){
@@ -15,5 +16,11 @@ function hoversubmenu(){
         $('.testho:before').css('width','30px');
         $('.test').css('background-color','black');
         $('.test').css('width','100px');
+    });
+}
+
+function clicklogo(){
+    $(".logobox").on("click", function(){
+        location.replace('member.html');
     });
 }

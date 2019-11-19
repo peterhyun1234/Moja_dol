@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+#test-list {min-height:600px;}
 li.policylist:hover {background-color: #fbffd0;}
 .policylist {cursor: pointer; position:relative; border-bottom: 1px solid #d4d1d1; font-size: 1em; width: 100%; text-align: center; padding: 0 10px; padding-top:20px; display:inline-block;}
 .policylist span {padding:0 10px; margin: 0; display: inline-block; padding-bottom: 20px;}
@@ -35,7 +36,7 @@ li.policylist:hover {background-color: #fbffd0;}
 .third_line p {float:left; line-height: 2.7; }
 
 .fourth_line p {float:left; line-height:2.7; text-align:center; margin:0; height: 44px;}
-.fourth_line textarea {width: calc(100% - 650px);overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}
+.fourth_line textarea {width: calc(100% - 900px);overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}
 .crawing_date {width:250px;}
 
 
@@ -48,7 +49,7 @@ li.policylist:hover {background-color: #fbffd0;}
 .last {width: 100%;}
 
 .origin_data {float:left; width:100%;}
-.origin_policy {float: left; min-height: 100px;}
+.origin_policy {float: left; min-height: 100px; white-space: normal; word-break: break-all;}
 
 .modifypolicybtn {font-size: 1.1em; transition: all 0.2s ease; float: right; margin: 10px; border: 2px solid #053863; background-color: transparent; padding: 10px 40px; border-radius: 10px; font-weight: bold;}
 .modifypolicybtn:hover {color:#ffffff; background-color: #ff2f0b;}

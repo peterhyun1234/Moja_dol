@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sorting">
+        <item>정렬방식</item>
+        <item>시간순</item>
+        <item>선호순</item>
+    </string-array>
+
+</resources>

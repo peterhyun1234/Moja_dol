@@ -30,21 +30,21 @@ router.post("/test", function (req, res, next) {
 
 
     // -------------------- 3. 지역 -----------------------
-    
+
     var arr_location = req.body.location;
     var location_SQL;
 
-    if(arr_location[0]=="전체"){
+    if (arr_location[0] == "전체") {
         location_SQL = '';
     }
-    else if(arr_location[1]=="전체"){
-        location_SQL = "AND (do LIKE '" + arr_location[0] + "%')";
+    else if (arr_location[1] == "전체") {
+        location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
-        location_SQL = "AND (do LIKE '" + arr_location[0] + "%') AND (si LIKE '" + arr_location[1] + "%')";
+        location_SQL = "AND (dor LIKE '" + arr_location[0] + "%') AND (si LIKE '" + arr_location[1] + "%')";
     }
-    
-    if(location_SQL.length == 0)
+
+    if (location_SQL.length == 0)
         location_SQL = ' ';
 
     //4. 분야 (4개도 세분화해서 ㄱㄱ)
@@ -59,7 +59,7 @@ router.post("/test", function (req, res, next) {
     // 4.2 이랑 4.4에 관련된 거 찾고 싶으면 "00101"
     // "4.0. 상관없음"이면 "1xxxx" > x는 0이든 1이든 상관없다는 의미
 
-    
+
     // var recv_category = req.body.category;
 
     // //console.log('category:' + recv_category);
@@ -124,19 +124,19 @@ router.post("/test", function (req, res, next) {
     var recv_category = req.body.category;
 
 
-    if(recv_category[0] == 1){
+    if (recv_category[0] == 1) {
         recv_category = "11111";
     }
-    
-    for(var i=1;i<5;i++){
-        if(recv_category[i]==1){
-            category_SQL_temp += categoryList[i-1] + " = 1 OR ";
+
+    for (var i = 1; i < 5; i++) {
+        if (recv_category[i] == 1) {
+            category_SQL_temp += categoryList[i - 1] + " = 1 OR ";
         }
     }
-    category_SQL_temp = category_SQL_temp.substr(0, category_SQL_temp.length-3) + ") ";
+    category_SQL_temp = category_SQL_temp.substr(0, category_SQL_temp.length - 3) + ") ";
     category_SQL = category_SQL_temp;
 
-    if(recv_category.length == 0)
+    if (recv_category.length == 0)
         category_SQL = ' ';
 
 
@@ -155,35 +155,33 @@ router.post("/test", function (req, res, next) {
     //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
     var match_score_SQL = req.body.keyword;
     //var keyword_length = match_score_SQL.length;
- 
+
     //keword input이 없을 때
-    if(match_score_SQL == null || match_score_SQL.length == 0)
-    {
+    if (match_score_SQL == null || match_score_SQL.length == 0) {
         match_score_SQL = ' ';
         keyword_SQL = '';
     }
-    else
-    {
+    else {
 
-   //키워드 필터링
-    var regex = /[가-힣]+/g;
+        //키워드 필터링
+        var regex = /[가-힣]+/g;
 
-    var match = match_score_SQL.match(regex);
+        var match = match_score_SQL.match(regex);
 
-    var match_score_SQL = ', ';
-    var keyword_SQL = 'AND (';
+        var match_score_SQL = ', ';
+        var keyword_SQL = 'AND (';
 
-    for (var i = 0; i < match.length; i++) {
-        //console.log(match[i]);
-        //title, contents 
-        match_score_SQL = match_score_SQL + '(title LIKE \"%' + match[i] + '%\")' + '+' + '(contents LIKE \"%' + match[i] + '%\") ' + '+ ';
-        keyword_SQL = keyword_SQL + 'title LIKE \"%' + match[i] + '%\" OR contents LIKE \"%' + match[i] + '%\" OR ';
-        //console.log(match_score_SQL);
-    }
-    match_score_SQL = match_score_SQL.substring(0, match_score_SQL.length - 2);
-    match_score_SQL = match_score_SQL + ' AS match_score ';
-    keyword_SQL = keyword_SQL.substring(0, keyword_SQL.length - 3);
-    keyword_SQL = keyword_SQL + ') ORDER BY match_score DESC';
+        for (var i = 0; i < match.length; i++) {
+            //console.log(match[i]);
+            //title, contents 
+            match_score_SQL = match_score_SQL + '(title LIKE \"%' + match[i] + '%\")' + '+' + '(contents LIKE \"%' + match[i] + '%\") ' + '+ ';
+            keyword_SQL = keyword_SQL + 'title LIKE \"%' + match[i] + '%\" OR contents LIKE \"%' + match[i] + '%\" OR ';
+            //console.log(match_score_SQL);
+        }
+        match_score_SQL = match_score_SQL.substring(0, match_score_SQL.length - 2);
+        match_score_SQL = match_score_SQL + ' AS match_score ';
+        keyword_SQL = keyword_SQL.substring(0, keyword_SQL.length - 3);
+        keyword_SQL = keyword_SQL + ') ORDER BY match_score DESC';
     }
 
     //console.log('match_score_SQL: ' + match_score_SQL);
@@ -199,14 +197,14 @@ router.post("/test", function (req, res, next) {
     // AND (do LIKE '서울%') AND (si LIKE '강남%')
     // ORDER BY match_score DESC
 
-    
-    var SQL = 'SELECT policy.*' +
-    match_score_SQL +
-    'FROM policy NATURAL JOIN interest WHERE ' + 
-    category_SQL +
-    age_SQL +
-    location_SQL +
-    keyword_SQL;
+
+    var SQL = 'SELECT p_code, title, apply_start, apply_end ' +
+        match_score_SQL +
+        'FROM policy NATURAL JOIN interest WHERE ' +
+        category_SQL +
+        age_SQL +
+        location_SQL +
+        keyword_SQL;
 
     //var SQL = 'SELECT * FROM policy';
 

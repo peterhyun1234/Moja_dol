@@ -12,6 +12,7 @@ mysql_db.test_open(connect);
 exports.connection = connect;
 
 var app = express();
+var fs = require('fs');
 
 app.set('port', process.env.PORT || 3000);
 
@@ -19,7 +20,7 @@ app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-//-----------------------------------
+
 
 app.use((req, res, next) =>{
   res.header("Access-Control-Allow-Origin", "*")
@@ -32,22 +33,43 @@ app.use((req, res, next) =>{
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+//관리자 web페이지
+app.get('/', function (request, response) {
+  fs.readFile('/views/login.html', function (error, data) {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      response.writeHead(200);
+      response.end(data);
+    }
+  });
+    // var url = request.url;
+    //   if(request.url == '/'){
+    //     url = '/views/login.html';
+    //   }
+    //   if(request.url == '/favicon.ico'){
+    //     return response.writeHead(404);
+    //   }
+    //   response.writeHead(200);
+    //   response.end(fs.readFileSync(__dirname + url));
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Router 정의
 const policyRouter = require('./router/policy');
-const userRouter=require('./router/user');
-const tempRouter=require('./router/temp');
+const userRouter = require('./router/user');
+const tempRouter = require('./router/temp');
 const requestRouter = require('./router/request');
-const reviewRouter=require('./router/review');
-const web_adminRouter=require('./router/web_admin');
-const my_listRouter=require('./router/my_list');
-const searchRouter=require('./router/search');
-const interestRouter=require('./router/interest');
+const reviewRouter = require('./router/review');
+const web_adminRouter = require('./router/web_admin');
+const my_listRouter = require('./router/my_list');
+const searchRouter = require('./router/search');
+const interestRouter = require('./router/interest');
 
-//Route 정의
 app.use('/policy', policyRouter);
 app.use('/user', userRouter);
 app.use('/temp', tempRouter);

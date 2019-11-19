@@ -2,14 +2,18 @@ package com.example.mypolicy.service;
 
 import com.example.mypolicy.model.Policy;
 import com.example.mypolicy.model.Review;
+import com.example.mypolicy.model.SearchData;
 import com.example.mypolicy.model.StoreData;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -60,5 +64,11 @@ public interface IApiService {
     @FormUrlEncoded
     @POST("my_list/ordered_mylist")
     Call<JSONObject> orderedMyList(@FieldMap HashMap<String,Object> parameters);
+
+    //search에서 검색조건
+    @FormUrlEncoded
+    @POST("search/test")
+    Call<ArrayList<SearchData>> postSearchKeyword(@Field("location") ArrayList<String> location, @Field("category") String category
+    , @Field("age")int age, @Field("keyword") String keyword);
 
 }

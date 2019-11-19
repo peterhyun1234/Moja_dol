@@ -4,31 +4,25 @@ var router = express.Router();
 
 var connection = require('../index.js').connection;
 
-router.get('/info', function (req, res) {
-    connection.query('SELECT id, password from admin_user', function (err, data) {
-        if (!err) {
-            //console.log(data);
-            res.send(data);
-        }
-        else {
-            console.log(err);
-            res.send('error');
-        }
-    });
-});
-
 router.post("/send_req", function (req, res, next) {
-   
-    var recv_uID = req.body.req_uID;   
+    
+    // 사용자의 ID (type: string)
+    var recv_uID = req.body.req_uID;
+    
+    // request의 유형 (type: string)
+    // egg.
+    // 서비스 불만
+    // 정책 수정
+    // 회원탈퇴요청
     var recv_category = req.body.req_category;
-    var recv_comments = req.body.req_contents;
 
-    //console.log('req_code: '+recv_code + 'req_flag: '+ recv_flag);
+    // request의 내용 (type: string)
+    var recv_contents = req.body.req_contents;
     
     var SQL = 'INSERT INTO request (req_uID, req_category, req_contents) VALUES(' +
-    '\'' + recv_uID + '\''
-    ', \'' + recv_category + '\''
-    ', \'' + recv_comments + '\')';
+    '\'' + recv_uID + '\'' +
+    ', \'' + recv_category + '\'' +
+    ', \'' + recv_contents + '\')';
 
     console.log(SQL);
     //절 차 

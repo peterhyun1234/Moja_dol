@@ -11,10 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SearchKeywordActivity extends AppCompatActivity implements View.OnClickListener{
+import com.example.mypolicy.model.SearchData;
+import com.example.mypolicy.service.IApiService;
+import com.example.mypolicy.service.RestClient;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class SearchKeywordActivity  extends AppCompatActivity implements View.OnClickListener{
     private String TAG = "SearchKeywordActivity";
 
     private Context mContext = SearchKeywordActivity.this;
@@ -27,18 +39,47 @@ public class SearchKeywordActivity extends AppCompatActivity implements View.OnC
     private Boolean isExitFlag = false;
 
     SharedPreferences sharedPreferences;
+    final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_keyword);
         init();
 
         sharedPreferences = getSharedPreferences("session",MODE_PRIVATE);
 
         addSideView();  //사이드바 add
 
+        Bundle extras = getIntent().getExtras();
+
+        ArrayList<String>search_region=extras.getStringArrayList("search_region");
+        String search_category=extras.getString("search_category");
+        int age=extras.getInt("age");
+        String keyword=extras.getString("keyword");
+
+        final Call<ArrayList<SearchData>> postSearchcall=iApiService.postSearchKeyword(search_region,search_category,age,keyword);
+        Log.d("뽑아낸","정보"+search_region+"  "+search_category+"  "+age+"  "+keyword);
+        try {
+            postSearchcall.enqueue(new Callback<ArrayList<SearchData>>() {
+                @Override
+                public void onResponse(Call<ArrayList<SearchData>> call, Response<ArrayList<SearchData>> response) {
+                    Log.d("뽑아낸","전체정보"+new Gson().toJson(response.body()));
+//                            PolicyAdapter pa=new PolicyAdapter(response.body());
+//                            mRecyclerView.setAdapter(pa);
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<SearchData>> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
 
@@ -103,7 +144,7 @@ public class SearchKeywordActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void btnSearch() {
-                Intent intent = new Intent(mContext, SearchActivity.class);
+                Intent intent = new Intent(mContext,SearchActivity.class);
                 startActivity(intent);
                 closeMenu();
                 finish();
@@ -111,7 +152,7 @@ public class SearchKeywordActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void btnDownload() {
-                Intent intent = new Intent(mContext, DownloadActivity.class);
+                Intent intent = new Intent(mContext,DownloadActivity.class);
                 startActivity(intent);
                 closeMenu();
                 finish();
@@ -119,7 +160,7 @@ public class SearchKeywordActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void btnProfile() {
-                Intent intent = new Intent(mContext, ProfileActivity.class);
+                Intent intent = new Intent(mContext,ProfileActivity.class);
                 startActivity(intent);
                 closeMenu();
                 finish();

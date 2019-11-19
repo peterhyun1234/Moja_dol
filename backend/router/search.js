@@ -34,10 +34,10 @@ router.post("/test", function (req, res, next) {
     var arr_location = req.body.location;
     var location_SQL;
 
-    if (arr_location[0] == "전체") {
+    if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전체") {
+    else if (arr_location[1] == "전국") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
@@ -49,7 +49,7 @@ router.post("/test", function (req, res, next) {
 
     //4. 분야 (4개도 세분화해서 ㄱㄱ)
     //4.0. 상관 없음.
-    //4.1. Employment_Sup(취업지원) - 취업지원금, 서류/면접 지원, 취업지원 프로그램
+    //4.1. Employment_sup(취업지원) - 취업지원금, 서류/면접 지원, 취업지원 프로그램
     //4.2. Startup_sup(창업지원) - 시설/공간 제공, 정책 자금, 멘토링/컨설팅, 사업화
     //4.3. Life_welfare(생활, 복지) - 학자금, 대출/이자, 생활보조(금), 결혼/육아, 교통지원
     //4.4. Residential_financial(주거, 금융) - 기숙사/생활관, 주택지원, 주거환경지원, 고용장려금, 기업지원금
@@ -154,15 +154,17 @@ router.post("/test", function (req, res, next) {
 
     //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
     var match_score_SQL = req.body.keyword;
+
+    var ORDER_SQL;
     //var keyword_length = match_score_SQL.length;
 
     //keword input이 없을 때
     if (match_score_SQL == null || match_score_SQL.length == 0) {
         match_score_SQL = ' ';
         keyword_SQL = '';
+        ORDER_SQL = "ORDER BY apply_end is null ASC, apply_end ASC";
     }
     else {
-
         //키워드 필터링
         var regex = /[가-힣]+/g;
 
@@ -182,6 +184,7 @@ router.post("/test", function (req, res, next) {
         match_score_SQL = match_score_SQL + ' AS match_score ';
         keyword_SQL = keyword_SQL.substring(0, keyword_SQL.length - 3);
         keyword_SQL = keyword_SQL + ') ORDER BY match_score DESC';
+        ORDER_SQL = ", apply_end is null ASC, apply_end ASC";
     }
 
     //console.log('match_score_SQL: ' + match_score_SQL);
@@ -198,13 +201,19 @@ router.post("/test", function (req, res, next) {
     // ORDER BY match_score DESC
 
 
-    var SQL = 'SELECT p_code, title, apply_start, apply_end ' +
+    var SQL = "SELECT p_code, title, apply_start, apply_end, " +
+    "concat_ws('', (CASE Employment_sup WHEN '1' THEN '취업지원' END), " +
+    "(CASE Startup_sup WHEN '1' THEN '창업지원' END), " +
+    "(CASE Life_welfare WHEN 1 THEN '생활복지' END), " +
+    "(CASE Residential_finance WHEN 1 THEN '주거금융' END)) AS category, " +
+    "concat_ws(' ', dor, (CASE dor WHEN '전국' THEN '' ELSE si END)) AS region" +
         match_score_SQL +
         'FROM policy NATURAL JOIN interest WHERE ' +
         category_SQL +
         age_SQL +
         location_SQL +
-        keyword_SQL;
+        keyword_SQL + 
+        ORDER_SQL;
 
     //var SQL = 'SELECT * FROM policy';
 

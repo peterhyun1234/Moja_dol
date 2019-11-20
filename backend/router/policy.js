@@ -26,7 +26,9 @@ router.get('/show_all_policies', function (req, res) {
 
 router.get('/select_all_policies', function (req, res) {
 
-    var SQL = 'SELECT p_code, title, crawling_date, expiration_flag from policy';
+    var SQL = "SELECT p_code, title, " + 
+    "DATE_SUB(crawling_date, INTERVAL -9 HOUR) AS crawling_date, " + 
+    "expiration_flag from policy";
 
     console.log("API 'policy/select_all_policies' called");
     console.log(SQL);
@@ -217,9 +219,16 @@ router.post("/modify_policy", function (req, res, next) {
 //간략하게 보여주는 정책
 router.get('/selected_policies', function (req, res) {
 
-    //console.log('/policy/selected_policies Processing completed');
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy";
+
+    console.log("API 'policy/selected_policies' called");
+    console.log(SQL);
     // 다음에 post로 구현!
-    connection.query('SELECT p_code, title, uri, apply_start, apply_end  from policy', function (err, data) {
+    connection.query(SQL, function (err, data) {
         if (!err) {
             //console.log(data);
             res.send(data);
@@ -235,7 +244,12 @@ router.get('/selected_policies', function (req, res) {
 router.get('/:id', function (req, res) {
     var policy_params = req.params.id;
     //console.log('selected policy is ' + policy_params);
-    var SQL = 'SELECT * from policy where p_code = ' + policy_params;
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+    "start_age, end_age, contents, application_target, dor, si, " +  
+    "crawling_date, expiration_flag " + 
+    "from policy where p_code = " + policy_params;
 
     console.log("API 'policy/:id' called");
     console.log(SQL);

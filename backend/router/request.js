@@ -24,6 +24,7 @@ router.post("/send_req", function (req, res, next) {
     ', \'' + recv_category + '\'' +
     ', \'' + recv_contents + '\')';
 
+    console.log("API 'request/send_req' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {
@@ -41,6 +42,7 @@ router.post("/send_req", function (req, res, next) {
 router.post("/show_all_reqs", function (req, res, next) {
     var SQL = 'SELECT * FROM request';
 
+    console.log("API 'request/show_all_reqs' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {
@@ -63,6 +65,7 @@ router.post("/change_flag", function (req, res, next) {
     
     var SQL = 'UPDATE request SET req_flag = ' + recv_flag + ' WHERE  req_code = '+ recv_code ;
 
+    console.log("API 'request/change_flag' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {

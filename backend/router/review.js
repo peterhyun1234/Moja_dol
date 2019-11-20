@@ -10,6 +10,10 @@ router.get('/:id', function (req, res) {
    //console.log('selected review is ' + policy_params);
    //CONVERT_TZ(review_time, "+0:00", "+9:00") 
    var SQL = 'SELECT * from review where p_code = ' + policy_params ;
+
+   console.log("API 'review/:id' called");
+   console.log(SQL);
+   
    connection.query( SQL, function (err, data) {
        if (!err) {
            //console.log(data);
@@ -26,6 +30,7 @@ router.post("/selected_review", function (req, res, next) {
    var recv_code = req.body.p_code;
    var SQL = 'SELECT * FROM review WHERE p_code = ' + recv_code;
 
+   console.log("API 'review/selected_review' called");
    console.log(SQL);
    //console.log(recv_id + ", " + recv_password);
    //절 차 
@@ -61,7 +66,7 @@ router.post("/write_review", function (req, res, next) {
    ',\'' + recv_contents + '\'' +
    ',' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' + 
    ')';
-
+   console.log("API 'review/write_review' called");
    console.log(SQL);
    //console.log(recv_id + ", " + recv_password);
    //절 차 
@@ -82,6 +87,7 @@ router.post("/delete_review", function (req, res, next) {
     var recv_code = req.body.review_code;
     var SQL = 'DELETE FROM review WHERE review_code = ' + recv_code ;
  
+    console.log("API 'review/delete_review' called");
     console.log(SQL);
     //console.log(recv_id + ", " + recv_password);
     //절 차 

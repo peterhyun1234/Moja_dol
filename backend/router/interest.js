@@ -11,6 +11,7 @@ router.post("/show_interest", function (req, res, next) {
 
     var SQL = 'SELECT * FROM interest WHERE p_code = '+ recv_p_code;
 
+    console.log("API 'interest/show_interest' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {
@@ -40,6 +41,8 @@ router.post("/modify_interest", function (req, res, next) {
     ', Life_welfare = ' + recv_Life_welfare + 
     ', Residential_finance = ' + recv_Residential_finance + 
     ' WHERE p_code = '+ recv_p_code ;
+
+    console.log("API 'interest/modify_interest' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {

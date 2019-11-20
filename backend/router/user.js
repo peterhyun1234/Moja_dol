@@ -5,7 +5,13 @@ var router = express.Router();
 var connection = require('../index.js').connection;
 
 router.get('/show_all_users', function (req, res) {
-    connection.query('SELECT * from user', function (err, data) {
+
+    var SQL = 'SELECT * from user';
+
+    console.log("API 'user/show_all_users' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
         if (!err) {
             //console.log(data);
             res.send(data);
@@ -18,7 +24,13 @@ router.get('/show_all_users', function (req, res) {
 });
 
 router.get('/info', function (req, res) {
-    connection.query('SELECT id, password from admin_web', function (err, data) {
+
+    var SQL = 'SELECT id, password from admin_web';
+
+    console.log("API 'user/info' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
         if (!err) {
             //console.log(data);
             res.send(data);
@@ -102,7 +114,9 @@ router.post("/register", function (req, res, next) {
         "Life_welfare_priority = " + recv_Life_welfare_priority + ", " +
         "Residential_financial_priority = " + recv_Residential_financial_priority;
 
+    console.log("API 'user/register' called");
     console.log(SQL);
+    
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
@@ -138,6 +152,7 @@ router.post("/update", function (req, res, next) {
         ',Residential_financial_priority = ' + recv_Residential_financial_priority +
         'WHERE uID = \'' + recv_uID + '\'';
 
+    console.log("API 'user/update' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {

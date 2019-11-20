@@ -13,6 +13,6 @@ dag = DAG('youth_crawl', description='youth_crawl',
 
 youth_crawl_operator = PythonOperator(task_id='youth_crawl', python_callable=youth_crawl_db_in, dag=dag)
 
-uth_crawl_oper = PythonOperator(task_id = 'youth_preprocess'),python_callable=preprocess_youth,dag =dag)
+uth_crawl_oper = PythonOperator(task_id = 'youth_preprocess',python_callable=preprocess_youth,dag =dag)
 
 youth_crawl_operator >> uth_crawl_oper

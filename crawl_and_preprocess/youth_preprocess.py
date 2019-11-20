@@ -3,12 +3,12 @@ import re
 import numpy as np
 import datetime
 import calendar
-
+from datetime import date
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import IntegrityError
 
-engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/mojadol_DB00?host=localhost?port=3306", encoding='utf-8')
+engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/crawl_db?host=localhost?port=3306", encoding='utf-8')
 
 pattern_age = re.compile(r"[0-9][0-9]세") 
 pattern_age_num = re.compile(r"[0-9][0-9]") 
@@ -44,20 +44,28 @@ jababa_preprocess_query = """ CREATE TABLE  youth_preprocess(
                             school varchar(200),
                             job_status varchar(200),
                             major varchar(200),
-                            specific varchar(200),
+                            `specific` varchar(200),
                             company varchar(200),
                             start_age int(11) DEFAULT NULL,
                             end_age   int(11) DEFAULT NULL,
-                            start_date timestamp,
-                            end_date   timestamp,
-                            crawl_date timestamp,
-                            CONSTRAINT youth_origin_pk PRIMARY KEY (id)
+                            start_date timestamp NULL DEFAULT NULL,
+                            end_date   timestamp NULL DEFAULT NULL,
+                            crawl_date timestamp NULL DEFAULT NULL,
+                            policy_uri text,
+			    dor varchar(50),
+			    si varchar(50),
+                            CONSTRAINT pk_youth_preprocess PRIMARY KEY(id)
 );"""
 
 jababa_crawl_get_query = """
     SELECT *
     FROM youth_crawl_origin
     WHERE id not in (SELECT id FROM youth_preprocess)
+"""
+
+jababa_crawl_get_query_1st = """
+    SELECT *
+    FROM youth_crawl_origin;
 """
 
 jababa_crawl_id_query = """
@@ -80,13 +88,27 @@ url_id_base = "https://www.youthcenter.go.kr/jynEmpSptNew/jynEmpSptGuide.do?bizI
 age_col = 'age'
 date_col = 'apply_date'
 
+def add_years(d,years):
+    try:
+        return d.replace(year = d.year + years)
+    except ValueError:
+        return d + (date(d.year + years,1,1) - date(d.year,1,1) )
+
 def remove_dup_list(x):
+
     temp_set = set()
     res = []
     for idx in x:
         if idx not in temp_set:
             res.append(idx)
             temp_set.add(idx)
+    return res
+
+def list_minus_list(x,y):
+    res = x.copy()
+    for idx in y:
+        if idx in x:
+            res.remove(idx)
     return res
 
 def age_parse(df):
@@ -138,16 +160,16 @@ def age_parse(df):
     start = remove_dup_list(start)
     temp = remove_dup_list(temp)
     
-    temp2 = temp.copy()
-    for kda in temp2:
-        if kda in start:
-            temp.remove(kda)
-        elif kda in end:
-            temp.remove(kda)
-        
+    #temp = list(set(temp)-set(start))
+    #temp = list(set(temp)-set(end))
+     
+    temp = list_minus_list(temp,start)
+    temp = list_minus_list(temp,start)
+   
     if len(temp)>1:
         start.append(temp[0])
         end.append(temp[1])
+
     elif len(temp)==1:
         if temp[0] not in start and temp[0] not in end:
             if len(start) == 0:
@@ -401,8 +423,12 @@ def date_list_parse(df_in):
 def preprocess_youth():
     
     conn = engine.connect()
-
-    df = pd.read_sql(jababa_crawl_get_query, con=conn)
+    
+    try:
+        df = pd.read_sql(jababa_crawl_get_query, con=conn)
+    except SQLAlchemyError:
+        df = pd.read_sql(jababa_crawl_get_query_1st,con=conn)
+        pass
 
     if len(df)==0:
         print("data already preprocessed")
@@ -430,15 +456,21 @@ def preprocess_youth():
    
     df['uri'] = df['id'].apply(lambda x: url_id_base + str(x))
 
-    df = df[['id','title','hash_tag','contents','school','major','job_status','specific','company','start_age','end_age','crawl_date','uri']]
-
-
+    df = df[['id','title','hash_tag','contents','school','major','job_status','specific','company','start_date','end_date','start_age','end_age','crawl_date','uri','policy_uri']]
+    df['dor'] = '전국'
+    df['si'] = '전체'
+    
+    for idx,row in df.iterrows():
+        if row['start_date']!= None and row['end_date'] !=None:
+            if row['start_date'] > row['end_date']:
+                df.loc[idx,'end_date'] = add_years(row['end_date'],1)
 
     try:
         conn.execute(jababa_preprocess_query)
     
-    except SQLAlchemyError:
+    except SQLAlchemyError as e:
         print('exist table')
+        print(e)
         pass
     
     try:
@@ -463,4 +495,4 @@ def preprocess_youth():
         except IntegrityError:
             pass
 
-
+#preprocess_youth()

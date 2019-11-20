@@ -7,7 +7,7 @@ import re
 import numpy as np
 import datetime
 
-engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/mojadol_DB00?host=localhost?port=3306", encoding='utf-8')
+engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/crawl_db?host=localhost?port=3306", encoding='utf-8')
 
 origin_table_policy = """
     SELECT *
@@ -15,24 +15,41 @@ origin_table_policy = """
     WHERE id not in (SELECT id FROM jababa_preprocess);
 """
 
+origin_table_policy_sec = """
+   SELECT * 
+   from jababa_crawl_origin
+"""
+
+local_tb_query = """
+   SELECT *
+   FROM gg_local_table;
+"""
+
 ##          contents varchar(10000) DEFAULT NULL, 
 
 jababa_preprocess_query = """ CREATE TABLE  jababa_preprocess(
-                            id varchar(100); 
-                            title varchar(100),
-                            uri varchar(200),
-                            apply_start timestamp NULL DEFAULT NULL,
-                            apply_end   timestamp NuLL DEFAULT NULL,
-                            start_age int(11) DEFAULT NULL,
-                            end_age   int(11) DEFAULT NULL,
-                            target varchar(1000),
-                            use varchar(200),
-                            category varchar(200),
-                            location varchar(42),
-                            crawl_date timestamp,
-                            CONSTRAINT youth_origin_pk PRIMARY KEY (id)
-
-);"""
+id varchar(100),
+title varchar(100),
+uri varchar(200),
+apply_start timestamp NULL DEFAULT NULL,
+apply_end   timestamp NULL DEFAULT NULL,
+start_age int(11) DEFAULT NULL,
+end_age   int(11) DEFAULT NULL,
+target varchar(1000),
+`use` text,
+category varchar(200),
+location varchar(42),
+dor varchar(42),
+si varchar(42),
+crawl_date timestamp NULL DEFAULT NULL,
+policy_uri varchar(1000),
+policy_sec_uri varchar(1000),
+PRIMARY KEY (id)
+);
+"""
+#CONSTRAINT pk_jababa_preprocess PRIMARY KEY(id)
+#
+#);"""
 
 
 
@@ -47,6 +64,7 @@ pattern_age_se = re.compile(r"[0-9][0-9]\s?(?=세)")
 pattern_age_wave = re.compile(r"[0-9][0-9]\s?(?=~)")
 pattern_age_more = re.compile(r"[0-9][0-9]\s?세?\s?이상")
 pattern_age_less = re.compile(r"[0-9][0-9]\s?세?\s?이하")
+pattern_age_less2 = re.compile(r"[0-9][0-9]\s?세?\s?미만")
 
 pattern_in_brace = re.compile(r'(?<=\[).*(?=\])')
 
@@ -94,6 +112,13 @@ def parse_date(x):
             res = datetime.datetime(int(nums[0]),int(nums[1]),int(nums[2]))
         return res
 
+def del_list_minus_list(x,y):
+    res = x.copy()
+    for idx in y:
+        if idx in res:
+            res.remove(idx)
+    return res 
+
 def age_parse(df):
     
     df_res = df.copy()
@@ -107,6 +132,7 @@ def age_parse(df):
     less = []
     wave = []
     se = []
+    less2 = []
     
     temp = []
     start = []
@@ -124,6 +150,9 @@ def age_parse(df):
     if pattern_age_se.search(x):
         se.extend(pattern_age_se.findall(x))
     
+    if pattern_age_less2.search(x):
+        less2.extend(pattern_age_less2.findall(x))
+    
     
     for i in se:
         temp.extend(pattern_age_num.findall(i))
@@ -133,15 +162,29 @@ def age_parse(df):
         end.extend(pattern_age_num.findall(i))
     for i in more:
         start.extend(pattern_age_num.findall(i))
-    
+    for i in less2:
+        end.extend(pattern_age_num.findall(i))    
+
     ##start = list(set(start))
     ##temp = list(set(temp))
     start = remove_dup_list(start)
     temp = remove_dup_list(temp)    
+    
+    #temp = list(set(temp) - set(start))
+    #temp = list(set(temp)-set(end))   
+    
+    temp = del_list_minus_list(temp,start) 
+    temp = del_list_minus_list(temp,end)   
 
     if len(temp)>1:
         start.append(temp[0])
         end.append(temp[1])
+    elif len(temp) ==1:
+        if temp[0] not in start and temp[0] not in end:
+            if len(start) == 0:
+                start.append(temp[0])
+            elif len(end) == 0:
+                end.append(temp[0])
     
     if len(start)>0:
         df_res['start_age'] = start[0]
@@ -151,13 +194,35 @@ def age_parse(df):
     
     return df_res
 
+def find_location(x,local_list):
+    #print('loc list')
+    for idx in local_list:
+        #print(str(idx))
+        if idx[:-1] in x:
+          
+            return idx
+    return "전국"
+
 
 def jababa_preprocess():
 
     conn = engine.connect()
+#    try:
+#        conn.execute("drop table jababa_preprocess")
+#    except Exception as e:
+#        print('wow')
+#        print(e)
+#        pass    
 
-    df = pd.read_sql(origin_table_policy,con=conn)
    
+    try:
+        df = pd.read_sql(origin_table_policy,con=conn)
+    except SQLAlchemyError:
+        print("preprocess table loss")
+        df = pd.read_sql(origin_table_policy_sec,con=conn)
+        pass   
+
+
     if len(df)==0:
         print("data already preprocessed")
         return ;
@@ -170,16 +235,42 @@ def jababa_preprocess():
 
     df = df.apply(age_parse,axis=1)
 
-    df['location'] = df[location_col].apply(lambda x : pattern_in_brace.search(x).group() if pattern_in_brace.search(x) else False)
+    try:
+        local_df = pd.read_sql(local_tb_query,con=conn)
+        local_list = list(local_df['시군구'])
+    except SQLAlchemyError:
+        print("local_table loss")
+        print("have_to fill local table!!!")
+        local_list=[]
+        return 
+     
+    #df['location'] = df[location_col].apply(lambda x : pattern_in_brace.search(x).group() if pattern_in_brace.search(x) else False)
 
-    df = df.drop(columns=['apply_start','apply_end','index'])
+    df['location'] = df[location_col].apply(lambda x : find_location(x,local_list))
+    
+    df['si'] = df['location'].apply(lambda x : '전체' if str(x)=='경기도' or str(x)=='전국' else str(x) )   
+
+    df['dor'] = df['location'].apply(lambda x : '전국' if x=='전국' else '경기도')
+
+
+    df = df.drop(columns=['apply_start','apply_end','sch']) #,'index'])
     df = df.rename(columns = {'apply_start_date':'apply_start','apply_end_date':'apply_end'})
     df['uri'] = df['id'].apply(lambda x: id_url+str(x))
+    
+ 
+#   try:
+#        conn.execute("drop table jababa_preprocess")
+#    except Exception as e:
+#        print('wow')
+#        print(e)
+#        pass    
+
 
     try:
         conn.execute(jababa_preprocess_query)
-    
-    except SQLAlchemyError:
+        print("table make")
+    except SQLAlchemyError as e:
+        print(e)
         print("exist table")
         pass
 
@@ -192,4 +283,4 @@ def jababa_preprocess():
             pass
 
 
-
+#jababa_preprocess()

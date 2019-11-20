@@ -166,12 +166,19 @@ router.post("/test", function (req, res, next) {
     }
     else {
         //키워드 필터링
-        var regex = /[가-힣]+/g;
+        var regex = /[가-힣A-Za-z0-9]+/g;
 
         var match = match_score_SQL.match(regex);
 
         var match_score_SQL = ', ';
         var keyword_SQL = 'AND (';
+
+        if(match.length == 0)   //필터링된 키워드가 없을 때 
+        {
+            match_score_SQL = ' ';
+            keyword_SQL = '';
+            ORDER_SQL = "ORDER BY apply_end is null ASC, apply_end ASC";
+        }
 
         for (var i = 0; i < match.length; i++) {
             //console.log(match[i]);
@@ -217,6 +224,7 @@ router.post("/test", function (req, res, next) {
 
     //var SQL = 'SELECT * FROM policy';
 
+    console.log("API 'search/test' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {

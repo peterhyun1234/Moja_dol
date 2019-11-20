@@ -99,6 +99,7 @@ function click_detail_policy(){
 				if(content.p_code == p_code){ 
 
 						var beforedate = content.crawling_date;
+						
 						//alert(beforedata + "FF");
 						var cut = beforedate.split("T");
 						var date = cut[0];
@@ -139,7 +140,7 @@ function click_detail_policy(){
 						$(".third_line").append(string); 
 						
 
-						
+						//alert(retime);
 						$(".crawling_date").append(retime); // 크롤링 날짜
 						$(".detail_title").append(content.title); // 제목
 						$(".policy_contents").append(content.contents); // 내용
@@ -150,7 +151,7 @@ function click_detail_policy(){
 						$(".uri").append(content.uri); // 링크
 						$(".expiration_flag2").append(content.expiration_flag);
 
-						console.log(content);
+						console.log("data" + content);
 						
 				 	}
 				 });

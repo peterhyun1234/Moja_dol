@@ -36,6 +36,7 @@ li.policylist:hover {background-color: #fbffd0;}
 .third_line input {float: left; text-align: center; height: 45px; width: calc(50% - 110px);}
 .third_line p {float:left; line-height: 2.7; }
 
+.crawling_date {width: calc(100% - 210px);}
 .fourth_line p {float:left; line-height:2.7; text-align:center; margin:0; height: 44px; margin-bottom:10px;}
 .second.title{margin-bottom:0;}
 .fourth_line textarea {width: calc(50% - 100px); overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}

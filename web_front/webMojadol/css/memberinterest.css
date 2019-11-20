@@ -8,4 +8,4 @@ align-items: center; justify-content: center; padding-top: 15px;}
 
 .userID {width: 400px; overflow:overlay; white-space: nowrap; text-overflow: ellipsis;}
 .interest{width:170px;}
-.age {width: 60px;}
+.age {min-width: 60px;}

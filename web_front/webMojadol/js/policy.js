@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$.ajax({
-		url: "http://49.236.136.213:3000/policy/show_all_policies",
+		url: "http://49.236.136.213:3000/policy/select_all_policies",
 		type: "GET",
 		success: function(data){
 		   //alert('성공');
@@ -129,10 +129,10 @@ function click_detail_policy(){
 						}
 
 						var string = '<p class="third title">신청기간</p> '+
-									 '<div class="apply">'+
+									 '<div class="apply clearfix">'+
 									 '<input type="text" class="apply_start" value="'+ start +'">'+
 									 '<p style="margin:0;">~</p><input type="text" class="apply_end" value="'+  end +'"></div>'+
-									 '<p class="third title">대상 연령</p><div class="age">'+
+									 '<p class="third title">대상 연령</p><div class="age clearfix">'+
 									 '<input type="text" class="start_age" value="'+ content.start_age +'">'+
 									 '<p style="margin:0;">~</p><input type="text" class="end_age" value="'+ content.end_age +'"></div>';
 							

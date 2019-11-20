@@ -3,14 +3,14 @@
 #test-list {min-height:600px;}
 li.policylist:hover {background-color: #fbffd0;}
 .policylist {cursor: pointer; position:relative; border-bottom: 1px solid #d4d1d1; font-size: 1em; width: 100%; text-align: center; padding: 0 10px; padding-top:20px; display:inline-block;}
-.policylist span {padding:0 10px; margin: 0; display: inline-block; padding-bottom: 20px;}
+.policylist span {float: left; padding:0 10px; margin: 0; display: inline-block; padding-bottom: 20px;}
 .attr {border-bottom: 2px solid gray; font-weight: bold;}
 
 .p_code {width: 150px;}
-.p_title {width: calc(100% - 600px)}
+.p_title {width: calc(100% - 470px)}
 .p_title input {cursor: pointer; text-align: center; width: 100%; text-overflow: ellipsis; border: none; background-color: transparent;}
 .crawling_data {width: 200px;}
-.expiration_flag {width: 150px;}
+.expiration_flag {width: 120px;}
 
 /*상세 정책 내용 수정*/
 .modify_title { border-radius: 15px; width: 100%; text-align: center; margin-bottom: 35px; height: 80px; background-color: #053863; color: #fff; font-weight: bold; font-size: 1.5em; line-height: 3.1;}
@@ -28,19 +28,21 @@ li.policylist:hover {background-color: #fbffd0;}
 .detail_p_code {width: 120px; height: 44px;}
 #expiration {border: none; border-bottom: 1px solid #053863; width: 100px; height: 40px; text-align: center;}
 .expiration_flag2 input { width: 20px; height: 20px; margin-left: 15px; vertical-align: middle;}
-.expiration_flag2{overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}
+.expiration_flag2{width: 50px; overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}
 .expiration_alert {margin-left: 10px !important;}
 
+.apply {margin-bottom: 10px;}
 
-.third_line input {float: left; text-align: center; height: 45px;}
+.third_line input {float: left; text-align: center; height: 45px; width: calc(50% - 110px);}
 .third_line p {float:left; line-height: 2.7; }
 
-.fourth_line p {float:left; line-height:2.7; text-align:center; margin:0; height: 44px;}
-.fourth_line textarea {width: calc(100% - 900px);overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}
-.crawing_date {width:250px;}
+.fourth_line p {float:left; line-height:2.7; text-align:center; margin:0; height: 44px; margin-bottom:10px;}
+.second.title{margin-bottom:0;}
+.fourth_line textarea {width: calc(50% - 100px); overflow: hidden; line-height: 2.7; text-align: center; height: 44px; border: none; float: left; scroll-behavior: unset; resize: none;}
+.crawing_date {width: calc(100% - 200px);}
 
 
-.second_line textarea, .fifth_line textarea, .seventh_line textarea {resize: none; overflow: hidden; width: calc(100% - 200px); line-height:2.7; text-align: center; height: 44px; border: none; float: left;}
+.second_line textarea, .fifth_line textarea, .seventh_line textarea {resize: none; overflow: hidden; width: calc(100% - 200px); line-height:2.7; text-align: center; height: 44px; border: none; float: left; overflow: inherit;}
 
 .sixth.title {width: 100%;}
 .policy_contents {width:100%; min-height:200px;}
@@ -55,22 +57,22 @@ li.policylist:hover {background-color: #fbffd0;}
 .modifypolicybtn:hover {color:#ffffff; background-color: #ff2f0b;}
 
 /*정책 interset 카테고리*/
-.eight {}
+.eight {width: 50%; float: left;}
 .policyinterst { width: 80px; height: 44px; line-height: 2.7; text-align: center; border: none; resize: none; overflow: hidden;  float: left;}
 
 /*댓글 */
 .review_title {margin-top: 100px; border-radius: 15px; width: 100%; text-align: center; margin-bottom: 35px; height: 45px; background-color: #053863; color: #fff; font-weight: bold; font-size: 1.1em; line-height: 2.2;}
-.policy_review p {display: inline-block; text-align:center; margin-bottom: 0;}
+.policy_review p {text-align:center; margin-bottom: 0; float:left;}
 .review_listBox {width:100%; padding:0; font-size: 0.8em; }
 .review_listBox.top {color: #fff; background-color: #053863; font-weight:bold; display: flex; align-items: center; height:45px;}
 .review_list {display: flex; align-items: center;border-bottom: 1px solid #000; padding: 0; width: 100%; background-color: #ffffff; min-height: 40px;}
 .review_list:hover {background-color: #d6eeff;}
 
 .review_code {width: 80px;}
-.review_uID {width:250px;}
-.contents{width: calc(100% - 630px);}
-.req_time {width: 200px;}
-.deletebtn {width: 100px;}
+.review_uID {overflow: hidden; width: 180px; text-overflow: ellipsis;}
+.contents{width: calc(100% - 520px); overflow: hidden; text-overflow: ellipsis;}
+.req_time {width: 180px;}
+.deletebtn {width: 80px;}
 .delete_btn {background-color: #ffffff; transition: all 0.1s ease; border: 2px solid #053863; border-radius: 30px; padding: 2px 10px;}
 .delete_btn:hover {background-color: #d5f2ff;}
 

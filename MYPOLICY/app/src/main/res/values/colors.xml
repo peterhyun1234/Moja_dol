@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#053963</color>
+    <color name="colorPrimaryLight">#0D5FA3</color>
+    <color name="colorPrimaryDark">#042b4a</color>
+    <color name="colorAccent">#053963</color>
+    <color name="colorLight">#FDFBF3</color>
+
+    <drawable name="btn_save_selected">#DAE6EE</drawable>
+    <drawable name="btn_save_default">#ffffff</drawable>
+</resources>

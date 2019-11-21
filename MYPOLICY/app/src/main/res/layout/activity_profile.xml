@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <RelativeLayout
+        android:id="@+id/id_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_001"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary">
+
+            <ImageButton
+                android:id="@+id/btn_menu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_menu"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_title"
+                android:textColor="@color/colorLight"
+                android:layout_centerInParent="true"
+                android:textSize="30sp"/>
+
+        </RelativeLayout>
+
+        <!--        액티비티 레이아웃 넣는 곳          -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rl_001">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_profile_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="111@naver.com"
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="#424242"
+                    android:layout_marginTop="15dp"/>
+
+                <TableLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:background="#929292"
+                    android:padding="1dp"
+                    android:layout_marginTop="20dp"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:background="#929292">
+                        <TextView
+                            android:id="@+id/btn_edit_personal_info"
+                            android:background="#ffffff"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:padding="7dp"
+                            android:layout_margin="0.5dp"
+                            android:textSize="17sp"
+                            android:text="개인정보 수정"
+                            />
+                    </TableRow>
+                    <TableRow
+                        android:background="#929292">
+                        <TextView
+                            android:id="@+id/btn_edit_interest"
+                            android:background="#ffffff"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:padding="7dp"
+                            android:layout_margin="0.5dp"
+                            android:textSize="17sp"
+                            android:text="관심 정책 수정"/>
+                    </TableRow>
+                    <TableRow
+                        android:background="#929292">
+                        <TextView
+                            android:id="@+id/btn_request"
+                            android:background="#ffffff"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:padding="7dp"
+                            android:layout_margin="0.5dp"
+                            android:textSize="17sp"
+                            android:text="관리자에게 문의"/>
+                    </TableRow>
+                    <TableRow
+                        android:background="#929292">
+                        <TextView
+                            android:background="#ffffff"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:padding="7dp"
+                            android:layout_margin="0.5dp"
+                            android:textSize="17sp"
+                            android:text="고객센터"/>
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+        <!--        액티비티 레이아웃 넣는 곳          -->
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_silde"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.75"/>
+
+        <FrameLayout
+            android:id="@+id/view_sildebar"
+            android:layout_width="280dp"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+
+</RelativeLayout>

@@ -87,6 +87,38 @@ router.post("/origin_table", function (req, res, next) {
     });
 });
 
+// 정책별로 평점 기입
+router.post("/add_rating", function (req, res, next) {
+
+    var recv_rating = req.body.rating;
+    var recv_uID = req.body.uID;
+    var recv_p_code = req.body.p_code;
+
+    var SQL = 'INSERT INTO policy_rating (uID, p_code, rating) SELECT ' +
+        '\'' + recv_uID + '\'' +
+        ', ' + recv_p_code +
+        ', ' + recv_rating +
+        ' FROM DUAL WHERE (0 = (SELECT count(*) FROM policy_rating WHERE uID = ' +
+        '\'' + recv_uID + '\'' + ' AND ' +
+        'p_code = ' + recv_p_code + ')) AND (rating != ' +
+        recv_rating + ')';
+
+    console.log("API 'policy/add_rating' called");
+    console.log(SQL);
+    //절 차 
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+
 router.post("/change_to_expiration", function (req, res, next) {
 
     var recv_code = req.body.p_code;
@@ -264,6 +296,26 @@ router.get('/:id', function (req, res) {
             res.send('error');
         }
     });
+// 클릭시 조회수 증가 ㄱㄱ
+//     var SQL = 'INSERT INTO stored_policy (uID, s_p_code, s_p_time) SELECT ' +
+//     '\'' + recv_uID + '\'' +
+//     ', ' + recv_s_p_code +
+//     ', ' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' +
+// ' FROM DUAL WHERE 0 = (SELECT count(*) FROM stored_policy WHERE uID = ' +
+//     '\'' + recv_uID + '\'' + ' AND '+
+// 's_p_code = ' + recv_s_p_code + ')';
+
+//     connection.query(SQL, function (err, data) {
+//         if (!err) {
+//             //console.log(data);
+//             res.send(data);
+//         }
+//         else {
+//             console.log(err);
+//             res.send('error');
+//         }
+//     });
+
 });
 
 //정책 추천 - 어플리케이션 HOME 화면

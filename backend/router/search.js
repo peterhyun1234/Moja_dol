@@ -127,6 +127,7 @@ router.post("/before_apply_start_search", function (req, res, next) {
         "concat_ws(' ', dor, (CASE dor WHEN '전국' THEN '' ELSE si END)) AS region" +
         match_score_SQL +
         'FROM policy NATURAL JOIN interest WHERE ' +
+        "apply_start < NOW() " +
         category_SQL +
         age_SQL +
         location_SQL +
@@ -272,7 +273,7 @@ router.post("/after_apply_start_search", function (req, res, next) {
         "concat_ws(' ', dor, (CASE dor WHEN '전국' THEN '' ELSE si END)) AS region" +
         match_score_SQL +
         'FROM policy NATURAL JOIN interest WHERE ' +
-        "apply_start >= NOW() "+
+        "apply_start >= NOW() " +
         category_SQL +
         age_SQL +
         location_SQL +

@@ -276,6 +276,7 @@ router.get('/selected_policies', function (req, res) {
 router.get('/:id', function (req, res) {
     var policy_params = req.params.id;
     //console.log('selected policy is ' + policy_params);
+
     var SQL = "SELECT p_code, title, uri, " + 
     "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
     "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
@@ -296,26 +297,34 @@ router.get('/:id', function (req, res) {
             res.send('error');
         }
     });
-// 클릭시 조회수 증가 ㄱㄱ
-//     var SQL = 'INSERT INTO stored_policy (uID, s_p_code, s_p_time) SELECT ' +
-//     '\'' + recv_uID + '\'' +
-//     ', ' + recv_s_p_code +
-//     ', ' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' +
-// ' FROM DUAL WHERE 0 = (SELECT count(*) FROM stored_policy WHERE uID = ' +
-//     '\'' + recv_uID + '\'' + ' AND '+
-// 's_p_code = ' + recv_s_p_code + ')';
+});
 
-//     connection.query(SQL, function (err, data) {
-//         if (!err) {
-//             //console.log(data);
-//             res.send(data);
-//         }
-//         else {
-//             console.log(err);
-//             res.send('error');
-//         }
-//     });
+// 정책 세부내용 조회와 동시에 클릭!
+router.post("/click", function (req, res, next) {
 
+    var recv_uID = req.body.uID;
+    var recv_p_code = req.body.p_code;
+
+    var SQL = 'INSERT INTO click (p_code, uID, click_time)'+
+    'VALUES (' +
+    recv_p_code +
+    ',\'' + recv_uID + '\'' +
+    ',' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' + 
+    ")";  
+
+    console.log("API 'policy/click' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
 });
 
 //정책 추천 - 어플리케이션 HOME 화면

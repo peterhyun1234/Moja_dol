@@ -10,7 +10,6 @@ router.post("/show_all_mylist", function (req, res, next) {
 
     var SQL = 'SELECT p_code, title, apply_start, apply_end from policy, stored_policy where p_code = s_p_code AND uID = \'' + recv_uID + '\'';
 
-
     console.log("API '/my_list/show_all_mylist' called");
     console.log(SQL);
 

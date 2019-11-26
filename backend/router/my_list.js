@@ -85,7 +85,9 @@ router.post("/ordered_mylist", function (req, res, next) {
         }
     }
 
-    var SQL = 'SELECT p_code, title, apply_start, apply_end '+
+    var SQL = 'SELECT p_code, title, '+
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
     'from stored_policy, policy ' + 
     'where p_code = s_p_code ' + 
     'AND uID = \'' + recv_uID + '\' ' + 

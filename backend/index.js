@@ -19,7 +19,7 @@ var admin_web = http.createServer(function(request,response){
     response.end(fs.readFileSync(__dirname + url));
  
 });
-admin_web.listen(3030);
+admin_web.listen(8000);
 
 
 // mysql 연동

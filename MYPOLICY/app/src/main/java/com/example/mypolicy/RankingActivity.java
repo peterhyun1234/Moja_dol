@@ -92,17 +92,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         final Call<ArrayList<RankingData>> rankingmonthCall=iApiService.sortMonthViews();
 
         //그래프
-        BarChart mBarChart=findViewById(R.id.barChart);
-        mBarChart.addBar(new BarModel(2.3f, 0xFF123456));
-        mBarChart.addBar(new BarModel(2.f,  0xFF343456));
-        mBarChart.addBar(new BarModel(3.3f, 0xFF563456));
-        mBarChart.addBar(new BarModel(1.1f, 0xFF873F56));
-        mBarChart.addBar(new BarModel(2.7f, 0xFF56B7F1));
-        mBarChart.addBar(new BarModel(2.f,  0xFF343456));
-        mBarChart.addBar(new BarModel(0.4f, 0xFF1FF4AC));
-        mBarChart.addBar(new BarModel(4.f,  0xFF1BA4E6));
-
-        mBarChart.startAnimation();
+        final BarChart mBarChart=findViewById(R.id.barChart);
 
         btn_day_ranking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +116,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         btn_week_ranking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mBarChart.clearChart();
                 rankingweekCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
@@ -133,9 +124,10 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                         String rankingData=new Gson().toJson(response.body());
                         Map<String,String> weekMapTitle=new HashMap<>();
                         Map<String,Integer> weekMapValue=new HashMap<>();
+                        weekMapTitle.clear();
+                        weekMapValue.clear();
                         try {
                             JSONArray jsonArray=new JSONArray(rankingData);
-                            Log.d("제이슨 길이",""+jsonArray.length());
                             String mapString="";
                             int mapKeyValue=0;
                             for(int i=0;i<jsonArray.length();i++)
@@ -149,11 +141,19 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                                 Log.d("제이슨 타이틀",""+mapString);
                                 Log.d("제이슨 타이틀2",""+mapKeyValue);
                             }
+
                             for(int i=0;i<jsonArray.length();i++)
                             {
-                                Log.d("제이슨 타이틀3",""+weekMapTitle.get("title"+i)+"   "+weekMapValue.get("value"+i));
+                                Log.d("제이슨 타이틀3",""+weekMapTitle.get("title"+i)+"   "+weekMapTitle.get("title"+i));
 
+                                mBarChart.addBar(new BarModel(weekMapTitle.get("title"+i),(float)weekMapValue.get("value"+i), 0xFF56B7F1));
+
+//                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
+//                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
+//                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
+//                                mBarChart.addBar(new BarModel("야",4.f,  0xFF1BA4E6));
                             }
+                            mBarChart.startAnimation();
 
 
                         }catch(JSONException j)
@@ -163,7 +163,6 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                         RankingAdapter ra=new RankingAdapter(response.body());
                         mRecyclerView.setAdapter(ra);
                     }
-
 
                     @Override
                     public void onFailure(Call<ArrayList<RankingData>> call, Throwable t) {

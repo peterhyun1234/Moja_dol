@@ -4,6 +4,9 @@
 # no .a files
 *.a
 
+# no .scv files
+*.scv
+
 # no .pdf files
 *.pdf
 

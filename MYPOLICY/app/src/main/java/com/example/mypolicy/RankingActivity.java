@@ -105,6 +105,8 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
                         Log.d("랭킹데이터","day"+new Gson().toJson(response.body()));
+                        RankingAdapter ra=new RankingAdapter(response.body());
+                        mRecyclerView.setAdapter(ra);
                     }
 
                     @Override
@@ -141,6 +143,8 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
                         Log.d("랭킹데이터","month"+new Gson().toJson(response.body()));
+                        RankingAdapter ra=new RankingAdapter(response.body());
+                        mRecyclerView.setAdapter(ra);
                     }
 
                     @Override

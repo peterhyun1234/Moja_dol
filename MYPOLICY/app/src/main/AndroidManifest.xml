@@ -26,6 +26,7 @@
         <activity android:name=".EditPersonalInfoActivity"/>
         <activity android:name=".SearchKeywordActivity"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".DonateActivity"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -30,8 +30,13 @@ import com.google.gson.Gson;
 
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.models.BarModel;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,6 +129,28 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
                         Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));
+                        String rankingData=new Gson().toJson(response.body());
+                        Map<String,Integer> weekMap=new HashMap<>();
+
+                        try {
+                            JSONArray jsonArray=new JSONArray(rankingData);
+                            Log.d("제이슨 길이",""+jsonArray.length());
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                JSONObject jsonObject=jsonArray.getJSONObject(i);
+                                Log.d("제이슨 타이틀",""+jsonObject.get("title").toString());
+                                Log.d("제이슨 타이틀",""+Integer.parseInt(jsonObject.get("views").toString()));
+
+                                weekMap.put(jsonObject.get("title").toString(),Integer.parseInt(jsonObject.get("views").toString()));
+                            }
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                Log.d("제이슨 데이터",""+weekMap.get("title")+"  "+weekMap.get("views"));
+                            }
+                        }catch(JSONException j)
+                        {
+                            j.printStackTrace();
+                        }
                         RankingAdapter ra=new RankingAdapter(response.body());
                         mRecyclerView.setAdapter(ra);
                     }

@@ -131,8 +131,8 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
                         Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));
                         String rankingData=new Gson().toJson(response.body());
-                        Map<String,Integer> weekMap=new HashMap<>();
-
+                        Map<String,String> weekMapTitle=new HashMap<>();
+                        Map<String,Integer> weekMapValue=new HashMap<>();
                         try {
                             JSONArray jsonArray=new JSONArray(rankingData);
                             Log.d("제이슨 길이",""+jsonArray.length());
@@ -144,18 +144,18 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
 
                                 mapString=jsonObject.getString("title");
                                 mapKeyValue=Integer.parseInt(jsonObject.get("views").toString());
-                                weekMap.put(mapString,mapKeyValue);
+                                weekMapTitle.put("title"+i,mapString);
+                                weekMapValue.put("value"+i,mapKeyValue);
                                 Log.d("제이슨 타이틀",""+mapString);
                                 Log.d("제이슨 타이틀2",""+mapKeyValue);
                             }
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                Log.d("제이슨 타이틀3",""+weekMapTitle.get("title"+i)+"   "+weekMapValue.get("value"+i));
 
-                            Set<Map.Entry<String,Integer>> entries=weekMap.entrySet();
-                            Map.Entry<String, Integer> entry;
-//                            for(entry.)
-//                            {
-//                                Log.d("제이슨 값",""+entries.);
-//                                Log.d("제이슨 값",""+entry.getValue());
-//                            }
+                            }
+
+
                         }catch(JSONException j)
                         {
                             j.printStackTrace();

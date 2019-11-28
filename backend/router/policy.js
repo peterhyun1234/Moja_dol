@@ -272,6 +272,105 @@ router.get('/selected_policies', function (req, res) {
     });
 });
 
+// 공고 후
+router.get('/after_apply_policies', function (req, res) {
+
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (apply_end < NOW())";
+
+    console.log("API 'policy/after_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 공고 전
+router.get('/before_apply_policies', function (req, res) {
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (apply_start > NOW())";;
+
+    console.log("API 'policy/before_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 신청가능
+router.get('/possible_apply_policies', function (req, res) {
+
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (apply_start <= NOW() AND apply_end >= NOW())";
+
+    console.log("API 'policy/always_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 상시
+router.get('/always_apply_policies', function (req, res) {
+
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (expiration_flag = 2)";
+
+    console.log("API 'policy/always_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
 //정책 세부내용
 router.get('/:id', function (req, res) {
     var policy_params = req.params.id;

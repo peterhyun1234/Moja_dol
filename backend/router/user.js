@@ -99,6 +99,7 @@ router.post("/register", function (req, res, next) {
         '\'' + recv_uID + '\'' +
         ', \'' + recv_name + '\'' +
         ', \'' + recv_region + '\'' +
+        ', \'' + recv_sex + '\'' +
         ', ' + recv_age +
         ', ' + recv_Employment_sup_priority +
         ', ' + recv_Startup_sup_priority +
@@ -108,6 +109,7 @@ router.post("/register", function (req, res, next) {
         "uID = '" + recv_uID + "', " +
         "name = '" + recv_name + "', " +
         "region = '" + recv_region + "', " +
+        "sex = '" + recv_sex + "', " +
         "age = " + recv_age + ", " +
         "Employment_sup_priority = " + recv_Employment_sup_priority + ", " +
         "Startup_sup_priority = " + recv_Startup_sup_priority + ", " +
@@ -136,6 +138,7 @@ router.post("/update", function (req, res, next) {
     var recv_uID = req.body.uID;
     var recv_name = req.body.name;
     var recv_region = req.body.region;
+    var recv_sex = req.body.sex;
     var recv_age = req.body.age;
     var recv_Employment_sup_priority = req.body.Employment_sup_priority;
     var recv_Startup_sup_priority = req.body.Startup_sup_priority;
@@ -145,6 +148,7 @@ router.post("/update", function (req, res, next) {
     var SQL = 'UPDATE user SET ' +
         'name = \'' + recv_name + '\'' +
         ',region = \'' + recv_region + '\'' +
+        ',sex = \'' + recv_sex + '\'' +
         ',age = ' + recv_age +
         ',Employment_sup_priority = ' + recv_Employment_sup_priority +
         ',Startup_sup_priority = ' + recv_Startup_sup_priority +

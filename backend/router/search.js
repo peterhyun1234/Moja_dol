@@ -20,7 +20,7 @@ router.post("/test", function (req, res, next) {
     if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전국") {
+    else if (arr_location[1] == "전체") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
@@ -164,7 +164,7 @@ router.post("/before_apply_search", function (req, res, next) {
     if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전국") {
+    else if (arr_location[1] == "전체") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
@@ -310,7 +310,7 @@ router.post("/after_apply_search", function (req, res, next) {
     if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전국") {
+    else if (arr_location[1] == "전체") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
@@ -456,7 +456,7 @@ router.post("/apply_search", function (req, res, next) {
     if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전국") {
+    else if (arr_location[1] == "전체") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
@@ -563,7 +563,7 @@ router.post("/apply_search", function (req, res, next) {
         "concat_ws(' ', dor, (CASE dor WHEN '전국' THEN '' ELSE si END)) AS region" +
         match_score_SQL +
         'FROM policy NATURAL JOIN interest WHERE ' +
-        "((apply_start <= NOW() AND apply_end >= NOW()) OR expiration_flag = 2) AND " +
+        "(apply_start <= NOW() AND apply_end >= NOW()) AND " +
         category_SQL +
         age_SQL +
         location_SQL +
@@ -602,7 +602,7 @@ router.post("/always_search", function (req, res, next) {
     if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전국") {
+    else if (arr_location[1] == "전체") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {

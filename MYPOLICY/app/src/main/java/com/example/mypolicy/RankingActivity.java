@@ -24,6 +24,7 @@ import com.example.mypolicy.model.Policy;
 import com.example.mypolicy.model.RankingData;
 import com.example.mypolicy.service.IApiService;
 import com.example.mypolicy.service.RestClient;
+import com.google.android.gms.common.util.Hex;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -94,13 +95,56 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         //그래프
         final BarChart mBarChart=findViewById(R.id.barChart);
 
+
+
         btn_day_ranking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mBarChart.clearChart();
                 rankingdayCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
-                        Log.d("랭킹데이터","day"+new Gson().toJson(response.body()));
+                        Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));
+                        String rankingData=new Gson().toJson(response.body());
+                        Map<String,String> dayMapTitle=new HashMap<>();
+                        Map<String,Integer> dayMapValue=new HashMap<>();
+                        dayMapTitle.clear();
+                        dayMapValue.clear();
+                        try {
+                            JSONArray jsonArray=new JSONArray(rankingData);
+                            String mapString="";
+                            int mapKeyValue=0;
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                JSONObject jsonObject=jsonArray.getJSONObject(i);
+
+                                mapString=jsonObject.getString("title");
+                                mapKeyValue=Integer.parseInt(jsonObject.get("views").toString());
+                                dayMapTitle.put("title"+i,mapString);
+                                dayMapValue.put("value"+i,mapKeyValue);
+                                Log.d("제이슨 타이틀",""+mapString);
+                                Log.d("제이슨 타이틀2",""+mapKeyValue);
+                            }
+
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                Log.d("제이슨 타이틀3",""+dayMapTitle.get("title"+i)+"   "+dayMapTitle.get("title"+i));
+
+                                mBarChart.addBar(new BarModel(dayMapTitle.get("title"+i),(float)dayMapValue.get("value"+i), 0xFF56B7F1));
+
+//                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
+//                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
+//                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
+//                                mBarChart.addBar(new BarModel("야",4.f,  0xFF1BA4E6));
+                                if(i==5)break;
+                            }
+                            mBarChart.startAnimation();
+
+
+                        }catch(JSONException j)
+                        {
+                            j.printStackTrace();
+                        }
                         RankingAdapter ra=new RankingAdapter(response.body());
                         mRecyclerView.setAdapter(ra);
                     }
@@ -152,6 +196,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
 //                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
 //                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
 //                                mBarChart.addBar(new BarModel("야",4.f,  0xFF1BA4E6));
+                                if(i==5)break;
                             }
                             mBarChart.startAnimation();
 
@@ -173,12 +218,54 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         btn_month_ranking.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                mBarChart.clearChart();
                 rankingmonthCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
-                        Log.d("랭킹데이터","month"+new Gson().toJson(response.body()));
+                        Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));
+                        String rankingData=new Gson().toJson(response.body());
+                        Map<String,String> monthMapTitle=new HashMap<>();
+                        Map<String,Integer> monthMapValue=new HashMap<>();
+                        monthMapTitle.clear();
+                        monthMapValue.clear();
+                        try {
+                            JSONArray jsonArray=new JSONArray(rankingData);
+                            String mapString="";
+                            int mapKeyValue=0;
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                JSONObject jsonObject=jsonArray.getJSONObject(i);
+
+                                mapString=jsonObject.getString("title");
+                                mapKeyValue=Integer.parseInt(jsonObject.get("views").toString());
+                                monthMapTitle.put("title"+i,mapString);
+                                monthMapValue.put("value"+i,mapKeyValue);
+                                Log.d("제이슨 타이틀",""+mapString);
+                                Log.d("제이슨 타이틀2",""+mapKeyValue);
+                            }
+
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                Log.d("제이슨 타이틀3",""+monthMapTitle.get("title"+i)+"   "+monthMapTitle.get("title"+i));
+
+                                mBarChart.addBar(new BarModel(monthMapTitle.get("title"+i),(float)monthMapValue.get("value"+i), 0xFF56B7F1));
+
+//                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
+//                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
+//                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
+//                                mBarChart.addBar(new BarModel("야",4.f,  0xFF1BA4E6));
+                                if(i==5)break;
+                            }
+                            mBarChart.startAnimation();
+
+
+                        }catch(JSONException j)
+                        {
+                            j.printStackTrace();
+                        }
                         RankingAdapter ra=new RankingAdapter(response.body());
                         mRecyclerView.setAdapter(ra);
                     }
@@ -341,5 +428,9 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         viewLayout.setEnabled(true);
         mainLayout.setEnabled(false);
         Log.e(TAG, "메뉴버튼 클릭");
+    }
+
+    public void setBar(){
+
     }
 }

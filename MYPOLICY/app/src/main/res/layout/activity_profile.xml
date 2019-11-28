@@ -117,6 +117,19 @@
                             android:textSize="17sp"
                             android:text="고객센터"/>
                     </TableRow>
+
+                    <TableRow
+                        android:background="#929292">
+                        <Button
+                            android:id="@+id/btn_donate"
+                            android:background="#cdcdcd"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:padding="7dp"
+                            android:layout_margin="0.5dp"
+                            android:textSize="17sp"
+                            android:text="기부하기"/>
+                    </TableRow>
                 </TableLayout>
 
             </LinearLayout>

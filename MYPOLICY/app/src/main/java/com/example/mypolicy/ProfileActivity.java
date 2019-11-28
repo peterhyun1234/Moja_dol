@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mypolicy.service.DonateActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     TextView tv_profile_email;
     TextView btn_edit_info, btn_edit_interest, btn_request;
+    Button btn_donate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btn_edit_info = findViewById(R.id.btn_edit_personal_info);
         btn_edit_interest = findViewById(R.id.btn_edit_interest);
         btn_request = findViewById(R.id.btn_request);
-
+        btn_donate=findViewById(R.id.btn_donate);
         tv_profile_email.setText(sharedPreferences.getString("userEmail",null));
 
         btn_edit_info.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +75,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileActivity.this, EditPersonalInfoActivity.class);
                 startActivity(intent);
+            }
+        });
+        btn_donate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ProfileActivity.this, DonateActivity.class);
+                 startActivity(intent);
             }
         });
 

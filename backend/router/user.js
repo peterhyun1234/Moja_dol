@@ -52,7 +52,7 @@ router.post("/register", function (req, res, next) {
     // 사용자 사는 지역 (type: string)
     var recv_region_arr = req.body.region;
     var region_arr_len = recv_region_arr.length;
-    console.log("region_arr_len: " + region_arr_len);
+    //console.log("region_arr_len: " + region_arr_len);
     var recv_region;
 
     if (region_arr_len == 2 && recv_region_arr[1] != "") {
@@ -64,6 +64,12 @@ router.post("/register", function (req, res, next) {
     }
     else {
         recv_region = "미정";
+    }
+
+    // 사용자 성별 (type: String)
+    var recv_sex = req.body.sex;
+    if (recv_sex == null || recv_sex.length == 0) {
+        recv_sex = '';
     }
     // 사용자 나이 (type: integer)
     var recv_age = req.body.age;
@@ -103,7 +109,8 @@ router.post("/register", function (req, res, next) {
         ', ' + recv_Employment_sup_priority +
         ', ' + recv_Startup_sup_priority +
         ', ' + recv_Life_welfare_priority +
-        ', ' + recv_Residential_financial_priority + ') ' +
+        ', ' + recv_Residential_financial_priority +
+        ', \'' + recv_sex + '\'' + ') ' +
         "ON DUPLICATE KEY UPDATE " +
         "uID = '" + recv_uID + "', " +
         "name = '" + recv_name + "', " +
@@ -112,48 +119,12 @@ router.post("/register", function (req, res, next) {
         "Employment_sup_priority = " + recv_Employment_sup_priority + ", " +
         "Startup_sup_priority = " + recv_Startup_sup_priority + ", " +
         "Life_welfare_priority = " + recv_Life_welfare_priority + ", " +
-        "Residential_financial_priority = " + recv_Residential_financial_priority;
+        "Residential_financial_priority = " + recv_Residential_financial_priority + ", " +
+        "sex = '" + recv_sex + "'";
 
     console.log("API 'user/register' called");
     console.log(SQL);
     
-    //절 차 
-    connection.query(SQL, function (err, data) {
-        if (!err) {
-            //console.log(data);
-            res.send(data);
-        }
-        else {
-            console.log(err);
-            res.send('error');
-        }
-    });
-});
-
-router.post("/update", function (req, res, next) {
-
-    //파일 형식 테스트 필요함!!
-    var recv_uID = req.body.uID;
-    var recv_name = req.body.name;
-    var recv_region = req.body.region;
-    var recv_age = req.body.age;
-    var recv_Employment_sup_priority = req.body.Employment_sup_priority;
-    var recv_Startup_sup_priority = req.body.Startup_sup_priority;
-    var recv_Life_welfare_priority = req.body.Life_welfare_priority;
-    var recv_Residential_financial_priority = req.body.Residential_financial_priority;
-
-    var SQL = 'UPDATE user SET ' +
-        'name = \'' + recv_name + '\'' +
-        ',region = \'' + recv_region + '\'' +
-        ',age = ' + recv_age +
-        ',Employment_sup_priority = ' + recv_Employment_sup_priority +
-        ',Startup_sup_priority = ' + recv_Startup_sup_priority +
-        ',Life_welfare_priority = ' + recv_Life_welfare_priority +
-        ',Residential_financial_priority = ' + recv_Residential_financial_priority +
-        'WHERE uID = \'' + recv_uID + '\'';
-
-    console.log("API 'user/update' called");
-    console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {

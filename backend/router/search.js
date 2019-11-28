@@ -6,28 +6,11 @@ var router = express.Router();
 var connection = require('../index.js').connection;
 
 
+// default search
 router.post("/test", function (req, res, next) {
 
     //3. 지역
     // 3.0. 상관없음 ("location = 0"으로 보내주면 ㄳㄳ) 
-
-    // var recv_location;
-    // var temp_location = req.body.location;
-    // var location_length = temp_location.length;
-    // // 지역 3~4 length의 경우 맨뒤 시, 군만 짤라서 ㄱㄱ 
-    // if (location_length == 3 || location_length == 4) {
-    //     recv_location = temp_location.substring(0, location_length - 1);
-    //     //console.log(recv_location);
-    // }
-    // else {
-    //     recv_location = temp_location;
-    // }
-
-
-    // var location_SQL = '';
-    // if (recv_location != 0) // "상관없음"이 아닌 경우
-    //     location_SQL = 'AND (location LIKE \"%' + recv_location + '%\" OR location = \'전국\') ';
-
 
     // -------------------- 3. 지역 -----------------------
 
@@ -37,7 +20,7 @@ router.post("/test", function (req, res, next) {
     if (arr_location[0] == "전국") {
         location_SQL = '';
     }
-    else if (arr_location[1] == "전국") {
+    else if (arr_location[1] == "전체") {
         location_SQL = "AND (dor LIKE '" + arr_location[0] + "%')";
     }
     else {
@@ -54,67 +37,9 @@ router.post("/test", function (req, res, next) {
     //4.3. Life_welfare(생활, 복지) - 학자금, 대출/이자, 생활보조(금), 결혼/육아, 교통지원
     //4.4. Residential_financial(주거, 금융) - 기숙사/생활관, 주택지원, 주거환경지원, 고용장려금, 기업지원금
 
-    // 성범아 이거 category에 스트링으로 "01010" 이런 식으로 보내주라
     // 예를 들어서 4.1 이랑 4.4에 관련된 거 찾고 싶으면 "01001"
     // 4.2 이랑 4.4에 관련된 거 찾고 싶으면 "00101"
     // "4.0. 상관없음"이면 "1xxxx" > x는 0이든 1이든 상관없다는 의미
-
-
-    // var recv_category = req.body.category;
-
-    // //console.log('category:' + recv_category);
-
-    // var recv_Employment_sup;
-    // var recv_Startup_sup;
-    // var recv_Life_welfare;
-    // var recv_Residential_finance;
-
-    // if (recv_category[0] == 1) {
-    //     recv_Employment_sup = 1;
-    //     recv_Startup_sup = 1;
-    //     recv_Life_welfare = 1;
-    //     recv_Residential_finance = 1;
-    // }
-    // else {
-    //     recv_Employment_sup = recv_category[1];
-    //     recv_Startup_sup = recv_category[2];
-    //     recv_Life_welfare = recv_category[3];
-    //     recv_Residential_finance = recv_category[4];
-    // }
-
-
-    // var temp_info = ' (';
-
-    // if (recv_Employment_sup == 1) {
-    //     //console.log('recv_Employment_sup:' + recv_Employment_sup);
-    //     temp_info = temp_info + 'Employment_sup = 1 OR ';
-    //     //console.log(temp_info);
-    // }
-    // if (recv_Startup_sup == 1) {
-    //     //console.log('recv_Startup_sup:' + recv_Startup_sup);
-    //     temp_info = temp_info + 'Startup_sup = 1 OR ';
-    //     //console.log(temp_info);
-    // }
-    // if (recv_Life_welfare == 1) {
-    //     //console.log('recv_Life_welfare:' + recv_Life_welfare);
-    //     temp_info = temp_info + 'Life_welfare = 1 OR ';
-    //     //console.log(temp_info);
-    // }
-    // if (recv_Residential_finance == 1) {
-    //     //console.log('recv_Residential_finance:' + recv_Residential_finance);
-    //     temp_info = temp_info + 'Residential_finance = 1 OR ';
-    //     //console.log(temp_info);
-    // }
-    // //console.log(temp_info);
-    // var category_SQL = temp_info.substring(0, temp_info.length - 3);
-    // category_SQL = category_SQL + ') ';
-
-    // //console.log('category_info:' + category_info);
-
-    // //console.log('recv_Employment_sup:' + recv_Employment_sup);
-    // //console.log('recv_Startup_sup:' + recv_Startup_sup);
-    // //console.log('recv_Life_welfare:' + recv_Life_welfare);
-    // //console.log('recv_Residential_finance:' + recv_Residential_finance);
 
     // -------------------- 4. 분야 -----------------------
     var categoryList = ["Employment_sup", "Startup_sup", "Life_welfare", "Residential_finance"];
@@ -152,7 +77,32 @@ router.post("/test", function (req, res, next) {
         age_SQL = 'AND ' + 'end_age >= ' + recv_age + ' AND ' + 'start_age <= ' + recv_age + ' ';
     }
 
-    //6. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
+
+    //6. 신청기간(상시/ 공고시작전/ 공고종료후/ 현재신청가능)   
+    var apply_termList = ["공고시작전", "공고종료후", "현재신청가능", "상시"];
+    var apply_term_SQL_List = [
+        "(apply_start > NOW()) AND ", 
+        "(apply_end < NOW()) AND ", 
+        "(apply_start <= NOW() AND apply_end >= NOW()) AND ", 
+        "(expiration_flag = 2) AND "
+    ];
+
+    var apply_term_SQL
+    var recv_apply_term = req.body.apply_term;
+
+    //apply_term input이 없을 때
+    if (recv_apply_term == null || recv_apply_term.length == 0) {
+        apply_term_SQL = ' ';
+    }
+    else{
+    for (var i = 0; i < apply_termList.length; i++) {
+        if (apply_termList[i] == recv_apply_term) {
+            apply_term_SQL = apply_term_SQL_List[i];
+        }
+    }
+}
+
+    //7. 키워드 기반 검색 - title, contents내에 해당 키워드가 있으면 ㅇㅋ
     var match_score_SQL = req.body.keyword;
 
     var ORDER_SQL;
@@ -173,7 +123,7 @@ router.post("/test", function (req, res, next) {
         var match_score_SQL = ', ';
         var keyword_SQL = 'AND (';
 
-        if(match.length == 0)   //필터링된 키워드가 없을 때 
+        if (match.length == 0)   //필터링된 키워드가 없을 때 
         {
             match_score_SQL = ' ';
             keyword_SQL = '';
@@ -194,32 +144,22 @@ router.post("/test", function (req, res, next) {
         ORDER_SQL = ", apply_end is null ASC, apply_end ASC";
     }
 
-    //console.log('match_score_SQL: ' + match_score_SQL);
-    //console.log('category_SQL: ' + category_SQL);
-    //console.log('age_SQL: ' + age_SQL);
-    //console.log('location_SQL: ' + location_SQL);
-    //console.log('keyword_SQL: ' + keyword_SQL);
 
-
-    // SQL example (category, location 검색)
-    //SELECT policy.*, AS match_score FROM policy NATURAL JOIN interest 
-    // WHERE (Employment_sup = 1 OR Startup_sup = 1 OR Life_welfare = 1)
-    // AND (do LIKE '서울%') AND (si LIKE '강남%')
-    // ORDER BY match_score DESC
-
-
-    var SQL = "SELECT p_code, title, apply_start, apply_end, " +
-    "concat_ws('', (CASE Employment_sup WHEN '1' THEN '취업지원' END), " +
-    "(CASE Startup_sup WHEN '1' THEN '창업지원' END), " +
-    "(CASE Life_welfare WHEN 1 THEN '생활복지' END), " +
-    "(CASE Residential_finance WHEN 1 THEN '주거금융' END)) AS category, " +
-    "concat_ws(' ', dor, (CASE dor WHEN '전국' THEN '' ELSE si END)) AS region" +
+    var SQL = "SELECT p_code, title, " + 
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "concat_ws('', (CASE Employment_sup WHEN '1' THEN '취업지원' END), " +
+        "(CASE Startup_sup WHEN '1' THEN '창업지원' END), " +
+        "(CASE Life_welfare WHEN 1 THEN '생활복지' END), " +
+        "(CASE Residential_finance WHEN 1 THEN '주거금융' END)) AS category, " +
+        "concat_ws(' ', dor, (CASE dor WHEN '전국' THEN '' ELSE si END)) AS region" +
         match_score_SQL +
         'FROM policy NATURAL JOIN interest WHERE ' +
+        apply_term_SQL +
         category_SQL +
         age_SQL +
         location_SQL +
-        keyword_SQL + 
+        keyword_SQL +
         ORDER_SQL;
 
     //var SQL = 'SELECT * FROM policy';

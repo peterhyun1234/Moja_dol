@@ -87,6 +87,38 @@ router.post("/origin_table", function (req, res, next) {
     });
 });
 
+// 정책별로 평점 기입
+router.post("/add_rating", function (req, res, next) {
+
+    var recv_rating = req.body.rating;
+    var recv_uID = req.body.uID;
+    var recv_p_code = req.body.p_code;
+
+    var SQL = 'INSERT INTO policy_rating (uID, p_code, rating) SELECT ' +
+        '\'' + recv_uID + '\'' +
+        ', ' + recv_p_code +
+        ', ' + recv_rating +
+        ' FROM DUAL WHERE (0 = (SELECT count(*) FROM policy_rating WHERE uID = ' +
+        '\'' + recv_uID + '\'' + ' AND ' +
+        'p_code = ' + recv_p_code + ')) AND (rating != ' +
+        recv_rating + ')';
+
+    console.log("API 'policy/add_rating' called");
+    console.log(SQL);
+    //절 차 
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+
 router.post("/change_to_expiration", function (req, res, next) {
 
     var recv_code = req.body.p_code;
@@ -240,10 +272,110 @@ router.get('/selected_policies', function (req, res) {
     });
 });
 
+// 공고 후
+router.get('/after_apply_policies', function (req, res) {
+
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (apply_end < NOW())";
+
+    console.log("API 'policy/after_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 공고 전
+router.get('/before_apply_policies', function (req, res) {
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (apply_start > NOW())";;
+
+    console.log("API 'policy/before_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 신청가능
+router.get('/possible_apply_policies', function (req, res) {
+
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (apply_start <= NOW() AND apply_end >= NOW())";
+
+    console.log("API 'policy/always_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 상시
+router.get('/always_apply_policies', function (req, res) {
+
+
+    var SQL = "SELECT p_code, title, uri, " + 
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
+    "from policy " +
+    "where (expiration_flag = 2)";
+
+    console.log("API 'policy/always_apply_policies' called");
+    console.log(SQL);
+    // 다음에 post로 구현!
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
 //정책 세부내용
 router.get('/:id', function (req, res) {
     var policy_params = req.params.id;
     //console.log('selected policy is ' + policy_params);
+
     var SQL = "SELECT p_code, title, uri, " + 
     "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
     "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
@@ -252,6 +384,34 @@ router.get('/:id', function (req, res) {
     "from policy where p_code = " + policy_params;
 
     console.log("API 'policy/:id' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// 정책 세부내용 조회와 동시에 클릭!
+router.post("/click", function (req, res, next) {
+
+    var recv_uID = req.body.uID;
+    var recv_p_code = req.body.p_code;
+
+    var SQL = 'INSERT INTO click (p_code, uID, click_time)'+
+    'VALUES (' +
+    recv_p_code +
+    ',\'' + recv_uID + '\'' +
+    ',' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' + 
+    ")";  
+
+    console.log("API 'policy/click' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {

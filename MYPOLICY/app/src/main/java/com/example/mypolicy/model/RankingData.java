@@ -2,15 +2,14 @@ package com.example.mypolicy.model;
 
 import java.util.Date;
 
-public class SearchData {
+public class RankingData {
     private long p_code;
     private String title;
     private Date apply_start;
-    private Date apply_end;
+    private Date apply_ned;
     private String category;
     private String region;
-    private int match_score;
-
+    private int views;
 
     public long getP_code() {
         return p_code;
@@ -36,12 +35,12 @@ public class SearchData {
         this.apply_start = apply_start;
     }
 
-    public Date getApply_end() {
-        return apply_end;
+    public Date getApply_ned() {
+        return apply_ned;
     }
 
-    public void setApply_end(Date apply_end) {
-        this.apply_end = apply_end;
+    public void setApply_ned(Date apply_ned) {
+        this.apply_ned = apply_ned;
     }
 
     public String getCategory() {
@@ -60,11 +59,11 @@ public class SearchData {
         this.region = region;
     }
 
-    public int getMatch_score() {
-        return match_score;
+    public int getViews() {
+        return views;
     }
 
-    public void setMatch_score(int match_score) {
-        this.match_score = match_score;
+    public void setViews(int views) {
+        this.views = views;
     }
 }

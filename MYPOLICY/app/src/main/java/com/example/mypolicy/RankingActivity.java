@@ -11,34 +11,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
+import com.example.mypolicy.adapter.PolicyAdapter;
+import com.example.mypolicy.adapter.RankingAdapter;
+import com.example.mypolicy.model.Policy;
+import com.example.mypolicy.model.RankingData;
+import com.example.mypolicy.service.IApiService;
+import com.example.mypolicy.service.RestClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
-    private String TAG = "ProfileActivity";
+import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.models.BarModel;
 
-    private Context mContext = ProfileActivity.this;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class RankingActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private String TAG = "RankingActivity";
+
+    private Context mContext = RankingActivity.this;
 
     private ViewGroup mainLayout;   //사이드 나왔을때 클릭방지할 영역
     private ViewGroup viewLayout;   //전체 감싸는 영역
@@ -49,42 +52,105 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     SharedPreferences sharedPreferences;
 
-    TextView tv_profile_email;
-    TextView btn_edit_info, btn_edit_interest, btn_request;
+    private String mClassName = getClass().getName().trim();
+    private RecyclerView mRecyclerView;
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
+    Button btn_day_ranking;
+    Button btn_week_ranking;
+    Button btn_month_ranking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        init();
-        addSideView();  //사이드바 add
+        setContentView(R.layout.activity_20ranking);
 
+        init();
         sharedPreferences = getSharedPreferences("session",MODE_PRIVATE);
 
-        tv_profile_email = findViewById(R.id.tv_profile_email);
-        btn_edit_info = findViewById(R.id.btn_edit_personal_info);
-        btn_edit_interest = findViewById(R.id.btn_edit_interest);
-        btn_request = findViewById(R.id.btn_request);
 
-        tv_profile_email.setText(sharedPreferences.getString("userEmail",null));
+        addSideView();  //사이드바 add
 
-        btn_edit_info.setOnClickListener(new View.OnClickListener() {
+        btn_day_ranking=findViewById(R.id.btn_day_ranking);
+        btn_week_ranking=findViewById(R.id.btn_week_ranking);
+        btn_month_ranking=findViewById(R.id.btn_month_ranking);
+
+        mRecyclerView=findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+        final Call<ArrayList<RankingData>> rankingdayCall=iApiService.sortDayViews();
+        final Call<ArrayList<RankingData>> rankingweekCall=iApiService.sortWeekViews();
+        final Call<ArrayList<RankingData>> rankingmonthCall=iApiService.sortMonthViews();
+
+        //그래프
+        BarChart mBarChart=findViewById(R.id.barChart);
+        mBarChart.addBar(new BarModel(2.3f, 0xFF123456));
+        mBarChart.addBar(new BarModel(2.f,  0xFF343456));
+        mBarChart.addBar(new BarModel(3.3f, 0xFF563456));
+        mBarChart.addBar(new BarModel(1.1f, 0xFF873F56));
+        mBarChart.addBar(new BarModel(2.7f, 0xFF56B7F1));
+        mBarChart.addBar(new BarModel(2.f,  0xFF343456));
+        mBarChart.addBar(new BarModel(0.4f, 0xFF1FF4AC));
+        mBarChart.addBar(new BarModel(4.f,  0xFF1BA4E6));
+
+        mBarChart.startAnimation();
+
+        btn_day_ranking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, EditPersonalInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-        btn_edit_interest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(ProfileActivity.this,CategoryEditActivity.class);
-                startActivity(intent);
+                rankingdayCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
+                        Log.d("랭킹데이터","day"+new Gson().toJson(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<RankingData>> call, Throwable t) {
+
+                    }
+                });
             }
         });
 
+        btn_week_ranking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rankingweekCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
+                        Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));
+                        RankingAdapter ra=new RankingAdapter(response.body());
+                        mRecyclerView.setAdapter(ra);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<RankingData>> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        btn_month_ranking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rankingmonthCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
+                        Log.d("랭킹데이터","month"+new Gson().toJson(response.body()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<RankingData>> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
     }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -191,7 +257,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void btnTop() {
-
                 Intent intent = new Intent(mContext, RankingActivity.class);
                 startActivity(intent);
                 closeMenu();

@@ -196,7 +196,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
 
 
-        search_region.add("전체");
+        search_region.add("전국");
         search_region.add("전체");
 
         sp_do.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -239,7 +239,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
             }
         });
-
         sp_si.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -404,6 +403,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void btnLogout() {
                 sharedPreferences.edit().clear().apply();
                 Intent intent = new Intent(mContext, LoginActivity.class);
+                startActivity(intent);
+                closeMenu();
+                finish();
+            }
+
+            @Override
+            public void btnTop() {
+
+                Intent intent = new Intent(mContext, RankingActivity.class);
                 startActivity(intent);
                 closeMenu();
                 finish();

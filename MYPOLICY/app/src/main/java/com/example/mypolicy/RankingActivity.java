@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -135,18 +136,26 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                         try {
                             JSONArray jsonArray=new JSONArray(rankingData);
                             Log.d("제이슨 길이",""+jsonArray.length());
+                            String mapString="";
+                            int mapKeyValue=0;
                             for(int i=0;i<jsonArray.length();i++)
                             {
                                 JSONObject jsonObject=jsonArray.getJSONObject(i);
-                                Log.d("제이슨 타이틀",""+jsonObject.get("title").toString());
-                                Log.d("제이슨 타이틀",""+Integer.parseInt(jsonObject.get("views").toString()));
 
-                                weekMap.put(jsonObject.get("title").toString(),Integer.parseInt(jsonObject.get("views").toString()));
+                                mapString=jsonObject.getString("title");
+                                mapKeyValue=Integer.parseInt(jsonObject.get("views").toString());
+                                weekMap.put(mapString,mapKeyValue);
+                                Log.d("제이슨 타이틀",""+mapString);
+                                Log.d("제이슨 타이틀2",""+mapKeyValue);
                             }
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                Log.d("제이슨 데이터",""+weekMap.get("title")+"  "+weekMap.get("views"));
-                            }
+
+                            Set<Map.Entry<String,Integer>> entries=weekMap.entrySet();
+                            Map.Entry<String, Integer> entry;
+//                            for(entry.)
+//                            {
+//                                Log.d("제이슨 값",""+entries.);
+//                                Log.d("제이슨 값",""+entry.getValue());
+//                            }
                         }catch(JSONException j)
                         {
                             j.printStackTrace();
@@ -154,6 +163,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                         RankingAdapter ra=new RankingAdapter(response.body());
                         mRecyclerView.setAdapter(ra);
                     }
+
 
                     @Override
                     public void onFailure(Call<ArrayList<RankingData>> call, Throwable t) {

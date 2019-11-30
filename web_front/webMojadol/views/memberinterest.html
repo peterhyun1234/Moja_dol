@@ -12,21 +12,21 @@
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/import.js"></script>
-    <script src="/js/list.js"></script>
+    <script src="/js/memberinterest.js"></script>
+
+    <!--datatable-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script src="/js/global.js"></script>    
 
     <!--css-->
     <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../css/reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/memberinterest.css">
 
     <!--web font-->
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Noto+Sans+KR&display=swap" rel="stylesheet">
     <!--font-family: 'Nanum Gothic', sans-serif; font-family: 'Noto Sans KR', sans-serif;-->
-
-    <!--js-->
-    <script src="/js/memberinterest.js"></script>
-
-    <!--css-->
-    <link rel="stylesheet" href="/css/memberinterest.css">
    
     <title>mojadol-request</title>
 </head>
@@ -40,30 +40,26 @@
                 <div class="menuname">
                     <p>회원별 관심사 목록</p>
                 </div>
+                
+                <table id="data_table" class="data_table">
+                    <thead>
+                        <tr>
+                            <th>회원아이디</th>
+                            <th>이름</th>
+                            <th>나이</th>
+                            <th>성별</th>
+                            <th>지역</th>
+                            <th>취업<br>지원</th>
+                            <th>창업<br>지원</th>
+                            <th>생활<br>복지</th>
+                            <th>주거<br>금융</th>
+                        </tr>
+                    </thead>
     
-                
-                <div id = "test-list" class=" clearfix">
-                    <!-- 검색박스 -->
-                    <div class="searchBox">
-                        <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
-                    </div>
-                    <!--  //검색박스 -->
-                    <div class="interestlist attr">
-                        <span class="userID" data-sort="userID">회원아이디</span>
-                        <span class="age" data-sort="age">나이</span>
-                        <span class="job interest" data-sorst="job">취업지원</span>
-                        <span class="found interest" data-sorst="found">창업지원</span>
-                        <span class="Life_welfare_priority interest" data-sorst="life">생활, 복지</span>
-                        <span class="Residential_financial_priority interest" data-sorst="dwelling">주거, 금융</span>                            
-                    </div>  
-
-                    <ul class="list clearfix">	
-                                             
-                     </ul>
-                
-                    <!-- 자동 페이징 영역 -->
-                    <ul class="pagination"></ul>
-                </div>
+                    <tbody>
+    
+                    </tbody>
+                </table>
             </div>
         </section>
         <!--//member box-->

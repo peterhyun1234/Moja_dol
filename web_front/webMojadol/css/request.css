@@ -1,19 +1,5 @@
 @charset "UTF-8";
 
-li.requestlist:hover {background-color: #fbffd0;}
-.requestlist {position:relative; border-bottom: 1px solid #d4d1d1; font-size: 1em; width: 100%; text-align: center; padding: 0 10px; padding-top:20px; display:inline-block;}
-.requestlist span {float:left; margin: 0; padding-bottom: 20px;}
-.attr {border-bottom: 2px solid gray; font-weight: bold;}
-
-.req_code {width:90px;}
-.userID {width: 220px; text-overflow: ellipsis; overflow: hidden;}
-.req_category {width:100px;}
-.request_time {width: calc(100% - 660px); margin-right: 10px !important;}
-.request_comment {width: 150px;}
-.request_comment input {width: 100%; text-overflow: ellipsis; border: none; background-color: transparent;}
-.hover_commentBox{ display: none; transition: ease all 0.1s; z-index: 10; top: 85%; left: 65%; position: absolute; width: 0px; border: 1px solid #000; background-color: #f0f7ff; padding: 10px; text-align: left; min-height: 100px;}
-.requestlist:hover .hover_commentBox {display:block; width:350px;}
-
 .request_flag {width:90px;}
 .request_flag input {width: 20px; height: 20px;}
 
@@ -22,7 +8,9 @@ li.requestlist:hover {background-color: #fbffd0;}
 .gmail_btn a:hover {border:none; text-decoration:none;}
 .gmail_btn:hover {background-color: #007bff; text-decoration:none;}
 
+.container{font-size: 0.9em;}
+th.sorting {min-width:28px;}
 
 @media (max-width: 1400px){
-    .container{font-size: 0.8em;}
+    .container{font-size: 0.85em;}
 }

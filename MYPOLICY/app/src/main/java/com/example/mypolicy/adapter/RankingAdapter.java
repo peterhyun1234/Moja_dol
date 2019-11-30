@@ -35,8 +35,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingViewHolder>{
     public void onBindViewHolder(@NonNull RankingViewHolder holder, int position) {
         holder.title.setText(rList.get(position).getTitle());
         final long pcode=rList.get(position).getP_code();
-        
+
         holder.views.setText(Integer.toString(rList.get(position).getViews()));
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

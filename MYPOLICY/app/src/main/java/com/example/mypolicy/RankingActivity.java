@@ -97,7 +97,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
 
 
         mBarChart.clearChart();
-        rankingweekCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
+        rankingdayCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
             @Override
             public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
                 Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));

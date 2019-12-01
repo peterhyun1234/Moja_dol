@@ -1,8 +1,28 @@
-
 var express = require('express');
 var router = express.Router();
 
 var connection = require('../index.js').connection;
+var firebase_db = require('../index.js').firebase_db;
+
+
+router.get('/fire_all_users', function (req, res) {
+
+    var SQL = 'SELECT * from user';
+
+    console.log("API 'user/show_all_users' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
 
 router.get('/show_all_users', function (req, res) {
 

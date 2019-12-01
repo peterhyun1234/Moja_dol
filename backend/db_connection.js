@@ -1,18 +1,19 @@
 var mysql = require('mysql');
-var db = require('./config/database.js').local;
+var mysql_db = require('./config/mysql.js').local;
+
 
 module.exports = function () {
   return {
-    init: function () {
+    mysql_init: function () {
       return mysql.createConnection({
-        host: db.host,
-        port: db.port,
-        user: db.user,
-        password: db.password,
-        database: db.database
+        host: mysql_db.host,
+        port: mysql_db.port,
+        user: mysql_db.user,
+        password: mysql_db.password,
+        database: mysql_db.database
       })
     },
-    test_open: function (con) {
+    mysql_open: function (con) {
       con.connect(function (err) {
         if (err) {
           console.error('mysql connection error :' + err);

@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 var http = require('http');
 var fs = require('fs');
+var firebase = require("firebase");
+var firebase_db = require('./config/firebase.js').real;
 
 // 관리자 웹화면
 var admin_web = http.createServer(function(request,response){
@@ -21,15 +23,27 @@ var admin_web = http.createServer(function(request,response){
 });
 admin_web.listen(8000);
 
+var app = express();
+var fs = require('fs');
 
 // mysql 연동
 var mysql_db = require('./db_connection.js');
-var connect = mysql_db.init();
-mysql_db.test_open(connect);
+var connect = mysql_db.mysql_init();
+mysql_db.mysql_open(connect);
 exports.connection = connect;
 
-var app = express();
-var fs = require('fs');
+// firebase 연동
+// firebase.initializeApp({
+//   apiKey: firebase_db.apiKey,
+//   authDomain: firebase_db.authDomain,
+//   databaseURL: firebase_db.databaseURL,
+//   projectId: firebase_db.projectId,
+//   storageBucket: firebase_db.storageBucket,
+//   messagingSenderId: firebase_db.messagingSenderId,
+//   appId: firebase_db.appId
+// });
+// exports.firebase_db = firebase;
+
 
 app.set('port', process.env.PORT || 3000);
 

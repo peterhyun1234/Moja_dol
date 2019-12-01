@@ -74,6 +74,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     String selected_categories = "";
     String selected_age = "전체";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -296,6 +297,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 extras.putString("search_category",search_category);
                 extras.putInt("age",age);
                 extras.putString("keyword",keyword);
+                extras.putString("time",selected_time);
                 intent.putExtras(extras);
                 startActivity(intent);
 //                final Call<ArrayList<SearchData>> postSearchcall=iApiService.postSearchKeyword(search_region,search_category,age,keyword);

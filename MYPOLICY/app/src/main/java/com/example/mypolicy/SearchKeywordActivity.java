@@ -66,6 +66,7 @@ public class SearchKeywordActivity  extends AppCompatActivity implements View.On
         String search_category=extras.getString("search_category");
         int age=extras.getInt("age");
         String keyword=extras.getString("keyword");
+        String time=extras.getString("time");
 
         final Call<ArrayList<SearchData>> postSearchcall=iApiService.postSearchKeyword(search_region,search_category,age,keyword);
         Log.d("뽑아낸","정보"+search_region+"  "+search_category+"  "+age+"  "+keyword);

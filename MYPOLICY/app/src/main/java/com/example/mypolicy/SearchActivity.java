@@ -68,12 +68,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     Button btn_apply_always,btn_apply_now,btn_apply_before,btn_apply_after,btn_apply_all;
     TextView tv_categories;
     EditText et_keyword;
-    Spinner sp_do, sp_si, sp_age;
+    Spinner sp_do, sp_si, sp_age, sp_time;
     ArrayList<String> search_region =new ArrayList<>();
     String search_category = "10000";
     String selected_categories = "";
     String selected_age = "전체";
-
+    String selected_time="전체";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +104,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         btn_search = findViewById(R.id.btn_search);
         sp_do = findViewById(R.id.sp_do);
         sp_si = findViewById(R.id.sp_si);
+        sp_time = findViewById(R.id.sp_timesorting);
         sp_age = findViewById(R.id.sp_age);
         et_keyword = findViewById(R.id.et_search_keyword);
         btn_apply_always=findViewById(R.id.btn_apply_always);
         btn_apply_now=findViewById(R.id.btn_apply_now);
         btn_apply_before=findViewById(R.id.btn_apply_before);
         btn_apply_after=findViewById(R.id.btn_apply_after);
-//        btn_apply_all=findViewById(R.id.btn_apply_all);
+        btn_apply_all=findViewById(R.id.btn_apply_all);
 
 /**********************************전체 정보 받아오는 부분**********************************************************************/
         try{
@@ -259,6 +260,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String region = parent.getItemAtPosition(position).toString();
                 search_region.set(1,region);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        sp_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selected_time=parent.getItemAtPosition(position).toString();
             }
 
             @Override

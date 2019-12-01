@@ -68,8 +68,8 @@ public class SearchKeywordActivity  extends AppCompatActivity implements View.On
         String keyword=extras.getString("keyword");
         String time=extras.getString("time");
 
-        final Call<ArrayList<SearchData>> postSearchcall=iApiService.postSearchKeyword(search_region,search_category,age,keyword);
-        Log.d("뽑아낸","정보"+search_region+"  "+search_category+"  "+age+"  "+keyword);
+        final Call<ArrayList<SearchData>> postSearchcall=iApiService.postSearchKeyword(search_region,search_category,age,keyword,time);
+        Log.d("뽑아낸","정보"+search_region+"  "+search_category+"  "+age+"  "+keyword+ "    "+time);
         try {
             postSearchcall.enqueue(new Callback<ArrayList<SearchData>>() {
                 @Override

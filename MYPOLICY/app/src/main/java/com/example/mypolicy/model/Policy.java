@@ -5,12 +5,6 @@ import android.widget.EditText;
 import java.util.Date;
 
 
-
-import android.widget.EditText;
-
-import java.util.Date;
-
-
 public class Policy {
     private long p_code;
     private String title;

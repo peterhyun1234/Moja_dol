@@ -82,10 +82,11 @@ public interface IApiService {
     @POST("my_list/ordered_mylist")
     Call<JSONObject> orderedMyList(@FieldMap HashMap<String,Object> parameters);
 
+    //search에서 검색조건
     @FormUrlEncoded
     @POST("search/test")
     Call<ArrayList<SearchData>> postSearchKeyword(@Field("location") ArrayList<String> location, @Field("category") String category
-            , @Field("age")int age, @Field("keyword") String keyword, @Field("apply_term") String apply_term);
+    , @Field("age")int age, @Field("keyword") String keyword, @Field("apply_term") String apply_term);
 
     //조회수 별 일일 Top20
     @GET("sorting/day_views")

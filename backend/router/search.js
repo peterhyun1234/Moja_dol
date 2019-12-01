@@ -79,8 +79,9 @@ router.post("/test", function (req, res, next) {
 
 
     //6. 신청기간(상시/ 공고시작전/ 공고종료후/ 현재신청가능)   
-    var apply_termList = ["공고시작전", "공고종료후", "현재신청가능", "상시"];
+    var apply_termList = ["전체", "공고시작 전", "공고기간 종료", "현재신청", "상시모집"];
     var apply_term_SQL_List = [
+        "",
         "(apply_start > NOW()) AND ", 
         "(apply_end < NOW()) AND ", 
         "(apply_start <= NOW() AND apply_end >= NOW()) AND ", 

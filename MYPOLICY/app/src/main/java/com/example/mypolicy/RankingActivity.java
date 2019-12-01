@@ -88,6 +88,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+
         final Call<ArrayList<RankingData>> rankingdayCall=iApiService.sortDayViews();
         final Call<ArrayList<RankingData>> rankingweekCall=iApiService.sortWeekViews();
         final Call<ArrayList<RankingData>> rankingmonthCall=iApiService.sortMonthViews();

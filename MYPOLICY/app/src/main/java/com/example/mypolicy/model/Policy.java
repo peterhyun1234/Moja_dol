@@ -4,6 +4,7 @@ import android.widget.EditText;
 
 import java.util.Date;
 
+
 public class Policy {
     long p_code;
     String title;

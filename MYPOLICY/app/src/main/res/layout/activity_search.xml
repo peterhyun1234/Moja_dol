@@ -197,6 +197,14 @@
                 android:orientation="horizontal"
                 android:gravity="center_horizontal"
                 >
+
+                <Button
+                    android:id="@+id/btn_apply_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체"
+                    android:background="#ffffff"/>
+
                 <Button
                     android:id="@+id/btn_apply_always"
                     android:layout_width="wrap_content"

@@ -65,7 +65,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private RecyclerView mRecyclerView;
     final String[] categories = new String[]{"전체","취업지원","창업지원","생활/복지","주거/금융"};
     Button btn_select_category, btn_search;
-    Button btn_apply_always,btn_apply_now,btn_apply_before,btn_apply_after;
+    Button btn_apply_always,btn_apply_now,btn_apply_before,btn_apply_after,btn_apply_all;
     TextView tv_categories;
     EditText et_keyword;
     Spinner sp_do, sp_si, sp_age;
@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
-        Call<ArrayList<Policy>> call=iApiService.showAllPolicies();
+        final Call<ArrayList<Policy>> call=iApiService.showAllPolicies();
         final Call<ArrayList<Policy>> alwaysCall=iApiService.showAllPolicies_always();
         final Call<ArrayList<Policy>> nowCall=iApiService.showAllPolicies_nowPossible();
         final Call<ArrayList<Policy>> beforeCall=iApiService.showAllPolicies_beforeApply();
@@ -109,6 +109,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         btn_apply_now=findViewById(R.id.btn_apply_now);
         btn_apply_before=findViewById(R.id.btn_apply_before);
         btn_apply_after=findViewById(R.id.btn_apply_after);
+        btn_apply_all=findViewById(R.id.btn_apply_all);
 
 /**********************************전체 정보 받아오는 부분**********************************************************************/
         try{
@@ -321,6 +322,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 alwaysCall.clone().enqueue(new Callback<ArrayList<Policy>>() {
+
                     @Override
                     public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
                         Log.d("상시모집",""+new Gson().toJson(response.body()));
@@ -350,7 +352,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 nowCall.clone().enqueue(new Callback<ArrayList<Policy>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
-
+                            Log.d("나우버튼",""+new Gson().toJson(response.body()));
 
                         try{
 
@@ -377,7 +379,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 beforeCall.clone().enqueue(new Callback<ArrayList<Policy>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
-
+                        Log.d("나우버튼","비포어"+new Gson().toJson(response.body()));
 
                         try{
 
@@ -403,8 +405,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     afterCall.clone().enqueue(new Callback<ArrayList<Policy>>() {
                         @Override
                         public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
-
-
+                            Log.d("나우버튼","애프터"+new Gson().toJson(response.body()));
                             try{
 
                                 PolicyAdapter pa=new PolicyAdapter(response.body());
@@ -420,6 +421,36 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
                         }
                     });
+            }
+        });
+        btn_apply_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    call.clone().enqueue(new Callback<ArrayList<Policy>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
+                            try{
+
+                                PolicyAdapter pa=new PolicyAdapter(response.body());
+                                mRecyclerView.setAdapter(pa);
+                            }catch(Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Policy>> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
             }
         });
 

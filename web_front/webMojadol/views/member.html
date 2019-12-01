@@ -12,34 +12,26 @@
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/import.js"></script>
-    <script src="/js/list.js"></script>
+    <script src="/js/member.js"></script>
 
-<!--     <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script> -->
-
-
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!--firebase-->
     <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
-     <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
+
+    <!--datatable-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script src="/js/global.js"></script>
 
     <!--css-->
     <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../css/reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/member.css">
 
     <!--web font-->
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Noto+Sans+KR&display=swap" rel="stylesheet">
     <!--font-family: 'Nanum Gothic', sans-serif; font-family: 'Noto Sans KR', sans-serif;-->
 
-    <!--js-->
-    <script src="/js/member.js"></script>
-
-    <!--css-->
-    <link rel="stylesheet" href="/css/member.css">
-   
     <title>mojadol-member</title>
 </head>
 <body>
@@ -53,29 +45,21 @@
                 <p>회원 목록</p>
             </div>
 
-            <div id = "test-list" class=" clearfix">
-                    <!-- 검색박스 -->
-                    <div class="searchBox">
-                        <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
-                    </div>
-                    <!--  //검색박스 -->
-                    
-                            <div class="memberlist attr">
-                                <span class="memberId" data-sort="memberId">회원아이디</span>
-                                <span class="membername" data-sort="membername">회원 이름</span>
-                                <span class="memberbirth" data-sort="memberbirth">나이</span>
-                            </div>  
+            <table id="data_table" class="data_table">
+                <thead>
+                    <tr>
+                        <th>회원아이디</th>
+                        <th>이름</th>
+                        <th>나이</th>
+                        <th>성별</th>
+                        <th>지역</th>
+                    </tr>
+                </thead>
 
+                <tbody>
 
-                    <ul class="list clearfix">	
-                        <!--더미값-->
-                         <!--    <li class="memberlist"><span class="memberId">id12</span><span class="membername">이경기</span><span class="memberbirth">19960515</span></li>
-                            <li class="memberlist"><span class="memberId">id13</span><span class="membername">김청년</span><span class="memberbirth">19960515</span></li> -->
-                 </ul>
-    
-                    <!-- 자동 페이징 영역 -->
-                    <ul class="pagination"></ul>
-            </div>
+                </tbody>
+            </table>
         </div>       
     </section>
     <!--//member box-->

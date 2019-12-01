@@ -12,27 +12,22 @@
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/import.js"></script>
-    <script src="/js/list.js"></script>
+    <script src="/js/request.js"></script>
+
+    <!--datatable-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script src="/js/global.js"></script>
 
     <!--css-->
     <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../css/reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/request.css">
 
     <!--web font-->
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Noto+Sans+KR&display=swap" rel="stylesheet">
     <!--font-family: 'Nanum Gothic', sans-serif; font-family: 'Noto Sans KR', sans-serif;-->
-
-    <!--js-->
-    <script src="/js/request.js"></script>
-
-    <!--css-->
-    <link rel="stylesheet" href="/css/request.css">
    
-
-<!--     <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/> 
-    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
- -->
-
     <title>mojadol-request</title>
 </head>
 <body>
@@ -46,40 +41,23 @@
                     <p>회원 요청 관리</p>
                 </div>
 
-                <div id = "test-list" class=" clearfix">
-                        <!-- 검색박스 -->
-                        <div class="searchBox">
-                            <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
-                        </div>
-                        <!--  //검색박스 -->
-                       
-                                <div class="requestlist attr clearfix">
-                                    <span class="req_code" data-sort="req_code">요청번호</span>
-                                    <span class="userID" data-sort="userID">회원아이디</span>
-                                    <span class="req_category" data-sort="req_category">카테고리</span>
-                                    <span class="request_time" data-sort="request_time">요청시간</span>
-                                    <span class="request_comment" data-sort="request_comment">요청내용</span>
-                                    <span class="request_flag" data-sort="request_flag">처리여부</span>
-                                </div>  
-
-                        <ul class="list clearfix">	
-                           
-                    </ul>
-        
-                        <!-- 자동 페이징 영역 -->
-                        <ul class="pagination"></ul>
-                </div>
-
-<!--                 <table id="foo-table" class="table table-bordered">
+                <table id="data_table" class="data_table">
                     <thead>
-                        <tr><th>요청번호</th><th>회원아이디</th><th>카테고리</th><th>요청시간</th><th>요청내용</th><th>처리여부</th></tr>
+                        <tr>
+                            <th>번호</th>
+                            <th>회원아이디</th>
+                            <th>카테<br>고리</th>
+                            <th>요청<br>시간</th>
+                            <th>요청내용</th>
+                            <th>처리<br>여부</th>
+                        </tr>
                     </thead>
+    
                     <tbody>
-  
+    
                     </tbody>
-                </table> -->
-            
-            
+                </table>
+
                 <div class="gmail_btn">
                     <a href="/views/request_gmail.html">요청처리 - Gmail</a>
                 </div>

@@ -12,21 +12,21 @@
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/import.js"></script>
-    <script src="/js/list.js"></script>
+    <script src="/js/policy.js"></script>
+
+    <!--datatable-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script src="/js/global.js"></script>
 
     <!--css-->
     <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="../css/reset.css" type="text/css">
+    <link rel="stylesheet" href="/css/policy.css">
 
     <!--web font-->
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Noto+Sans+KR&display=swap" rel="stylesheet">
     <!--font-family: 'Nanum Gothic', sans-serif; font-family: 'Noto Sans KR', sans-serif;-->
-
-    <!--js-->
-    <script src="/js/policy.js"></script>
-
-    <!--css-->
-    <link rel="stylesheet" href="/css/policy.css">
    
     <title>mojadol-policy</title>
 </head>
@@ -41,35 +41,21 @@
                     <p>정책 게시물 관리</p>
                 </div>
 
-                <div id = "test-list" class=" clearfix">
-                        <!-- 검색박스 -->
-                        <div class="searchBox">
-                            <input type="text" class="search filterSearch" placeholder="Search" style="outline: none;"/> 
-                        </div>
-                        <!--  //검색박스 -->
-
-                                <div class="policylist attr clearfix">
-                                    <span class="p_code" data-sort="p_code">정책코드</span>
-                                    <span class="p_title" data-sort="p_title">제목</span>
-                                    <span class="crawling_data" data-sort="crawling_data">정책 수집 날짜</span>
-                                    <span class="expiration_flag" data-sort="expiration_flag">정책 만료여부</span>
-                                </div>  
-
-                        <ul class="list clearfix">	
-                            <!--더미값-->
-<!--                             <li class="policylist ">
-                                <span class="p_code" data-sort="p_code">CP1432</span>
-                                <span class="p_title" data-sort="p_title">
-                                    <input type="text" value="대학생미취업청년 채무조정제도" readonly/>
-                                </span>
-                                <span class="crawling_data" data-sort="crawling_data">2019:04:23</span>
-                                <span class="expiration_flag" data-sort="expiration_flag">만료</span>
-                            </li>
- -->                    </ul>
-                    
-                        <!-- 자동 페이징 영역 -->
-                        <ul class="pagination"></ul>
-                </div>
+                <!--전체 정책 목록-->
+                <table id="data_table" class="data_table">
+                    <thead>
+                        <tr>
+                            <th>정책코드</th>
+                            <th>제목</th>
+                            <th>정책수집날짜</th>
+                            <th style="min-width:100px;">정책만료여부</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+    
+                    </tbody>
+                </table>
 
                 <div class="policy_detailBox clearfix">
                     <p class="modify_title">정책 수정하기</p>
@@ -215,54 +201,3 @@
         <!--//policy box-->
 </body>
 </html>
-
-
-<!--더미데이터-->
-<!-- <li class="first_line clearfix">
-        <p class="first title">정책코드</p>
-        <p class="detail_p_code">31</p>
-        <p class="first title">정책 만료여부</p>
-        <p class="expiration_flag">
-            <select id = "expiration">
-                <option >선택</option>
-                <option data="0">진행중</option>
-                <option data="1">만료</option>
-            </select>
-        </p>
-    </li>
-    <li class="second_line clearfix">
-        <p class="second title">대상</p>
-        <textarea class="application_target">4년제 대학교 재학생</textarea>
-    </li>
-    <li class="third_line clearfix">
-        <p class="third title">신청기간</p> 
-        <div class="apply">
-            <input type="text" class="apply_start" value="2019-10-01">
-            <p style="margin:0;">~</p>
-            <input type="text" class="apply_end" value="2019-12-31">
-        </div>  
-        <p class="third title">대상 연령</p> 
-        <div class="age">
-            <input type="text" class="start_age" value="19">
-            <p style="margin:0;">~</p>
-            <input type="text" class="end_age" value="34">
-        </div>          
-    </li>
-    <li class="fourth_line clearfix">
-        <p class="fourth title">정책 수집 날짜</p>
-        <p class="crawling_date">2019-10-26 06:44:32</p>
-        <p class="second title">시행 지역</p>
-        <input type="text" class="location" value="전국">
-    </li>
-    <li class="fifth_line clearfix">
-        <p class="fifth title">제목</p>
-        <textarea class="detail_title">취업 지원금 지원 제도</textarea>
-    </li>
-    <li class="sixth_line clearfix">
-        <p class="sixth title">내용</p>
-        <textarea class="policy_contents">개발도상국에 대한 주요 무상원조사업의 하나로 개발도상국의 수요를 바탕으로 우리가 비교우위에 있는 공공행정, 교육, 농림수산, 보건, 산업에너지 5개 분야 30여개 직종에서 활동</textarea>
-    </li>
-    <li class="seventh_line clearfix">
-        <p class="seventh title">연결 링크</p>
-        <textarea class="uri">https://www.youthcenter.go.kr/jynEmpSptNew/jynEmpSptGuide.do?bizId=201808160009</textarea>
-    </li> -->

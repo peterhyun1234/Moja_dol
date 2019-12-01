@@ -109,7 +109,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         btn_apply_now=findViewById(R.id.btn_apply_now);
         btn_apply_before=findViewById(R.id.btn_apply_before);
         btn_apply_after=findViewById(R.id.btn_apply_after);
-        btn_apply_all=findViewById(R.id.btn_apply_all);
+//        btn_apply_all=findViewById(R.id.btn_apply_all);
 
 /**********************************전체 정보 받아오는 부분**********************************************************************/
         try{

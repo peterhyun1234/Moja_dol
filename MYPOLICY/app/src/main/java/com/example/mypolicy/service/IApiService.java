@@ -22,7 +22,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface IApiService {
-    @GET("policy/show_all_policies")//전체 공공정책 리스트
+    @GET("policy/selected_policies")//전체 공공정책 리스트
     Call<ArrayList<Policy>> showAllPolicies();
 
     @GET("policy/{number}")//세부 공공정책 사항

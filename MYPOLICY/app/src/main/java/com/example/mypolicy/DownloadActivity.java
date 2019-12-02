@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,9 +55,10 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
 
     private Boolean isMenuShow = false;
     private Boolean isExitFlag = false;
-    private Button btn_store_delte;
+    private Button btn_home_nav;
     private RecyclerView mRecyclerView;
     private String dateValue="";
+    ImageView hdImage;
     Spinner sp_sort;
 
 
@@ -77,11 +79,12 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-        btn_store_delte=findViewById(R.id.btn_store_delete);
+
         mRecyclerView=findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        btn_store_delte=findViewById(R.id.btn_store_delete);
+        btn_home_nav=findViewById(R.id.btn_home_nav);
         sp_sort=findViewById(R.id.sp_sort);
+
 
 
         final Call<ArrayList<StoreData>> storeDataCall=iApiService.showallMyList(showStoreDataMap);
@@ -104,18 +107,10 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
                         //디폴트에서 길이가 0이면
                         if(response.body().size()==0)
                         {
-                            WindowManager.LayoutParams wm = sd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
-                            wm.copyFrom(hd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
-                            wm.width=width;
-                            wm.height=height;
 
-                            hd.show();
-                            hd.setOnDismissListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
 
-                                }
-                            });
+                            sd.callFunction();
+
                         }
                         StoreAdapter sa = new StoreAdapter(response.body());
                         mRecyclerView.setAdapter(sa);
@@ -355,5 +350,6 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
         mainLayout.setEnabled(false);
         Log.e(TAG, "메뉴버튼 클릭");
     }
+
 
 }

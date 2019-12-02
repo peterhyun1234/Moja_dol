@@ -1,14 +1,18 @@
 package com.example.mypolicy;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -33,12 +37,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DownloadActivity extends AppCompatActivity implements View.OnClickListener {
-
+    saveDialog sd;
+    homeDialog hd;
     private String TAG = "DownloadActivity";
     private Context mContext = DownloadActivity.this;
 
@@ -80,6 +86,13 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
 
         final Call<ArrayList<StoreData>> storeDataCall=iApiService.showallMyList(showStoreDataMap);
         final Call<ArrayList<StoreData>> sortCall=iApiService.sortMyList(sortMap);
+        sd = new saveDialog(this);
+        hd=new homeDialog(this);
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+        final int width = dm.widthPixels; //디바이스 화면 너비
+        final int height = dm.heightPixels; //디바이스 화면 높이
+
+
 
        //=========================서버에서 저장한거 가져오는 코드=========================//
         try {
@@ -88,6 +101,22 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
                     try {
+                        //디폴트에서 길이가 0이면
+                        if(response.body().size()==0)
+                        {
+                            WindowManager.LayoutParams wm = sd.getWindow().getAttributes();  //다이얼로그의 높이 너비 설정하기위해
+                            wm.copyFrom(hd.getWindow().getAttributes());  //여기서 설정한값을 그대로 다이얼로그에 넣겠다는의미
+                            wm.width=width;
+                            wm.height=height;
+
+                            hd.show();
+                            hd.setOnDismissListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            });
+                        }
                         StoreAdapter sa = new StoreAdapter(response.body());
                         mRecyclerView.setAdapter(sa);
                         Log.d("저장정보", "" + new Gson().toJson(response.body()));
@@ -142,6 +171,7 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
                         sortCall.clone().enqueue(new Callback<ArrayList<StoreData>>() {
                             @Override
                             public void onResponse(Call<ArrayList<StoreData>> call, Response<ArrayList<StoreData>> response) {
+
                                 Log.d("추가정렬정보",""+new Gson().toJson(response.body()));
                                 StoreAdapter sa = new StoreAdapter(response.body());
                                 mRecyclerView.setAdapter(sa);

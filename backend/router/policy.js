@@ -431,8 +431,32 @@ router.post("/referral", function (req, res, next) {
 
     var recv_uID = req.body.uID;
 
+    // 1. 카테고리 입력안했으면 암것도 안보내기
+    // 2. 클릭, 찜, 카테고리지정에 따른 웨이트 구하기
+    // 3. 유저베이스드는 플마 3살의 가장 많이 클릭한 웨이트 + 찜한 웨이트
+    // 4. 와이값은 나이와 성별 별로 찜한 리스트
+    
+    // • 디비에 성별 추가
+    // • 카테고리 분류 추가 이거 약간 노가다
+    // • 여러 유저의 데이터 쌓기
+
+    var click_weight = 0.5;
+    var mylist_weight = 0.5;
+    var category_weight = 0.5;
+    var age_SQL;
+    var order_SQL;
+
     var SQL = "SELECT policy.*," +
-        "(Employment_sup*Employment_sup_priority + Startup_sup*Startup_sup_priority + Life_welfare*Life_welfare_priority + Residential_finance*Residential_financial_priority) AS total_priority " +
+        "(Employment_sup*Employment_sup_priority + " + 
+        "Startup_sup*Startup_sup_priority + " + 
+        "Life_welfare*Life_welfare_priority + " + 
+        "Residential_finance*Residential_financial_priority)*"+ category_weight + " " + 
+        "AS category_priority " +
+        "(Employment_sup*Employment_sup_priority + " + 
+        "Startup_sup*Startup_sup_priority + " + 
+        "Life_welfare*Life_welfare_priority + " + 
+        "Residential_finance*Residential_financial_priority)*"+ category_weight + " " + 
+        "AS mylist_priority " +
         "FROM policy NATURAL JOIN interest, user " +
         "WHERE (uID = '" + recv_uID + "') AND " +
         "(start_age <= user.age AND user.age <= end_age) AND " +

@@ -139,7 +139,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 
         final Call<ArrayList<Policy>> call=iApiService.showselectedPolicy(position);
         final Call<ArrayList<Review>> reviewCall=iApiService.postShowReview(getReviewhashMap);
-         final Call<JSONObject> postSaveCall=iApiService.storeinMyList(postSavehashMap);
+        final Call<JSONObject> postSaveCall=iApiService.storeinMyList(postSavehashMap);
 
         //각각 에 대한 상세정보 받는부분
 
@@ -149,7 +149,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                 public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
                     String tmp=new Gson().toJson(response.body());
 
-                    Log.d("각각정보",""+position+tmp);
+                    Log.d("각각정보22",""+position+tmp);
                     //파싱코드
                     try{
                         JSONArray jsonArray=new JSONArray(tmp);
@@ -157,8 +157,16 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                         String title=jsonObject.getString("title");
                         tv_title.setText(title);
 
-                        String contents=jsonObject.getString("contents");
-                        tv_detail.setText(contents);
+                        if(jsonObject.has("contents"))
+                        {
+                            tv_detail.setText("-");
+                        }
+                        else
+                        {
+                            String contents=jsonObject.getString("contents");
+                            tv_detail.setText(contents);
+                        }
+
 
                         String age=Integer.toString(jsonObject.getInt("start_age"));
                         if(age.equals("0"))
@@ -166,7 +174,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             tv_age_start.setText("제한없음");
                         }
                         else
-                        tv_age_start.setText(age+"살");
+                            tv_age_start.setText(age+"살");
 
                         String age_end=Integer.toString(jsonObject.getInt("end_age"));
                         if(age_end.equals("0"))
@@ -174,7 +182,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             tv_age_end.setText("제한없음");
                         }
                         else
-                        tv_age_end.setText(age_end+"살");
+                            tv_age_end.setText(age_end+"살");
 
                         String url=jsonObject.getString("uri");
                         tv_uri.setText(url);
@@ -205,7 +213,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             startSB.append(" ");
                             startSB.append(splited[1]+"일");
 
-                           tv_applyStart.setText(startSB.toString());
+                            tv_applyStart.setText(startSB.toString());
                         }
                         else {
                             tv_applyStart.setText("공고후 확인 신청 바람");

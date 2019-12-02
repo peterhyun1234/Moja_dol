@@ -95,6 +95,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 rd.callFunction();
             }
         });
+        tv_center.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ProfileActivity.this,TestActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

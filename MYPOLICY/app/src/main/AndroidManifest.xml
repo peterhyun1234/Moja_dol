@@ -28,6 +28,7 @@
         <activity android:name=".RankingActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".MainActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".CategoryEditActivity" android:windowSoftInputMode="stateHidden"/>
+
         <activity android:name=".LoginActivity" android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".SplashActivity"
@@ -38,6 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

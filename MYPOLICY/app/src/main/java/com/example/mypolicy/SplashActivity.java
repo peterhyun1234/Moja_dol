@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
 //        setContentView(R.layout.activity_splash);
         try
         {
-            Thread.sleep(1700);
+            Thread.sleep(5000);
         }catch(InterruptedException e)
         {
             e.printStackTrace();

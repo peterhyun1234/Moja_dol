@@ -42,7 +42,7 @@ public class TestActivity extends AppCompatActivity {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
-                        Log.d(TAG,"토근"+token);
+                        Log.d(TAG,"토근  "+token);
                     }
                 });
 

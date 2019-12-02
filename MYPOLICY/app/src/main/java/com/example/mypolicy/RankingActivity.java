@@ -88,7 +88,6 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
-
         final Call<ArrayList<RankingData>> rankingdayCall=iApiService.sortDayViews();
         final Call<ArrayList<RankingData>> rankingweekCall=iApiService.sortWeekViews();
         final Call<ArrayList<RankingData>> rankingmonthCall=iApiService.sortMonthViews();
@@ -96,6 +95,8 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
         //그래프
         final BarChart mBarChart=findViewById(R.id.barChart);
 
+///////////////////////////****************디폴트 일일 랭킹값***************///////////////////////////////////////////
+//  깃허브 URL: https://github.com/blackfizz/EazeGraph                                                          //
 
         mBarChart.clearChart();
         rankingdayCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
@@ -136,10 +137,6 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
 
                         mBarChart.addBar(new BarModel(dayMapTitle.get("title"+i),(float)dayMapValue.get("value"+i), 0xFF56B7F1));
 
-//                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
-//                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
-//                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
-//                                mBarChart.addBar(new BarModel("야",4.f,  0xFF1BA4E6));
                         if(i==4)break;
                     }
                     mBarChart.startAnimation();
@@ -165,6 +162,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
+///////////////////////////**************** 일일 랭킹값***************///////////////////////////////////////////
 
         btn_day_ranking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,10 +213,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
 
                                 mBarChart.addBar(new BarModel(dayMapTitle.get("title"+i),(float)dayMapValue.get("value"+i), 0xFF56B7F1));
 
-//                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
-//                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
-//                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
-//                                mBarChart.addBar(new BarModel("야",4.f,  0xFF1BA4E6));
+
                                 if(i==4)break;
                             }
                             mBarChart.startAnimation();
@@ -243,6 +238,9 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                 });
             }
         });
+
+
+///////////////////////////****************주 랭킹값***************///////////////////////////////////////////
 
         btn_week_ranking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,18 +322,21 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+
+
+
+///////////////////////////****************월 랭킹값***************///////////////////////////////////////////
+
         btn_month_ranking.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
 
                 mBarChart.clearChart();
                 rankingmonthCall.clone().enqueue(new Callback<ArrayList<RankingData>>() {
 
                     @Override
                     public void onResponse(Call<ArrayList<RankingData>> call, Response<ArrayList<RankingData>> response) {
-
 
                         Log.d("랭킹데이터","week"+new Gson().toJson(response.body()));
                         String rankingData=new Gson().toJson(response.body());
@@ -348,8 +349,8 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                         monthMapTitle.clear();
                         monthMapValue.clear();
 
-
                         try {
+
                             JSONArray jsonArray=new JSONArray(rankingData);
 
                             String mapString="";
@@ -372,8 +373,8 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                             {
                                 Log.d("제이슨 타이틀3",""+monthMapTitle.get("title"+i)+"   "+monthMapTitle.get("title"+i));
 
-                                mBarChart.addBar(new BarModel(monthMapTitle.get("title"+i),(float)monthMapValue.get("value"+i), 0xFF56B7F1));
-
+                                mBarChart.addBar(new BarModel(monthMapTitle.get("title"+i),(float)monthMapValue.get("value"+i),      0xFFCDA67F));
+//                                에메랄드0xFF63CBB0
 //                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
 //                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
 //                                mBarChart.addBar(new BarModel("야",0.4f, 0xFF1FF4AC));
@@ -403,6 +404,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

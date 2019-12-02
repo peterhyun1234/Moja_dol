@@ -134,7 +134,7 @@ public class PolicyAdapter extends RecyclerView.Adapter<PolicyViewHolder> {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////*****************************holder 자체를 눌렸을때 detail로 이동********************************************************************////
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 /*******************************통신으로 클릭수 보내주고 디테일 부분으로 이동*///////////////////////////////////////
@@ -176,7 +176,7 @@ public class PolicyAdapter extends RecyclerView.Adapter<PolicyViewHolder> {
         }
 //*********************************년도****************************************//
         String year=words[5];
-        // Log.d("원본","년도"+year);
+       // Log.d("원본","년도"+year);
         sb.append(year); sb.append("년 ");
 
         //*********************************월****************************************//

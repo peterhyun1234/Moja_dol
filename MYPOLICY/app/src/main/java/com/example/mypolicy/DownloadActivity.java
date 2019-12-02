@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,9 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
     private Boolean isExitFlag = false;
     private Button btn_store_delte;
     private RecyclerView mRecyclerView;
+    Spinner sp_sort;
+
+
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
     final HashMap<String,Object> showStoreDataMap=new HashMap<>();
     final HashMap<String,Object> deleteDataMap=new HashMap<>();
@@ -68,6 +73,9 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
         mRecyclerView=findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         btn_store_delte=findViewById(R.id.btn_store_delete);
+        sp_sort=findViewById(R.id.sp_sort);
+
+
         final Call<ArrayList<StoreData>> storeDataCall=iApiService.showallMyList(showStoreDataMap);
 
 
@@ -98,7 +106,24 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
         }
 
 
+        /**********************************다운로드에서 정렬하기*****************************************************/
+        sp_sort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
     }
+
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

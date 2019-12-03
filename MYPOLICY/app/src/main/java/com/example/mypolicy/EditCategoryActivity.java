@@ -31,7 +31,7 @@ public class EditCategoryActivity extends AppCompatActivity {
 
     TextView tv_job_score,tv_business_score,tv_life_score,tv_house_score;
     ImageView btn_job_plus, btn_job_minus, btn_business_plus, btn_business_minus,
-            btn_life_plus, btn_life_minus, btn_house_plus, btn_house_minus;
+        btn_life_plus, btn_life_minus, btn_house_plus, btn_house_minus;
     Button btn_cancel, btn_ok,btn_profile_change;
     View.OnClickListener listener;
     SharedPreferences sharedPreferences;

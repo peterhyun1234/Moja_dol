@@ -26,6 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
 import android.view.ViewGroup;
@@ -76,12 +77,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PagerModelManager manager = new PagerModelManager();
         manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
         ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+
+//        Log.d("여긴가",""+manager.getItem(0));
+//        if(manager.getItem(0).toString().equals("GuideFragment{40b78d2 (a5ca0c12-adda-4584-9626-503015027256)}"))
+//        {
+//            Toast.makeText(mContext, "1111", Toast.LENGTH_SHORT).show();
+//        }
+//        Log.d("여긴가",""+manager.getItem(1));
+//        Log.d("여긴가",""+manager.getItem(2));
+//        Log.d("여긴가",""+manager.getItem(3));
+//        Log.d("여긴가",""+manager.getItem(4));
+
         viewPager.setAdapter(adapter);
         viewPager.fixScrollSpeed();
+//        Log.d("여긴가",""+springIndicator.);
 
         // just set viewPager
         springIndicator.setViewPager(viewPager);
 
+        ;
 
 
     }

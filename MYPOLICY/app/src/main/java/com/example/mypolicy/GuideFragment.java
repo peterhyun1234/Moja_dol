@@ -27,7 +27,7 @@ public class GuideFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_guide, container, false);
-   
+
     }
 
     @Override
@@ -36,7 +36,6 @@ public class GuideFragment extends Fragment {
 
 
         imageView = (ImageView) getView().findViewById(R.id.image);
-
         imageView.setBackgroundResource(bgRes);
     }
 }

@@ -118,9 +118,15 @@ module.exports = router;
 
 const gracfulCleanJob = () => new Promise((resolve, reject) => {
   setTimeout(() => {
-      // cleaning job done
+     console.log("Disconnected from port 3000");
       resolve();
   }, 3000);
+
+  setTimeout(() => {
+    console.log("Disconnected from port 8000");
+    console.log("Please wait...");
+    resolve();
+}, 8000);
 });
 
 process.on('SIGINT', function() {

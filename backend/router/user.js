@@ -62,6 +62,33 @@ router.get('/info', function (req, res) {
     });
 });
 
+router.post("/my_priority", function (req, res, next) {
+  
+    // 사용자 ID (type: string)
+    var recv_uID = req.body.uID;
+
+    var SQL = "SELECT Employment_sup_priority, Startup_sup_priority, Life_welfare_priority, Residential_financial_priority " +
+    "FROM user " + 
+    "WHERE " +
+    "uID = '" + recv_uID + "'";
+
+
+    console.log("API 'user/my_priority' called");
+    console.log(SQL);
+    
+    //절 차 
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
 router.post("/register", function (req, res, next) {
     // 사용자 ID (type: string)
     var recv_uID = req.body.uID;

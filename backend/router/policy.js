@@ -455,7 +455,7 @@ router.post("/test", function (req, res, next) {
     });
 });
 
-//정책 추천 - 어플리케이션 HOME 화면
+//정책 추천 - 어플리케이션 HOME 화면 1
 router.post("/referral", function (req, res, next) {
 
     var recv_uID = req.body.uID;
@@ -499,17 +499,68 @@ router.post("/referral", function (req, res, next) {
         "(mylist_priority.uID = click_priority.uID) AND " +
         "(user.uID = '" + recv_uID + "') AND " +
         "(start_age <= user.age AND user.age <= end_age) AND " +
-        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) AND " +
+        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
         "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
         "LIMIT 10";
 
     // "(user.region) AND " +        
-    // 경기 용인시
+    // egg. 경기 용인시
     // 1. dor = 전국
     // 2. dor = 경기 and si = 전체
     // 3. dor = 경기 and si = 용인시
 
     console.log("API 'policy/referral' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+//User_based 정책 추천 - 어플리케이션 HOME 화면 2
+router.post("/user_based_referral", function (req, res, next) {
+
+    var recv_uID = req.body.uID;
+
+    var age_SQL;
+    var order_SQL;
+
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "(Employment_sup*user.Employment_sup_priority + " +
+        "Startup_sup*user.Startup_sup_priority + " +
+        "Life_welfare*user.Life_welfare_priority + " +
+        "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
+        "AS cg_priority, " +
+        "(Employment_sup*mylist_priority.Employment_sup_priority + " +
+        "Startup_sup*mylist_priority.Startup_sup_priority + " +
+        "Life_welfare*mylist_priority.Life_welfare_priority + " +
+        "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
+        "AS ml_priority, " +
+        "(Employment_sup*click_priority.Employment_sup_priority + " +
+        "Startup_sup*click_priority.Startup_sup_priority + " +
+        "Life_welfare*click_priority.Life_welfare_priority + " +
+        "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
+        "AS cl_priority " +
+        "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
+        "WHERE (user.uID = mylist_priority.uID) AND " +
+        "(user.uID = click_priority.uID) AND " +
+        "(mylist_priority.uID = click_priority.uID) AND " +
+        "(user.uID = '" + recv_uID + "') AND " +
+        "(start_age <= user.age AND user.age <= end_age) AND " +
+        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
+        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
+        "LIMIT 10";
+
+    console.log("API 'policy/user_based_referral' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {

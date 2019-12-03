@@ -13,12 +13,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.collect.Lists;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -31,6 +33,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
+
+import github.chenupt.springindicator.SpringIndicator;
+import github.chenupt.springindicator.viewpager.ScrollerViewPager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean isExitFlag = false;
 
     SharedPreferences sharedPreferences;
-
+    ScrollerViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sharedPreferences = getSharedPreferences("session",MODE_PRIVATE);
 
         addSideView();  //사이드바 add
+
+        viewPager = (ScrollerViewPager) findViewById(R.id.view_pager);
+        SpringIndicator springIndicator = (SpringIndicator) findViewById(R.id.indicator);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        PagerModelManager manager = new PagerModelManager();
+        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
+        ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+        viewPager.setAdapter(adapter);
+        viewPager.fixScrollSpeed();
+
+        // just set viewPager
+        springIndicator.setViewPager(viewPager);
+
 
 
     }
@@ -214,4 +236,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainLayout.setEnabled(false);
         Log.e(TAG, "메뉴버튼 클릭");
     }
+
+    private List<String> getTitles(){
+        return Lists.newArrayList("1", "2", "3", "4","5");
+    }
+
+    private List<Integer> getBgRes(){
+        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg4);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_about) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

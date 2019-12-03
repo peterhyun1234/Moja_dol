@@ -1,0 +1,59 @@
+ -- policy/referral
+SELECT *
+FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority 
+WHERE 
+(user.uID = mylist_priority.uID = click_priority.uID) AND 
+(mylist_priority.uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= user.age AND user.age <= end_age) AND 
+expiration_flag <> 1
+LIMIT 10
+
+ -- policy/referral
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+(Employment_sup*user.Employment_sup_priority + 
+Startup_sup*user.Startup_sup_priority + 
+Life_welfare*user.Life_welfare_priority + 
+Residential_finance*user.Residential_financial_priority)*0.5 AS cg_priority, 
+(Employment_sup*mylist_priority.Employment_sup_priority + 
+Startup_sup*mylist_priority.Startup_sup_priority + 
+Life_welfare*mylist_priority.Life_welfare_priority + 
+Residential_finance*mylist_priority.Residential_financial_priority)*0.5 AS ml_priority, 
+(Employment_sup*click_priority.Employment_sup_priority + 
+Startup_sup*click_priority.Startup_sup_priority + 
+Life_welfare*click_priority.Life_welfare_priority + 
+Residential_finance*click_priority.Residential_financial_priority)*0.5 AS cl_priority 
+FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority 
+WHERE 
+(user.uID = mylist_priority.uID = click_priority.uID) AND 
+(mylist_priority.uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= user.age AND user.age <= end_age) AND 
+expiration_flag <> 1 
+ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC 
+LIMIT 10
+
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+(Employment_sup*user.Employment_sup_priority + 
+Startup_sup*user.Startup_sup_priority + 
+Life_welfare*user.Life_welfare_priority + 
+Residential_finance*user.Residential_financial_priority)*0.5 AS cg_priority, 
+(Employment_sup*mylist_priority.Employment_sup_priority + 
+Startup_sup*mylist_priority.Startup_sup_priority + 
+Life_welfare*mylist_priority.Life_welfare_priority + 
+Residential_finance*mylist_priority.Residential_financial_priority)*0.5 AS ml_priority, 
+(Employment_sup*click_priority.Employment_sup_priority + 
+Startup_sup*click_priority.Startup_sup_priority + 
+Life_welfare*click_priority.Life_welfare_priority + 
+Residential_finance*click_priority.Residential_financial_priority)*0.5 AS cl_priority 
+FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority 
+WHERE 
+(user.uID = mylist_priority.uID = click_priority.uID) AND 
+(user.uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= user.age AND user.age <= end_age) AND 
+expiration_flag <> 1 
+ORDER BY cg_priority DESC, apply_end ASC 
+LIMIT 10

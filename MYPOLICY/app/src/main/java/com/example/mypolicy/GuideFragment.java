@@ -1,6 +1,7 @@
 package com.example.mypolicy;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class GuideFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bgRes = getArguments().getInt("data");
+        Log.d("bgRes",""+bgRes);
     }
 
     @Override

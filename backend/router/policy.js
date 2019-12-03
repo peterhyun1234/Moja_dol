@@ -26,9 +26,9 @@ router.get('/show_all_policies', function (req, res) {
 
 router.get('/select_all_policies', function (req, res) {
 
-    var SQL = "SELECT p_code, title, " + 
-    "DATE_SUB(crawling_date, INTERVAL -9 HOUR) AS crawling_date, " + 
-    "expiration_flag from policy";
+    var SQL = "SELECT p_code, title, " +
+        "DATE_SUB(crawling_date, INTERVAL -9 HOUR) AS crawling_date, " +
+        "expiration_flag from policy";
 
     console.log("API 'policy/select_all_policies' called");
     console.log(SQL);
@@ -252,10 +252,10 @@ router.post("/modify_policy", function (req, res, next) {
 router.get('/selected_policies', function (req, res) {
 
 
-    var SQL = "SELECT p_code, title, uri, " + 
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
-    "from policy";
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+        "from policy";
 
     console.log("API 'policy/selected_policies' called");
     console.log(SQL);
@@ -276,11 +276,11 @@ router.get('/selected_policies', function (req, res) {
 router.get('/after_apply_policies', function (req, res) {
 
 
-    var SQL = "SELECT p_code, title, uri, " + 
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
-    "from policy " +
-    "where (apply_end < NOW())";
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+        "from policy " +
+        "where (apply_end < NOW())";
 
     console.log("API 'policy/after_apply_policies' called");
     console.log(SQL);
@@ -300,11 +300,11 @@ router.get('/after_apply_policies', function (req, res) {
 // 공고 전
 router.get('/before_apply_policies', function (req, res) {
 
-    var SQL = "SELECT p_code, title, uri, " + 
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
-    "from policy " +
-    "where (apply_start > NOW())";;
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+        "from policy " +
+        "where (apply_start > NOW())";;
 
     console.log("API 'policy/before_apply_policies' called");
     console.log(SQL);
@@ -325,11 +325,11 @@ router.get('/before_apply_policies', function (req, res) {
 router.get('/possible_apply_policies', function (req, res) {
 
 
-    var SQL = "SELECT p_code, title, uri, " + 
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
-    "from policy " +
-    "where (apply_start <= NOW() AND apply_end >= NOW())";
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+        "from policy " +
+        "where (apply_start <= NOW() AND apply_end >= NOW())";
 
     console.log("API 'policy/always_apply_policies' called");
     console.log(SQL);
@@ -350,11 +350,11 @@ router.get('/possible_apply_policies', function (req, res) {
 router.get('/always_apply_policies', function (req, res) {
 
 
-    var SQL = "SELECT p_code, title, uri, " + 
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " + 
-    "from policy " +
-    "where (expiration_flag = 2)";
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+        "from policy " +
+        "where (expiration_flag = 2)";
 
     console.log("API 'policy/always_apply_policies' called");
     console.log(SQL);
@@ -376,12 +376,12 @@ router.get('/:id', function (req, res) {
     var policy_params = req.params.id;
     //console.log('selected policy is ' + policy_params);
 
-    var SQL = "SELECT p_code, title, uri, " + 
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-    "start_age, end_age, contents, application_target, dor, si, " +  
-    "crawling_date, expiration_flag " + 
-    "from policy where p_code = " + policy_params;
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "start_age, end_age, contents, application_target, dor, si, " +
+        "crawling_date, expiration_flag " +
+        "from policy where p_code = " + policy_params;
 
     console.log("API 'policy/:id' called");
     console.log(SQL);
@@ -404,12 +404,12 @@ router.post("/click", function (req, res, next) {
     var recv_uID = req.body.uID;
     var recv_p_code = req.body.p_code;
 
-    var SQL = 'INSERT INTO click (p_code, uID, click_time)'+
-    'VALUES (' +
-    recv_p_code +
-    ',\'' + recv_uID + '\'' +
-    ',' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' + 
-    ")";  
+    var SQL = 'INSERT INTO click (p_code, uID, click_time)' +
+        'VALUES (' +
+        recv_p_code +
+        ',\'' + recv_uID + '\'' +
+        ',' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' +
+        ")";
 
     console.log("API 'policy/click' called");
     console.log(SQL);
@@ -431,12 +431,14 @@ router.post("/test", function (req, res, next) {
     var recv_uID = req.body.uID;
 
     var SQL = "SELECT * " +
-    "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
-    "WHERE (user.uID = mylist_priority.uID = click_priority.uID) AND " +
-    "(click_priority.uID = '" + recv_uID + "') AND " +
-    "(start_age <= user.age AND user.age <= end_age) AND " +
-    "expiration_flag <> 1 " +
-    "LIMIT 10";  
+        "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
+        "WHERE (user.uID = mylist_priority.uID) AND " +
+        "(user.uID = click_priority.uID) AND " +
+        "(mylist_priority.uID = click_priority.uID) AND " +
+        "(user.uID = '" + recv_uID + "') AND " +
+        "(start_age <= user.age AND user.age <= end_age) AND " +
+        "expiration_flag <> 1 " +
+        "LIMIT 10";
 
     console.log("API 'policy/test' called");
     console.log(SQL);
@@ -462,7 +464,7 @@ router.post("/referral", function (req, res, next) {
     // 2. 클릭, 찜, 카테고리지정에 따른 웨이트 구하기
     // 3. 유저베이스드는 플마 3살의 가장 많이 클릭한 웨이트 + 찜한 웨이트
     // 4. 와이값은 나이와 성별 별로 찜한 리스트
-    
+
     // • 디비에 성별 추가
     // • 카테고리 분류 추가 이거 약간 노가다
     // • 여러 유저의 데이터 쌓기
@@ -473,31 +475,39 @@ router.post("/referral", function (req, res, next) {
     var age_SQL;
     var order_SQL;
 
-    var SQL = "SELECT p_code, title, uri, " + 
-        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-        "(Employment_sup*user.Employment_sup_priority + " + 
-        "Startup_sup*user.Startup_sup_priority + " + 
-        "Life_welfare*user.Life_welfare_priority + " + 
-        "Residential_finance*user.Residential_financial_priority)*"+ category_weight + " " + 
+        "(Employment_sup*user.Employment_sup_priority + " +
+        "Startup_sup*user.Startup_sup_priority + " +
+        "Life_welfare*user.Life_welfare_priority + " +
+        "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
         "AS cg_priority, " +
-        "(Employment_sup*mylist_priority.Employment_sup_priority + " + 
-        "Startup_sup*mylist_priority.Startup_sup_priority + " + 
-        "Life_welfare*mylist_priority.Life_welfare_priority + " + 
-        "Residential_finance*mylist_priority.Residential_financial_priority)*"+ mylist_weight + " " + 
+        "(Employment_sup*mylist_priority.Employment_sup_priority + " +
+        "Startup_sup*mylist_priority.Startup_sup_priority + " +
+        "Life_welfare*mylist_priority.Life_welfare_priority + " +
+        "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
         "AS ml_priority, " +
-        "(Employment_sup*click_priority.Employment_sup_priority + " + 
-        "Startup_sup*click_priority.Startup_sup_priority + " + 
-        "Life_welfare*click_priority.Life_welfare_priority + " + 
-        "Residential_finance*click_priority.Residential_financial_priority)*"+ click_weight + " " + 
+        "(Employment_sup*click_priority.Employment_sup_priority + " +
+        "Startup_sup*click_priority.Startup_sup_priority + " +
+        "Life_welfare*click_priority.Life_welfare_priority + " +
+        "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
         "AS cl_priority " +
         "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
-        "WHERE (uID = '" + recv_uID + "') AND " +
-        "(user.uID = mylist_priority.uID = click_priority.uID) AND " +
+        "WHERE (user.uID = mylist_priority.uID) AND " +
+        "(user.uID = click_priority.uID) AND " +
+        "(mylist_priority.uID = click_priority.uID) AND " +
+        "(user.uID = '" + recv_uID + "') AND " +
         "(start_age <= user.age AND user.age <= end_age) AND " +
-        "expiration_flag <> 1 " +
-        "ORDER BY (category_priority + mylist_priority + click_priority) DESC, apply_end ASC " +
+        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) AND " +
+        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
         "LIMIT 10";
+
+    // "(user.region) AND " +        
+    // 경기 용인시
+    // 1. dor = 전국
+    // 2. dor = 경기 and si = 전체
+    // 3. dor = 경기 and si = 용인시
 
     console.log("API 'policy/referral' called");
     console.log(SQL);

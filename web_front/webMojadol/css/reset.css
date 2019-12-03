@@ -21,6 +21,8 @@ input {outline: none;}
 .pagination a {color: #000;}
 .pagination li.active a {color: blue;}
 
+.request_flag {width:90px;}
+.request_flag input {width: 20px; height: 20px;}
 
 ul {list-style: none;}
 p {margin: 0;}

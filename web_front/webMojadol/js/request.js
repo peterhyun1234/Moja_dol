@@ -23,6 +23,7 @@ function showrequest(){
 					var flag = '<span class="request_flag" data-sort="request_flag"><input type="checkbox"  unchecked data-toggle="toggle" onclick="modifyflag(this.id)" id="'+"request"+content.req_code+'"></span></li>';
 				}
 				else {
+					
 					var flag = '<span class="request_flag" data-sort="request_flag"><input type="checkbox"  checked data-toggle="toggle"  onclick="modifyflag(this.id)" id="'+"request"+content.req_code+'"></span></li>';
 				}             
 				  

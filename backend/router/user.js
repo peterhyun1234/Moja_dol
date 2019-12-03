@@ -100,18 +100,18 @@ router.post("/register", function (req, res, next) {
     var recv_region_arr = req.body.region;
     var region_arr_len = recv_region_arr.length;
     //console.log("region_arr_len: " + region_arr_len);
-    var recv_region;
 
-    if (region_arr_len == 2 && recv_region_arr[1] != "") {
-        recv_region = recv_region_arr[0] + " " + recv_region_arr[1];
-    }
-    else if(region_arr_len == 1 || recv_region_arr[1] == "")
-    {
-        recv_region = recv_region_arr[0];
-    }
-    else {
-        recv_region = "미정";
-    }
+    // if (region_arr_len == 2 && recv_region_arr[1] != "") // 
+    // {
+    //     recv_region = recv_region_arr[0] + " " + recv_region_arr[1];
+    // }
+    // else if(region_arr_len == 1 || recv_region_arr[1] == "")
+    // {
+    //     recv_region = recv_region_arr[0];
+    // }
+    // else {
+    //     recv_region = "미정";
+    // }
 
     // 사용자 성별 (type: String)
     var recv_sex = req.body.sex;
@@ -151,7 +151,8 @@ router.post("/register", function (req, res, next) {
     var SQL = 'INSERT INTO user VALUES(' +
         '\'' + recv_uID + '\'' +
         ', \'' + recv_name + '\'' +
-        ', \'' + recv_region + '\'' +
+        ', \'' + recv_region_arr[0] + '\'' +
+        ', \'' + recv_region_arr[1] + '\'' +
         ', ' + recv_age +
         ', ' + recv_Employment_sup_priority +
         ', ' + recv_Startup_sup_priority +
@@ -161,7 +162,8 @@ router.post("/register", function (req, res, next) {
         "ON DUPLICATE KEY UPDATE " +
         "uID = '" + recv_uID + "', " +
         "name = '" + recv_name + "', " +
-        "region = '" + recv_region + "', " +
+        "dor = '" + recv_region_arr[0] + "', " +
+        "si = '" + recv_region_arr[1] + "', " +
         "age = " + recv_age + ", " +
         "Employment_sup_priority = " + recv_Employment_sup_priority + ", " +
         "Startup_sup_priority = " + recv_Startup_sup_priority + ", " +

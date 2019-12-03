@@ -78,12 +78,56 @@ FROM user NATURAL JOIN stored_policy, policy
 WHERE 
 (p_code = s_p_code) AND
 (age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
-() AND -- 지역이 같거나 전국인 경우
-(user.uID = 'peterhyun1234@gmail.com') AND 
-(start_age <= user.age AND user.age <= end_age) AND 
+(start_age <= age AND age <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
 GROUP BY p_code
 ORDER BY policy_hits DESC
 LIMIT 10
 
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+() AND -- 지역이 같거나 전국인 경우
+(uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= age AND age <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+(start_age <= (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') AND (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+(start_age <= (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') AND (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') <= end_age) AND 
+() AND -- 지역이 같거나 전국인 경우
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
 
 DELETE FROM stored_policy WHERE s_p_code BETWEEN 0 AND 3000;

@@ -143,14 +143,14 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
                 // ***********************************값 널기*******************************//
                 if(sp_sort.getItemAtPosition(position).equals("저장날짜순"))
                 {
-                    Toasty.success(mContext, "저장날짜", Toast.LENGTH_SHORT, true).show();
+                    Toasty.success(mContext, "저장날짜순", Toast.LENGTH_SHORT, true).show();
                     dateValue=sp_sort.getItemAtPosition(position).toString();
                 }
 
 
                 if(sp_sort.getItemAtPosition(position).equals("지원날짜순"))
                 {
-                    Toasty.success(mContext, "지원날짜", Toast.LENGTH_SHORT, true).show();
+                    Toasty.success(mContext, "지원날짜순", Toast.LENGTH_SHORT, true).show();
                     dateValue=sp_sort.getItemAtPosition(position).toString();
                 }
 

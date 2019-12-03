@@ -240,12 +240,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.e(TAG, "메뉴버튼 클릭");
     }
 
-    private List<String> getTitles(){
+    static List<String> getTitles(){
         return Lists.newArrayList("1", "2", "3", "4","5");
     }
 
-    private List<Integer> getBgRes(){
-        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg4);
+    static List<Integer> getBgRes(){
+        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
     }
 
 

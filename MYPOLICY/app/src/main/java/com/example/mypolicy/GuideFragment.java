@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class GuideFragment extends Fragment {
 
@@ -20,19 +21,22 @@ public class GuideFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bgRes = getArguments().getInt("data");
-        Log.d("bgRes",""+bgRes);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_guide, container, false);
+   
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         imageView = (ImageView) getView().findViewById(R.id.image);
+
         imageView.setBackgroundResource(bgRes);
     }
 }

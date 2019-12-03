@@ -469,13 +469,16 @@ router.post("/referral", function (req, res, next) {
     // • 카테고리 분류 추가 이거 약간 노가다
     // • 여러 유저의 데이터 쌓기
 
+
+    // **** 카테고리 등록안한 user는 못 받는 게 당연하지마 click, my_list의 경우는 받아야 함!!
+
     var click_weight = 0.5;
     var mylist_weight = 0.5;
     var category_weight = 0.5;
     var age_SQL;
     var order_SQL;
 
-    var SQL = "SELECT p_code, title, uri, " +
+    var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
         "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
         "(Employment_sup*user.Employment_sup_priority + " +
@@ -498,16 +501,38 @@ router.post("/referral", function (req, res, next) {
         "(user.uID = click_priority.uID) AND " +
         "(mylist_priority.uID = click_priority.uID) AND " +
         "(user.uID = '" + recv_uID + "') AND " +
-        "(start_age <= user.age AND user.age <= end_age) AND " +
-        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
-        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
-        "LIMIT 10";
+        "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) "
+        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC ";
 
-    // "(user.region) AND " +        
-    // egg. 경기 용인시
-    // 1. dor = 전국
-    // 2. dor = 경기 and si = 전체
-    // 3. dor = 경기 and si = 용인시
+        // var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
+        // "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        // "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        // "(Employment_sup*user.Employment_sup_priority + " +
+        // "Startup_sup*user.Startup_sup_priority + " +
+        // "Life_welfare*user.Life_welfare_priority + " +
+        // "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
+        // "AS cg_priority, " +
+        // "(Employment_sup*mylist_priority.Employment_sup_priority + " +
+        // "Startup_sup*mylist_priority.Startup_sup_priority + " +
+        // "Life_welfare*mylist_priority.Life_welfare_priority + " +
+        // "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
+        // "AS ml_priority, " +
+        // "(Employment_sup*click_priority.Employment_sup_priority + " +
+        // "Startup_sup*click_priority.Startup_sup_priority + " +
+        // "Life_welfare*click_priority.Life_welfare_priority + " +
+        // "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
+        // "AS cl_priority " +
+        // "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
+        // "WHERE (user.uID = mylist_priority.uID) AND " +
+        // "(user.uID = click_priority.uID) AND " +
+        // "(mylist_priority.uID = click_priority.uID) AND " +
+        // "(user.uID = '" + recv_uID + "') AND " +
+        // "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) AND " +
+        // "(start_age <= user.age AND user.age <= end_age) AND " +
+        // "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
+        // "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
+        // "LIMIT 30";
+
 
     console.log("API 'policy/referral' called");
     console.log(SQL);
@@ -528,37 +553,27 @@ router.post("/referral", function (req, res, next) {
 router.post("/user_based_referral", function (req, res, next) {
 
     var recv_uID = req.body.uID;
+    var age_gap = 10;
 
     var age_SQL;
     var order_SQL;
 
+    // 지역으로 분류하는 걸 추가해야할지..?
+
     var SQL = "SELECT p_code, title, uri, " +
-        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
-        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-        "(Employment_sup*user.Employment_sup_priority + " +
-        "Startup_sup*user.Startup_sup_priority + " +
-        "Life_welfare*user.Life_welfare_priority + " +
-        "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
-        "AS cg_priority, " +
-        "(Employment_sup*mylist_priority.Employment_sup_priority + " +
-        "Startup_sup*mylist_priority.Startup_sup_priority + " +
-        "Life_welfare*mylist_priority.Life_welfare_priority + " +
-        "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
-        "AS ml_priority, " +
-        "(Employment_sup*click_priority.Employment_sup_priority + " +
-        "Startup_sup*click_priority.Startup_sup_priority + " +
-        "Life_welfare*click_priority.Life_welfare_priority + " +
-        "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
-        "AS cl_priority " +
-        "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
-        "WHERE (user.uID = mylist_priority.uID) AND " +
-        "(user.uID = click_priority.uID) AND " +
-        "(mylist_priority.uID = click_priority.uID) AND " +
-        "(user.uID = '" + recv_uID + "') AND " +
-        "(start_age <= user.age AND user.age <= end_age) AND " +
-        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
-        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
-        "LIMIT 10";
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+    "count(*) AS policy_hits " +
+    "FROM user NATURAL JOIN stored_policy, policy " +
+    "WHERE " +
+    "(p_code = s_p_code) AND " +
+    "(age BETWEEN ((SELECT age FROM user WHERE uID = '"+ recv_uID +"') - " + age_gap + 
+    ") AND ((SELECT age FROM user WHERE uID = '"+ recv_uID +"') + " + age_gap + ")) AND " +
+    "(start_age <= (SELECT age FROM user WHERE uID = '"+ recv_uID +"') AND (SELECT age FROM user WHERE uID = '"+ recv_uID +"') <= end_age) AND " +
+    "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
+    "GROUP BY p_code " +
+    "ORDER BY policy_hits DESC " +
+    "LIMIT 5";
 
     console.log("API 'policy/user_based_referral' called");
     console.log(SQL);

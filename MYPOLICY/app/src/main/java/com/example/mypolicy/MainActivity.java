@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     SharedPreferences sharedPreferences;
     ScrollerViewPager viewPager;
+//    SpringIndicator springIndicator;
+//    PagerModelManager manager;
+//    ModelPagerAdapter adapter;
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
 
 
@@ -121,33 +124,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager = (ScrollerViewPager) findViewById(R.id.view_pager);
         SpringIndicator springIndicator = (SpringIndicator) findViewById(R.id.indicator);
 
-
         PagerModelManager manager = new PagerModelManager();
+        manager.addCommonFragment(GuideFragment2.class, getBgRes(), getTitles());
+        ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+      
+
+
         new Handler().postDelayed(new Runnable()
         {
             @Override
             public void run()
             {
-                for(int i=0;i<referralList.size();i++)
-                {
-                    Log.d("여긴가프린트",""+referralList.get(i).getTitle());
-                }
+
+                SpringIndicator springIndicator = (SpringIndicator) findViewById(R.id.indicator);
+
+                PagerModelManager manager = new PagerModelManager();
+
+                manager.addCommonFragment(GuideFragment.class, getNetwork(), getTitles());
+                ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+                adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+
+                viewPager.setAdapter(adapter);
+                viewPager.fixScrollSpeed();
+
+
+                // just set viewPager
+                springIndicator.setViewPager(viewPager);
             }
-        }, 2000);// 0.5초 정도 딜레이를 준 후 시작
+        }, 1000);// 0.5초 정도 딜레이를 준 후 시작
 
 
-        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
-
-        ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
-
+//        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
 //
+//        ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
 //
-        viewPager.setAdapter(adapter);
-        viewPager.fixScrollSpeed();
-        Log.d("여긴가",""+springIndicator);
-
-        // just set viewPager
-        springIndicator.setViewPager(viewPager);
+////
+////
+//        viewPager.setAdapter(adapter);
+//        viewPager.fixScrollSpeed();
+//        Log.d("여긴가",""+springIndicator);
+//
+//        // just set viewPager
+//        springIndicator.setViewPager(viewPager);
 
         ;
 
@@ -316,9 +334,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
     }
 
-//    static List<Referral> getNetwork(){
-//        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
-//    }
+    static List<Referral> getNetwork(){
+        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
+    }
 
 
 //    @Override

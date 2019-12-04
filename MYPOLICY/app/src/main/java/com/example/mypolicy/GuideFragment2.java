@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.mypolicy.model.Referral;
 
-public class GuideFragment extends Fragment {
+public class GuideFragment2 extends Fragment {
 
     private int bgRes;
     private Referral referral;
@@ -25,8 +25,8 @@ public class GuideFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //bgRes = getArguments().getInt("data");
-        referral = (Referral) getArguments().get("data");
+        bgRes = getArguments().getInt("data");
+//        referral = (Referral) getArguments().get("data");
 //        name=getArguments().getString("data");
 
     }
@@ -41,10 +41,10 @@ public class GuideFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        //imageView = (ImageView) getView().findViewById(R.id.image);
+        imageView = (ImageView) getView().findViewById(R.id.image);
 
-        //imageView.setBackgroundResource(bgRes);
-        textView=getView().findViewById(R.id.tv_policy_name_test);
-        textView.setText(referral.getTitle());
+        imageView.setBackgroundResource(bgRes);
+//        textView=getView().findViewById(R.id.tv_policy_name_test);
+//        textView.setText(referral.getTitle());
     }
 }

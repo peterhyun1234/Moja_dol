@@ -166,45 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // just set viewPager
         springIndicator.setViewPager(viewPager);
-
-
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-
-                SpringIndicator springIndicator = (SpringIndicator) findViewById(R.id.indicator);
-
-                PagerModelManager manager = new PagerModelManager();
-
-                manager.addCommonFragment(GuideFragment.class, getNetwork(), getTitles());
-                ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
-                adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
-
-                viewPager.setAdapter(adapter);
-
-
-            }
-        }, 1000);// 0.5초 정도 딜레이를 준 후 시작
-
-
-//        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
-//
-//        ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
-//
-////
-////
-//        viewPager.setAdapter(adapter);
-//        viewPager.fixScrollSpeed();
-//        Log.d("여긴가",""+springIndicator);
-//
-//        // just set viewPager
-//        springIndicator.setViewPager(viewPager);
-
-        ;
-
-
     }
 
     @Override

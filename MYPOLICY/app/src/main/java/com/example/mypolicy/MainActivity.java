@@ -39,6 +39,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call<ArrayList<Referral>> call, Response<ArrayList<Referral>> response) {
                 Log.d("여긴가",""+new Gson().toJson(response.body()));
+                String a=new Gson().toJson(response.body());
             }
 
             @Override
@@ -293,9 +295,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
 //    }
 
-    static List<ArrayList<Referral>> getNetwork(){
-        return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
-    }
+//    static List<ArrayList<Referral>> getNetwork(){
+//        return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
+//    }
 
 
 //    @Override

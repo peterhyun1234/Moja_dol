@@ -1,13 +1,29 @@
 package com.example.mypolicy.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Referral {
+public class Referral implements Serializable {
     private long p_code;
     private String title;
     private String uri;
     private Date apply_start;
     private Date apply_end;
+
+    public Referral(long p_code, String title, String uri) {
+        this.p_code = p_code;
+        this.title = title;
+        this.uri = uri;
+
+    }
+
+    public Referral(long p_code, String title, String uri, Date apply_start, Date apply_end) {
+        this.p_code = p_code;
+        this.title = title;
+        this.uri = uri;
+        this.apply_start = apply_start;
+        this.apply_end = apply_end;
+    }
 
     public long getP_code() {
         return p_code;

@@ -8,40 +8,27 @@ import android.os.Bundle;
 import com.example.mypolicy.model.Referral;
 import com.example.mypolicy.service.IApiService;
 import com.example.mypolicy.service.RestClient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.core.view.GravityCompat;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
-import android.view.MenuItem;
-
-import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
-import android.view.Menu;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,8 +38,6 @@ import github.chenupt.springindicator.SpringIndicator;
 import github.chenupt.springindicator.viewpager.ScrollerViewPager;
 import github.chenupt.multiplemodel.viewpager.ModelPagerAdapter;
 import github.chenupt.multiplemodel.viewpager.PagerModelManager;
-import github.chenupt.springindicator.SpringIndicator;
-import github.chenupt.springindicator.viewpager.ScrollerViewPager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context mContext = MainActivity.this;
 
-    public ArrayList<Referral> referralList=new ArrayList<>();
+    static List<Referral> referralList = new ArrayList<>();
 
     private ViewGroup mainLayout;   //사이드 나왔을때 클릭방지할 영역
     private ViewGroup viewLayout;   //전체 감싸는 영역
@@ -75,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferences sharedPreferences;
     ScrollerViewPager viewPager;
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
-
 
 
     @Override
@@ -101,12 +85,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     long p_code;
                     String uri;
                     String title;
-
+                    Log.d("여긴가길이",""+jsonArray.length());
                     for(int i=0;i<jsonArray.length();i++)
                     {
                         JSONObject jsonObject=jsonArray.getJSONObject(i);
-                        
+                        title=jsonObject.getString("title");
+                        Log.d("여긴가1",""+title);
+                        p_code=jsonObject.getInt("p_code");
+                        uri=jsonObject.getString("uri");
+
+                        Log.d("여긴가1",""+jsonObject.getString("apply_start"));
+//                        start=transFormat.parse(jsonObject.getString("apply_start"));
+//                        end=transFormat.parse(jsonObject.getString("apply_end"));
+
+                        Log.d("여긴가길이",""+title + "  "+p_code+ " "+uri);
+                        Referral referral=new Referral(p_code,title,uri);
+                        referralList.add(referral);
                     }
+                    Log.d("여긴가사이즈",""+referralList.size());
                 }catch (Exception e)
                 {
                     e.printStackTrace();
@@ -119,7 +115,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
+        Log.d("여긴가프린트",""+referralList.size());
+        for(int i=0;i<referralList.size();i++)
+        {
+            Log.d("여긴가프린트",""+referralList.get(i).getTitle());
+        }
         addSideView();  //사이드바 add
 
         viewPager = (ScrollerViewPager) findViewById(R.id.view_pager);
@@ -127,19 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         PagerModelManager manager = new PagerModelManager();
-        manager.addCommonFragment(GuideFragment.class, getNetwork(), getTitles());
+        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
+
         ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
 
-//        Log.d("여긴가",""+manager.getItem(0));
-//        if(manager.getItem(0).toString().equals("GuideFragment{40b78d2 (a5ca0c12-adda-4584-9626-503015027256)}"))
-//        {
-//            Toast.makeText(mContext, "1111", Toast.LENGTH_SHORT).show();
-//        }
-//        Log.d("여긴가",""+manager.getItem(1));
-//        Log.d("여긴가",""+manager.getItem(2));
-//        Log.d("여긴가",""+manager.getItem(3));
-//        Log.d("여긴가",""+manager.getItem(4));
-
+//
+//
         viewPager.setAdapter(adapter);
         viewPager.fixScrollSpeed();
         Log.d("여긴가",""+springIndicator);
@@ -310,13 +303,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Lists.newArrayList("1", "2", "3", "4","5");
     }
 
-//    static List<Integer> getBgRes(){
-//        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
-//    }
-
-    static List<ArrayList<Referral>> getNetwork(){
-        return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
+    static List<Integer> getBgRes(){
+        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
     }
+
+//    static List<Referral> getNetwork(){
+//        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
+//    }
 
 
 //    @Override

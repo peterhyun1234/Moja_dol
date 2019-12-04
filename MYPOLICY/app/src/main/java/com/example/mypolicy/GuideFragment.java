@@ -69,7 +69,7 @@ public class GuideFragment extends Fragment {
         textView=getView().findViewById(R.id.tv_policy_name_test);
         textView.setText(referral.getTitle());
         Log.d("체코드",""+referral.getP_code());
-      //  final Call<ArrayList<Policy>> call=iApiService.showselectedPolicy(R.id.tv_policy_pcode_test);
+//        final Call<ArrayList<Policy>> call=iApiService.showselectedPolicy(R.id.tv_policy_pcode_test);
 
 //        Log.d("체코드",""+GuideFragment.this.getActivity().getSharedPreferences("userEmail", Context.MODE_PRIVATE));
 //        clickMap.put("uID",share);

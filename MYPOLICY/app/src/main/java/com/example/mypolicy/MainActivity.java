@@ -63,13 +63,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Boolean isMenuShow = false;
     private Boolean isExitFlag = false;
-
-    TextView tv_name;
+    TextView tv_name, tv_name2;
 
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
     ScrollerViewPager viewPager;
-//    SpringIndicator springIndicator;
+    //    SpringIndicator springIndicator;
 //    PagerModelManager manager;
 //    ModelPagerAdapter adapter;
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
@@ -85,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sharedPreferences = getSharedPreferences("session",MODE_PRIVATE);
 
         tv_name = findViewById(R.id.tv_name_main);
+        tv_name2 = findViewById(R.id.tv_name_main2);
 
         // 사용자 이름 불러오기
         DocumentReference userInfo = db.collection("user").document(sharedPreferences.getString("userEmail",null));
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         tv_name.setText(document.get("name").toString());
+                        tv_name2.setText(document.get("name").toString());
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -104,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-
 
         final HashMap<String,Object> referralMap=new HashMap<>();
         referralMap.put("uID",sharedPreferences.getString("userEmail",null));
@@ -126,13 +126,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     {
                         JSONObject jsonObject=jsonArray.getJSONObject(i);
                         title=jsonObject.getString("title");
-                        Log.d("여긴가1",""+title);
+
                         p_code=jsonObject.getInt("p_code");
                         uri=jsonObject.getString("uri");
 
                         Log.d("여긴가1",""+jsonObject.getString("apply_start"));
-//                        start=transFormat.parse(jsonObject.getString("apply_start"));
-//                        end=transFormat.parse(jsonObject.getString("apply_end"));
+
 
                         Log.d("여긴가길이",""+title + "  "+p_code+ " "+uri);
                         Referral referral=new Referral(p_code,title,uri);
@@ -163,9 +162,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager.setAdapter(adapter);
         viewPager.fixScrollSpeed();
 
-
         // just set viewPager
         springIndicator.setViewPager(viewPager);
+
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+
+                SpringIndicator springIndicator = (SpringIndicator) findViewById(R.id.indicator);
+
+                PagerModelManager manager = new PagerModelManager();
+
+                manager.addCommonFragment(GuideFragment.class, getNetwork(), getTitles());
+                ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+                adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+
+                viewPager.setAdapter(adapter);
+
+            }
+        }, 1000);// 0.5초 정도 딜레이를 준 후 시작
+
+
+//        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
+//
+//        ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
+//
+////
+////
+//        viewPager.setAdapter(adapter);
+//        viewPager.fixScrollSpeed();
+//        Log.d("여긴가",""+springIndicator);
+//
+//        // just set viewPager
+//        springIndicator.setViewPager(viewPager);
+
+        ;
+
+
     }
 
     @Override

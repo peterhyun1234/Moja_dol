@@ -115,11 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        Log.d("여긴가프린트",""+referralList.size());
-        for(int i=0;i<referralList.size();i++)
-        {
-            Log.d("여긴가프린트",""+referralList.get(i).getTitle());
-        }
+
         addSideView();  //사이드바 add
 
         viewPager = (ScrollerViewPager) findViewById(R.id.view_pager);
@@ -127,6 +123,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         PagerModelManager manager = new PagerModelManager();
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for(int i=0;i<referralList.size();i++)
+                {
+                    Log.d("여긴가프린트",""+referralList.get(i).getTitle());
+                }
+            }
+        }, 2000);// 0.5초 정도 딜레이를 준 후 시작
+
+
         manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
 
         ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);

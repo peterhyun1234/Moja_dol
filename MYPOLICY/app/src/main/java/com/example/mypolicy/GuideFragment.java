@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,15 +16,17 @@ import androidx.fragment.app.FragmentManager;
 public class GuideFragment extends Fragment {
 
     private int bgRes;
+    private String name;
     private ImageView imageView;
+    private TextView textView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bgRes = getArguments().getInt("data");
+        //bgRes = getArguments().getInt("data");
+        name=getArguments().getString("data");
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_guide, container, false);
@@ -35,7 +38,10 @@ public class GuideFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        imageView = (ImageView) getView().findViewById(R.id.image);
-        imageView.setBackgroundResource(bgRes);
+        //imageView = (ImageView) getView().findViewById(R.id.image);
+
+        //imageView.setBackgroundResource(bgRes);
+        textView=getView().findViewById(R.id.tv_policy_name_test);
+        textView.setText(name);
     }
 }

@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -123,7 +124,31 @@ public class EditCategoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<Preference>> call, Response<ArrayList<Preference>> response) {
                 String score=new Gson().toJson(response.body());
-                Log.d("점수",""+score);
+                int job,changup,life,jugeo;
+                try{
+                    JSONArray jsonArray=new JSONArray(score);
+                    JSONObject jsonObject=jsonArray.getJSONObject(0);
+                    job=jsonObject.getInt("Employment_sup_priority");
+                    Log.d("점수",""+Integer.toString(job));
+                    changup=jsonObject.getInt("Startup_sup_priority");
+                    Log.d("점수",""+changup);
+
+                    life=jsonObject.getInt("Life_welfare_priority");
+                    Log.d("점수",""+life);
+
+                    jugeo=jsonObject.getInt("Residential_financial_priority");
+                    Log.d("점수",""+jugeo);
+
+                    tv_job_score.setText(Integer.toString(job));
+                    tv_business_score.setText(Integer.toString(changup));
+                    tv_life_score.setText(Integer.toString(life));
+                    tv_house_score.setText(Integer.toString(jugeo));
+                    Log.d("점수",""+job+" "+changup+"  "+life+" "+jugeo);
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             @Override

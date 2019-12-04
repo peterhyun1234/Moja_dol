@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mypolicy.model.Preference;
 import com.example.mypolicy.service.IApiService;
 import com.example.mypolicy.service.RestClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,10 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,14 +34,19 @@ public class EditCategoryActivity extends AppCompatActivity {
 
     TextView tv_job_score,tv_business_score,tv_life_score,tv_house_score;
     ImageView btn_job_plus, btn_job_minus, btn_business_plus, btn_business_minus,
-        btn_life_plus, btn_life_minus, btn_house_plus, btn_house_minus;
+            btn_life_plus, btn_life_minus, btn_house_plus, btn_house_minus;
     Button btn_cancel, btn_ok,btn_profile_change;
     View.OnClickListener listener;
     SharedPreferences sharedPreferences;
     FirebaseFirestore db;
 
+
     int[] scoreList = {0,0,0,0};
     final IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+    final HashMap<String,Object> setCategoryMap=new HashMap<>();
+    final Call<ArrayList<Preference>> setCategoryCall=iApiService.showPreference(setCategoryMap);
+
+
     ArrayList<String> search_region =new ArrayList<>();
 
 
@@ -110,6 +118,20 @@ public class EditCategoryActivity extends AppCompatActivity {
         btn_house_plus.setOnClickListener(listener);
         btn_house_minus.setOnClickListener(listener);
         final String email=sharedPreferences.getString("userEmail",null);
+        setCategoryMap.put("uID",email);
+        setCategoryCall.clone().enqueue(new Callback<ArrayList<Preference>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Preference>> call, Response<ArrayList<Preference>> response) {
+                String score=new Gson().toJson(response.body());
+                Log.d("점수",""+score);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Preference>> call, Throwable t) {
+
+            }
+        });
+
 
         // ***********************************************
         // score 초기값 불러오기

@@ -1,6 +1,7 @@
 package com.example.mypolicy.service;
 
 import com.example.mypolicy.model.Policy;
+import com.example.mypolicy.model.Preference;
 import com.example.mypolicy.model.RankingData;
 import com.example.mypolicy.model.Referral;
 import com.example.mypolicy.model.Review;
@@ -135,5 +136,9 @@ public interface IApiService {
     @FormUrlEncoded
     @POST("policy/test")
     Call<ArrayList<Referral>> showReferral(@FieldMap HashMap<String,Object> parameters);
+
+    @FormUrlEncoded
+    @POST("user/my_priority")
+    Call<ArrayList<Preference>> showPreference(@FieldMap HashMap<String,Object> parameters);
 
 }

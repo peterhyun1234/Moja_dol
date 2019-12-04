@@ -430,15 +430,12 @@ router.post("/test", function (req, res, next) {
 
     var recv_uID = req.body.uID;
 
-    var SQL = "SELECT * " +
-        "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
-        "WHERE (user.uID = mylist_priority.uID) AND " +
-        "(user.uID = click_priority.uID) AND " +
-        "(mylist_priority.uID = click_priority.uID) AND " +
-        "(user.uID = '" + recv_uID + "') AND " +
-        "(start_age <= user.age AND user.age <= end_age) AND " +
-        "expiration_flag <> 1 " +
-        "LIMIT 10";
+    var SQL = "SELECT p_code, title, uri, " +
+    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+    "FROM policy " +
+    "WHERE (apply_start <= NOW() AND apply_end >= NOW())" +
+    "LIMIT 5";
 
     console.log("API 'policy/test' called");
     console.log(SQL);
@@ -501,9 +498,9 @@ router.post("/referral", function (req, res, next) {
         "(user.uID = click_priority.uID) AND " +
         "(mylist_priority.uID = click_priority.uID) AND " +
         "(user.uID = '" + recv_uID + "') AND " +
-        "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) "
-        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC ";
-
+        "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) " +
+        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
+        "LIMIT 30";
         // var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
         // "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         // "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +

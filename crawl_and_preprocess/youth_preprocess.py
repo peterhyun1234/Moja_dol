@@ -164,7 +164,7 @@ def age_parse(df):
     #temp = list(set(temp)-set(end))
      
     temp = list_minus_list(temp,start)
-    temp = list_minus_list(temp,start)
+    temp = list_minus_list(temp,end)
    
     if len(temp)>1:
         start.append(temp[0])
@@ -413,7 +413,10 @@ def date_list_parse(df_in):
     df['end_date'] = None
     
     if len(df['res_date'])==0:
-        pass
+        if df[date_col]=='상시':
+            df['start_date'] = datetime.datetime(1980,1,1)
+        else:
+            pass
     else:
         df['start_date'] = df['res_date'][0][0]
         df['end_date'] = df['res_date'][0][1]
@@ -495,4 +498,4 @@ def preprocess_youth():
         except IntegrityError:
             pass
 
-#preprocess_youth()
+#preprocess_local_youth()

@@ -14,6 +14,8 @@ from sqlalchemy.exc import IntegrityError
 
 import datetime
 
+from test_slack import slack_chat
+
 path = "/root/airflow/dags/chromedriver"
 option_ch = webdriver.ChromeOptions()
 option_ch.add_argument('--headless')
@@ -173,7 +175,8 @@ def youth_crawl_db_in():
         print("exist")
         print(e)
         pass
-    
+   
+    slack_chat('youth crawl origin len : '+str(len(df)))    
     for i in range(len(df)):
         try:
             df.iloc[i:i+1].to_sql(name="youth_crawl_origin",if_exists='append',con=conn,index = False)

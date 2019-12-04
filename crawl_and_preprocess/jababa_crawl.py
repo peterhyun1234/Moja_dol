@@ -12,12 +12,15 @@ from sqlalchemy.exc import IntegrityError
 import datetime
 import time
 
+from slacker import Slacker
+
 PATH = "/root/airflow/dags/chromedriver"
 option_ch = webdriver.ChromeOptions()
 option_ch.add_argument('--headless')
 option_ch.add_argument('--no-sandbox')
 option_ch.add_argument('--disable-dev-shm-usage')
 
+token = 'xoxp-755497320470-755149020551-861262615350-955245705b763bd4857324f7d9a58f6e'
 
 engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/crawl_db?host=localhost?port=3306", encoding='utf-8')
 base_url = "https://www.jobaba.net/sprtPlcy/info/list.do?schCl1Cd="
@@ -156,6 +159,9 @@ def jababa_crawling():
     id_list = youth_id_cral(driver)
     conn = engine.connect()
     
+    slack = Slacker(token)
+    
+
     try:
         id_df = pd.read_sql(jababa_id,con=conn)
     
@@ -189,6 +195,8 @@ def jababa_crawling():
         pass
     
     print("data row len: "+ str(len(df)))
+
+    slack.chat.post_message("#crawl_info",'jababa_crawl len : '+str(len(df)))
     for i in range(len(df)):
         try:
 	   

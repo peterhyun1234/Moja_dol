@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String TAG = "MainActivity";
 
     private Context mContext = MainActivity.this;
+
+    public ArrayList<Referral> referralList=new ArrayList<>();
 
     private ViewGroup mainLayout;   //사이드 나왔을때 클릭방지할 영역
     private ViewGroup viewLayout;   //전체 감싸는 영역
@@ -91,7 +94,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call<ArrayList<Referral>> call, Response<ArrayList<Referral>> response) {
                 Log.d("여긴가",""+new Gson().toJson(response.body()));
-                String a=new Gson().toJson(response.body());
+                try{
+                    JSONArray jsonArray=new JSONArray(new Gson().toJson(response.body()).toString());
+                    Date start;
+                    Date end;
+                    long p_code;
+                    String uri;
+                    String title;
+
+                    for(int i=0;i<jsonArray.length();i++)
+                    {
+                        JSONObject jsonObject=jsonArray.getJSONObject(i);
+                        
+                    }
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -295,9 +314,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
 //    }
 
-//    static List<ArrayList<Referral>> getNetwork(){
-//        return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
-//    }
+    static List<ArrayList<Referral>> getNetwork(){
+        return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
+    }
 
 
 //    @Override

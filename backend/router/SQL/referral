@@ -131,3 +131,8 @@ ORDER BY policy_hits DESC
 LIMIT 10
 
 DELETE FROM stored_policy WHERE s_p_code BETWEEN 0 AND 3000;
+
+
+--5. 사용자 맞춤 정책 추천 (temp/referral + temp/user_based_referral)
+
+--6. 건의사항 작성 (temp/send_req)

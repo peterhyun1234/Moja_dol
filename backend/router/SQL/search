@@ -1,0 +1,39 @@
+-- 1. 정책 키워드 검색 (temp/keyword_search)
+
+SELECT policy.*, 
+(title LIKE "%시%") + (contents LIKE "%시%") + (title LIKE "%여러분%") + (contents LIKE "%여러분%") AS match_score 
+FROM policy  
+WHERE (title LIKE "%시%" OR contents LIKE "%시%" OR title LIKE "%여러분%" OR contents LIKE "%여러분%" ) 
+ORDER BY match_score DESC, apply_end is null ASC, apply_end ASC
+
+-- 2. 나이 기반 정책 검색 (temp/age_search)
+
+SELECT policy.*,
+(title LIKE "%시%") + (contents LIKE "%시%") + (title LIKE "%여러분%") + (contents LIKE "%여러분%") AS match_score
+FROM policy 
+WHERE (title LIKE "%시%" OR contents LIKE "%시%" OR title LIKE "%여러분%" OR contents LIKE "%여러분%" )
+AND (end_age >= 25 AND start_age <= 25) 
+ORDER BY match_score DESC, apply_end is null ASC, apply_end ASC
+
+-- 3. 거주지 기반 정책 검색 (temp/location_search)
+
+SELECT policy.*,
+(title LIKE "%시%") + (contents LIKE "%시%") + (title LIKE "%여러분%") + (contents LIKE "%여러분%") AS match_score 
+FROM policy 
+WHERE (title LIKE "%시%" OR contents LIKE "%시%" OR title LIKE "%여러분%" OR contents LIKE "%여러분%" )
+AND (end_age >= 25 AND start_age <= 25) 
+AND ((dor LIKE '경기%'))
+ORDER BY match_score DESC, apply_end is null ASC, apply_end ASC
+
+-- 4. 지원분야 기반 검색 (temp/category_search)
+
+SELECT policy.*,
+concat_ws('', (CASE Employment_sup WHEN '1' THEN '취업지원' END), (CASE Startup_sup WHEN '1' THEN '창업지원' END), (CASE Life_welfare WHEN 1 THEN '생활복지' END), (CASE Residential_finance WHEN 1 THEN '주거금융' END)) AS category, 
+(title LIKE "%시%")+(contents LIKE "%시%") + (title LIKE "%여러분%") + (contents LIKE "%여러분%") AS match_score 
+FROM policy NATURAL JOIN interest 
+WHERE (Startup_sup = 1) 
+AND (title LIKE "%시%" OR contents LIKE "%시%" OR title LIKE "%여러분%" OR contents LIKE "%여러분%" )
+AND (end_age >= 25 AND start_age <= 25) 
+AND ((dor LIKE '경기%'))
+ORDER BY match_score DESC, apply_end is null ASC, apply_end ASC
+

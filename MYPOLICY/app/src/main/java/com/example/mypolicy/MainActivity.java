@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         PagerModelManager manager = new PagerModelManager();
-        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
+        manager.addCommonFragment(GuideFragment.class, getNetwork(), getTitles());
         ModelPagerAdapter adapter = new ModelPagerAdapter(getSupportFragmentManager(), manager);
 
 //        Log.d("여긴가",""+manager.getItem(0));
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         viewPager.setAdapter(adapter);
         viewPager.fixScrollSpeed();
-//        Log.d("여긴가",""+springIndicator.);
+        Log.d("여긴가",""+springIndicator);
 
         // just set viewPager
         springIndicator.setViewPager(viewPager);
@@ -258,8 +258,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Lists.newArrayList("1", "2", "3", "4","5");
     }
 
-    static List<Integer> getBgRes(){
-        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
+//    static List<Integer> getBgRes(){
+//        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
+//    }
+
+    static List<String> getNetwork(){
+        return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
     }
 
 

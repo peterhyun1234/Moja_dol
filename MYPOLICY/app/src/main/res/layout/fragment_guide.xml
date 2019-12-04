@@ -50,7 +50,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_policy_name"
+                android:id="@+id/tv_policy_name_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="청년지원 프로젝트"

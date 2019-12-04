@@ -1,7 +1,7 @@
 
 -- before_click_priority_update
 delimiter |
-CREATE TRIGGER before_click_priority_update 
+CREATE TRIGGER after_click_priority_insert 
 AFTER INSERT ON click 
 FOR EACH ROW 
 BEGIN 
@@ -30,7 +30,7 @@ BEGIN
     Life_welfare_priority = ci.Life_welfare_priority,  
     Residential_financial_priority = ci.Residential_financial_priority;
 END|
-delimiter ;
+delimiter;
 
 -- create table mylist_priority
 create table mylist_priority(         

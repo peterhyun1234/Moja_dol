@@ -124,7 +124,6 @@ WHERE
 (p_code = s_p_code) AND
 (age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
 (start_age <= (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') AND (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') <= end_age) AND 
-() AND -- 지역이 같거나 전국인 경우
 ((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
 GROUP BY p_code
 ORDER BY policy_hits DESC

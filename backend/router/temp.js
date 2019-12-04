@@ -6,7 +6,8 @@ var connection = require('../index.js').connection;
 
 router.get('/all_users', function (req, res) {
 
-    var SQL = "SELECT uID, name, dor, si, age, sex from user";
+    var SQL = "SELECT uID, name, dor, si, age, sex from user " +
+    "WHERE (uID <> 'iwsl1234@naver.com') OR (uID <> '054637@naver.com') OR (uID <> 'aaa@naver.com')";
 
     console.log("API 'temp/all_users' called");
     console.log(SQL);
@@ -25,7 +26,8 @@ router.get('/all_users', function (req, res) {
 
 router.get('/users_priority', function (req, res) {
 
-    var SQL = 'SELECT uID, name, Employment_sup_priority, Startup_sup_priority, Life_welfare_priority, Residential_financial_priority from user';
+    var SQL = 'SELECT uID, name, Employment_sup_priority, Startup_sup_priority, Life_welfare_priority, Residential_financial_priority from user ' +
+    "WHERE (uID <> 'iwsl1234@naver.com') OR (uID <> '054637@naver.com') OR (uID <> 'aaa@naver.com')";
 
     console.log("API 'temp/users_priority' called");
     console.log(SQL);
@@ -139,7 +141,7 @@ router.get("/location_search", function (req, res, next) {
 });
 
 //4. 지원분야 기반 검색 (temp/category_search)
-router.get("/location_search", function (req, res, next) {
+router.get("/category_search", function (req, res, next) {
 
     var SQL = "SELECT policy.*, " +
         "concat_ws('', (CASE Employment_sup WHEN '1' THEN '취업지원' END), (CASE Startup_sup WHEN '1' THEN '창업지원' END), (CASE Life_welfare WHEN 1 THEN '생활복지' END), (CASE Residential_finance WHEN 1 THEN '주거금융' END)) AS category, " +
@@ -151,7 +153,7 @@ router.get("/location_search", function (req, res, next) {
         "AND ((dor LIKE '경기%')) " +
         "ORDER BY match_score DESC, apply_end is null ASC, apply_end ASC";
 
-    console.log("API 'temp/location_search' called");
+    console.log("API 'temp/category_search' called");
     console.log(SQL);
     //절 차 
     connection.query(SQL, function (err, data) {
@@ -202,7 +204,7 @@ router.get("/referral", function (req, res, next) {
         "(user.uID = '" + recv_uID + "') AND " +
         "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) " +
         "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
-        "LIMIT 30";
+        "LIMIT 5";
 
 
     console.log("API 'temp/referral' called");
@@ -260,7 +262,7 @@ router.get("/user_based_referral", function (req, res, next) {
 
 
 //6. 건의사항 작성 (temp/send_req)
-router.get("/send_req", function (req, res, next) {
+router.post("/send_req", function (req, res, next) {
     // 사용자의 ID (type: string)
     var recv_uID = "peterhyun1234@gmail.com";
 

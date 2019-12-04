@@ -40,7 +40,7 @@ router.post("/send_req", function (req, res, next) {
 });
 
 router.post("/show_all_reqs", function (req, res, next) {
-    var SQL = 'SELECT * FROM request';
+    var SQL = 'SELECT * FROM request ORDER BY req_time desc';
 
     console.log("API 'request/show_all_reqs' called");
     console.log(SQL);

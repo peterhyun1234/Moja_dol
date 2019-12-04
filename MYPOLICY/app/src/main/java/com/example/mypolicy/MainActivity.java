@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.mypolicy.model.Referral;
+import com.example.mypolicy.service.IApiService;
+import com.example.mypolicy.service.RestClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +24,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -35,6 +39,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import github.chenupt.springindicator.SpringIndicator;
@@ -43,6 +51,9 @@ import github.chenupt.multiplemodel.viewpager.ModelPagerAdapter;
 import github.chenupt.multiplemodel.viewpager.PagerModelManager;
 import github.chenupt.springindicator.SpringIndicator;
 import github.chenupt.springindicator.viewpager.ScrollerViewPager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -59,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     SharedPreferences sharedPreferences;
     ScrollerViewPager viewPager;
+    IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +81,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         init();
 
         sharedPreferences = getSharedPreferences("session",MODE_PRIVATE);
+
+        final HashMap<String,Object> referralMap=new HashMap<>();
+        referralMap.put("uID",sharedPreferences.getString("userEmail",null));
+        final Call<ArrayList<Referral>> referralCall=iApiService.showReferral(referralMap);
+
+        referralCall.clone().enqueue(new Callback<ArrayList<Referral>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Referral>> call, Response<ArrayList<Referral>> response) {
+                Log.d("여긴가",""+new Gson().toJson(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Referral>> call, Throwable t) {
+
+            }
+        });
+
 
         addSideView();  //사이드바 add
 
@@ -262,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
 //    }
 
-    static List<String> getNetwork(){
+    static List<ArrayList<Referral>> getNetwork(){
         return Lists.newArrayList("장성범","ㄴㅇ","ㄴㅇㄹ","ㄴㅇ","ㄴㅇㄹ");
     }
 

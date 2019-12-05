@@ -366,9 +366,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
     }
 
-    static List<Referral> getNetwork(){
-        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
-    }
+//    static List<Referral> getNetwork(){
+//        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
+//    }
 
 
 //    @Override

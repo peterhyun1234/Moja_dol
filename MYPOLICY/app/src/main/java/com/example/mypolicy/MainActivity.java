@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.mypolicy.adapter.PolicyAdapter;
+import com.example.mypolicy.adapter.TestAdapter;
 import com.example.mypolicy.model.Referral;
+import com.example.mypolicy.model.Test;
 import com.example.mypolicy.service.IApiService;
 import com.example.mypolicy.service.RestClient;
 
@@ -24,6 +27,8 @@ import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
     ScrollerViewPager viewPager;
+    RecyclerView mRecyclerView;
     //    SpringIndicator springIndicator;
 //    PagerModelManager manager;
 //    ModelPagerAdapter adapter;
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tv_name = findViewById(R.id.tv_name_main);
         tv_name2 = findViewById(R.id.tv_name_main2);
+
 
         // 사용자 이름 불러오기
         DocumentReference userInfo = db.collection("user").document(sharedPreferences.getString("userEmail",null));
@@ -107,34 +114,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         final HashMap<String,Object> referralMap=new HashMap<>();
-        referralMap.put("uID",sharedPreferences.getString("userEmail",null));
-        final Call<ArrayList<Referral>> referralCall=iApiService.showReferral(referralMap);
+        final HashMap<String,Object> testMap=new HashMap<>();
 
+        testMap.put("uID",sharedPreferences.getString("userEmail",null));
+        referralMap.put("uID",sharedPreferences.getString("userEmail",null));
+
+        final Call<ArrayList<Referral>> referralCall=iApiService.showReferral(referralMap);
+        final Call<ArrayList<Test>> testCall=iApiService.showTest(testMap);
+
+        /*************************위에 뷰페이져 불러오는 부분***************************/
         referralCall.clone().enqueue(new Callback<ArrayList<Referral>>() {
             @Override
             public void onResponse(Call<ArrayList<Referral>> call, Response<ArrayList<Referral>> response) {
                 Log.d("여긴가",""+new Gson().toJson(response.body()));
                 try{
-                    JSONArray jsonArray=new JSONArray(new Gson().toJson(response.body()).toString());
-                    Date start;
-                    Date end;
+                    JSONArray jsonArray=new JSONArray(new Gson().toJson(response.body()));
+
                     long p_code;
-                    String uri;
                     String title;
+
                     Log.d("여긴가길이",""+jsonArray.length());
                     for(int i=0;i<jsonArray.length();i++)
                     {
                         JSONObject jsonObject=jsonArray.getJSONObject(i);
                         title=jsonObject.getString("title");
 
-                        p_code=jsonObject.getInt("p_code");
-                        uri=jsonObject.getString("uri");
+                        p_code=jsonObject.getLong("p_code");
 
-                        Log.d("여긴가1",""+jsonObject.getString("apply_start"));
+                        Log.d("여긴가1",""+title+"  "+p_code);
 
 
-                        Log.d("여긴가길이",""+title + "  "+p_code+ " "+uri);
-                        Referral referral=new Referral(p_code,title,uri);
+                        Referral referral=new Referral(p_code,title);
                         referralList.add(referral);
                     }
                     Log.d("여긴가사이즈",""+referralList.size());
@@ -150,6 +160,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //******************************밑에 화면(리사이클러*******************************************/
+        mRecyclerView=findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        testCall.clone().enqueue(new Callback<ArrayList<Test>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Test>> call, Response<ArrayList<Test>> response) {
+                Log.d("밑에화면",""+new Gson().toJson(response.body()));
+                TestAdapter ta=new TestAdapter(response.body());
+                mRecyclerView.setAdapter(ta);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Test>> call, Throwable t) {
+
+            }
+        });
 
         addSideView();  //사이드바 add
 
@@ -183,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 viewPager.setAdapter(adapter);
 
             }
-        }, 1000);// 0.5초 정도 딜레이를 준 후 시작
+        }, 3000);// 0.5초 정도 딜레이를 준 후 시작
 
 
 //        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());
@@ -366,9 +393,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return Lists.newArrayList(R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,R.drawable.bg1);
     }
 
-//    static List<Referral> getNetwork(){
-//        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
-//    }
+    static List<Referral> getNetwork(){
+        return Lists.newArrayList(referralList.get(0),referralList.get(1),referralList.get(2),referralList.get(3),referralList.get(4));
+    }
 
 
 //    @Override

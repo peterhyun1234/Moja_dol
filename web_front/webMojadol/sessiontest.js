@@ -78,15 +78,64 @@ router.route('/login').post(                      //설정된 쿠키정보를 �
         var paramID = req.body.id || req.query.id;
         var pw = req.body.passwords || req.query.passwords;
  
-//여기서 디비 확인하고 오면 될 듯 - 현빈
+//로그인 요청이라 디비 쿼리문 넣으면 될듯요!
+/*         var recv_id = req.body.id;
+        var recv_password = req.body.password;
+        var SQL = 'SELECT 1 FROM admin_user WHERE id = \'' + recv_id + '\' and password = \'' + recv_password + '\'';
+
+        console.log(SQL);
+
+        var login;
+        var msg;
+
+        connection.query(SQL, function (err, data) {
+            console.log(data);
+            if (data.length == '1') {
+                //console.log("비밀번호 일치");
+                //res.send('1');
+                login = 1;
+                if (req.session.user) {
+                    console.log('이미 로그인 되어 있음');
+                    //res.redirect('../views/member.html');
+                    var data = {msg : 1};
+                    res.send(data);
+
+                } else {
+                    console.log("세션업슈 그래서 만듬");
+                    req.session.user =
+                        {
+                            id: paramID,
+                            pw: pw,
+                            name: 'UsersNames!!!!!',
+                            authorized: true
+                        };
+                    //var data = 1;
+                    var data = {msg : 0};
+                    res.send(data);
+                    //res.redirect('../views/member.html');
+                }
+            }
+            else {
+                console.log("비밀번호 불일치");
+                //res.send('-1');
+                login = -1;
+            }
+
+            var senddata = {"login": login, "msg" : msg};
+            res.send(senddata);
+        }); */
+
+//로그인 요청이라 디비 쿼리문 넣으면 될듯요!
+        /////////////////////////////////////////////////////
 
         if (req.session.user) {
             console.log('이미 로그인 되어 있음');
-            res.redirect('../views/member.html');
-            
+            //res.redirect('../views/member.html');
+            var data = {msg : 1};
+            res.send(data);
  
         } else {
-            console.log("세션업슈");
+            console.log("세션업슈 그래서 만듬");
             req.session.user =
                 {
                     id: paramID,
@@ -94,8 +143,12 @@ router.route('/login').post(                      //설정된 쿠키정보를 �
                     name: 'UsersNames!!!!!',
                     authorized: true
                 };
-                res.redirect('../views/member.html');
+                //var data = 1;
+                var data = {msg : 0};
+                res.send(data);
+                //res.redirect('../views/member.html');
         }
+        
         console.log("/login. 함수끝");
     }
 );

@@ -50,34 +50,22 @@
                              <input id="loginadmin" class="loginadminbtn" type="button" onclick="logincheck()" value="관리자 로그인"/>
                         </div>                        
                     </form>
+                    <form class="sessionBox" method="post" ><!-- action="/login" -->
+                        <div>
+                            <input type="text" name="id" class="id" id="id2" placeholder="아이디를 입력해주세요"/> 
+                        </div>
+                        <div>
+                            <input type="password" name="pw" class="pw" id="pw2" placeholder="비밀번호를 입력해주세요"/>
+                        </div>
+                        <div>
+                             <input id="" class="loginadminbtn" type="submit" value="관리자 로그인" onclick="login()"/>
+                        </div>                      
+                    </form>
                     <div class="mojadol">
-                        <span>@MOJADOL@
-                        </span>
+                        <span>@MOJADOL@</span>
                     </div>
             </div>
         </div>
-
-        <h1>login2</h1>
-    <form method="post" action="/login">
-        <table>
-            <tr>
-                <td><label>ID : </label></td>
-                <td><input type="text" name="id"></td>
-            </tr>
-            <tr>
-                <td><label>PW : </label></td>
-                <td><input type="text" name="passwords"></td>
- 
- 
-            </tr>
- 
-            <tr>
-                <td><input type="submit" value="Sumit" name=""></td>
-            </tr>
- 
-        </table>
- 
-    </form>
 
     </section>
 </body>

@@ -1,5 +1,11 @@
-﻿uID,name,region,age,Employment_sup_priority,Startup_sup_priority,Life_welfare_priority,Residential_financial_priority
-054637@naver.com,천혜림,서울시 송파구,24,5,3,5,1
-hades818@gmail.com,장성범,강남,25,5,1,5,5
-peterhyun1234@gmail.com,전현빈,경기도,25,5,4,3,2
-randfo42@gmail.com,김태성,강원도,23,1,1,1,1
+﻿uID,name,dor,si,age,Employment_sup_priority,Startup_sup_priority,Life_welfare_priority,Residential_financial_priority,sex
+054637@naver.com,천혜림,서울,전체,24,5,1,2,2,여
+aaa@naver.com,ㅇㅈㅇ,경기,전체,23,1,2,1,3,여
+iwsl1234@naver.com,장성범,서울,전체,25,4,3,3,3,남
+ncavchl2@ajou.ac.kr,고경표,세종,전체,26,0,0,0,1,남
+peterhyun1234@gmail.com,전현빈,경기,전체,25,5,4,3,2,남
+sunstar04@ajou.ac.kr,김선영,서울,전체,22,4,3,1,3,여
+whddls9632@naver.com,박종인,경기,수원시,27,5,0,5,3,남
+wjsgusqls12345@gmail.com,전현숙,서울,강북구,27,0,0,5,5,여
+wjsgusqls1234@gmail.com,전현순,경기,수원시,25,5,1,5,5,여
+wjsgusqls123@gmail.com,김현빈,서울,전체,20,5,5,5,5,남

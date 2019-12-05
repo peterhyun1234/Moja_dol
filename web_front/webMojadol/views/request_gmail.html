@@ -66,7 +66,7 @@
 
             <!--Add buttons to initiate auth sequence and sign out-->
             <button id="authorize_button" style="display: none;">Gmail 인증</button>
-            <button id="signout_button" style="display: none;"><a href="request.html">로그아웃</a></button>
+            <button id="signout_button" style="display: none;"><a href="policy.html">로그아웃</a></button>
             
             <pre id="content" style="white-space: pre-wrap;"></pre>
             
@@ -149,7 +149,6 @@
        */
       function handleSignoutClick(event) {
         gapi.auth2.getAuthInstance().signOut();
-        //location.replace('request.html');
       }
 
       /**

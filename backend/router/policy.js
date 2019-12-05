@@ -432,10 +432,14 @@ router.post("/test", function (req, res, next) {
 
     var SQL = "SELECT p_code, title, uri, " +
     "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
-    "FROM policy " +
-    "WHERE (apply_start <= NOW() AND apply_end >= NOW())" +
-    "LIMIT 5";
+    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+    "count(*) AS policy_hits " +
+    "FROM stored_policy, policy " +
+    "WHERE " +
+    "(p_code = s_p_code) " +
+    "GROUP BY p_code " +
+    "ORDER BY policy_hits DESC " +
+    "LIMIT 30";
 
     console.log("API 'policy/test' called");
     console.log(SQL);
@@ -500,7 +504,7 @@ router.post("/referral", function (req, res, next) {
         "(user.uID = '" + recv_uID + "') AND " +
         "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) " +
         "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
-        "LIMIT 30";
+        "LIMIT 5";
         // var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
         // "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         // "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +

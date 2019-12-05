@@ -32,19 +32,6 @@ var connect = mysql_db.mysql_init();
 mysql_db.mysql_open(connect);
 exports.connection = connect;
 
-// firebase 연동
-// firebase.initializeApp({
-//   apiKey: firebase_db.apiKey,
-//   authDomain: firebase_db.authDomain,
-//   databaseURL: firebase_db.databaseURL,
-//   projectId: firebase_db.projectId,
-//   storageBucket: firebase_db.storageBucket,
-//   messagingSenderId: firebase_db.messagingSenderId,
-//   appId: firebase_db.appId
-// });
-// exports.firebase_db = firebase;
-
-
 app.set('port', process.env.PORT || 3000);
 
 // URL REST-API SERVER

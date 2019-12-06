@@ -46,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import github.chenupt.springindicator.SpringIndicator;
 import github.chenupt.springindicator.viewpager.ScrollerViewPager;
 import github.chenupt.multiplemodel.viewpager.ModelPagerAdapter;
@@ -134,6 +135,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String title;
 
                     Log.d("여긴가길이",""+jsonArray.length());
+                    for(int i=0;i<referralList.size();i++)
+                    {
+                        if(referralList.get(i).getTitle().equals("caterogy_required"))
+                        {
+                            hd.callFunction();
+                            break;
+
+                        }
+                    }
+
                     for(int i=0;i<jsonArray.length();i++)
                     {
                         JSONObject jsonObject=jsonArray.getJSONObject(i);
@@ -144,14 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Referral referral=new Referral(p_code,title);
                         referralList.add(referral);
                     }
-                    for(int i=0;i<referralList.size();i++)
-                    {
-                        if(referralList.get(i).getTitle().equals("caterogy_required"))
-                        {
-                            hd.callFunction();
 
-                        }
-                    }
                     Log.d("여긴가사이즈",""+referralList.size());
                 }catch (Exception e)
                 {
@@ -172,9 +176,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         testCall.clone().enqueue(new Callback<ArrayList<Test>>() {
             @Override
             public void onResponse(Call<ArrayList<Test>> call, Response<ArrayList<Test>> response) {
-                Log.d("밑에화면",""+new Gson().toJson(response.body()));
-                TestAdapter ta=new TestAdapter(response.body());
-                mRecyclerView.setAdapter(ta);
+                Log.d("위에화면",""+new Gson().toJson(response.body()));
+                if(response.body().size()==5)
+                {
+                    Toasty.error(MainActivity.this, "삭제완료!!", Toast.LENGTH_SHORT, true).show();
+                }
+
+                else
+                {
+                    TestAdapter ta = new TestAdapter(response.body());
+                    mRecyclerView.setAdapter(ta);
+                }
             }
 
             @Override

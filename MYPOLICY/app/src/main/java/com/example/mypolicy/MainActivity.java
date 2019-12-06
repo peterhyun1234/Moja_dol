@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    PagerModelManager manager;
 //    ModelPagerAdapter adapter;
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
-
+    homeDialog hd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         tv_name = findViewById(R.id.tv_name_main);
         tv_name2 = findViewById(R.id.tv_name_main2);
+        hd=new homeDialog(this);
 
 
         // 사용자 이름 불러오기
@@ -129,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("여긴가",""+new Gson().toJson(response.body()));
                 try{
                     JSONArray jsonArray=new JSONArray(new Gson().toJson(response.body()));
-
                     long p_code;
                     String title;
 
@@ -141,11 +141,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         p_code=jsonObject.getLong("p_code");
 
-                        Log.d("여긴가1",""+title+"  "+p_code);
-
-
                         Referral referral=new Referral(p_code,title);
                         referralList.add(referral);
+                    }
+                    for(int i=0;i<referralList.size();i++)
+                    {
+                        if(referralList.get(i).getTitle().equals("caterogy_required"))
+                        {
+                            hd.callFunction();
+
+                        }
                     }
                     Log.d("여긴가사이즈",""+referralList.size());
                 }catch (Exception e)
@@ -210,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 viewPager.setAdapter(adapter);
 
             }
-        }, 3000);// 0.5초 정도 딜레이를 준 후 시작
+        }, 2000);// 0.5초 정도 딜레이를 준 후 시작
 
 
 //        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());

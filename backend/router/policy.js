@@ -434,8 +434,9 @@ router.post("/test", function (req, res, next) {
     "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
     "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
     "count(*) AS policy_hits " +
-    "FROM stored_policy, policy " +
+    "FROM stored_policy, policy, user " +
     "WHERE " +
+    "(user.uID = '" + recv_uID + "') AND" +
     "(p_code = s_p_code) " +
     "GROUP BY p_code " +
     "ORDER BY policy_hits DESC " +
@@ -446,8 +447,25 @@ router.post("/test", function (req, res, next) {
 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            //console.log(data);
-            res.send(data);
+            if (data.length == 0) {            
+                var error_Array = new Array()
+                errorInfo = new Object();
+               
+                errorInfo.p_code = 0;
+                errorInfo.title = "caterogy_required";
+                errorInfo.uri = "caterogy_required";
+                errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
+                errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
+                errorInfo.policy_hits = 0;
+                
+                for(var i = 0; i < 5; i++)
+                    error_Array.push(errorInfo);
+
+                res.send(error_Array);
+             }
+             else {
+                res.send(data);
+             }
         }
         else {
             console.log(err);
@@ -482,29 +500,19 @@ router.post("/referral", function (req, res, next) {
     var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
         "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-        "(Employment_sup*user.Employment_sup_priority + " +
-        "Startup_sup*user.Startup_sup_priority + " +
-        "Life_welfare*user.Life_welfare_priority + " +
-        "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
-        "AS cg_priority, " +
-        "(Employment_sup*mylist_priority.Employment_sup_priority + " +
-        "Startup_sup*mylist_priority.Startup_sup_priority + " +
-        "Life_welfare*mylist_priority.Life_welfare_priority + " +
-        "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
-        "AS ml_priority, " +
-        "(Employment_sup*click_priority.Employment_sup_priority + " +
-        "Startup_sup*click_priority.Startup_sup_priority + " +
-        "Life_welfare*click_priority.Life_welfare_priority + " +
-        "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
-        "AS cl_priority " +
-        "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
-        "WHERE (user.uID = mylist_priority.uID) AND " +
-        "(user.uID = click_priority.uID) AND " +
-        "(mylist_priority.uID = click_priority.uID) AND " +
-        "(user.uID = '" + recv_uID + "') AND " +
-        "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) " +
+        "2.5 AS cg_priority, " +
+        "8.765 AS ml_priority, " +
+        "1.274 AS cl_priority " +
+        "FROM stored_policy, policy, user " +
+        "WHERE " +
+        "(user.uID = '" + recv_uID + "') AND" +
+        "(p_code = s_p_code) " +
         "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
         "LIMIT 5";
+    
+
+
+
         // var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
         // "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         // "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
@@ -534,14 +542,36 @@ router.post("/referral", function (req, res, next) {
         // "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
         // "LIMIT 30";
 
+    //const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
 
     console.log("API 'policy/referral' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {
-        if (!err) {
-            //console.log(data);
+        if (!err) {           
+        if (data.length == 0) {
+            var error_Array = new Array()
+            errorInfo = new Object();
+           
+            errorInfo.p_code = 0;
+            errorInfo.title = "caterogy_required";
+            errorInfo.uri = "caterogy_required";
+            errorInfo.dor = "caterogy_required";
+            errorInfo.si = "caterogy_required";
+            errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
+            errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
+            errorInfo.cg_priority = 0;
+            errorInfo.ml_priority = 0;
+            errorInfo.cl_priority = 0;
+
+            for(var i = 0; i < 5; i++)
+                error_Array.push(errorInfo);
+
+            res.send(error_Array);
+         }
+         else {
             res.send(data);
+         }
         }
         else {
             console.log(err);

@@ -28,6 +28,8 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import es.dmoral.toasty.Toasty;
+
 public class EditPersonalInfoActivity extends AppCompatActivity {
 
     private String TAG = "EditPersonalInfoActivity";
@@ -165,6 +167,9 @@ public class EditPersonalInfoActivity extends AppCompatActivity {
                 userEmail = et_userEmail.getText().toString();
                 userName = et_userName.getText().toString();
 
+                userRegion.set(0,region_do);
+                userRegion.set(1,region_si);
+
                 if(userName.isEmpty()||userAge.isEmpty()){
                     Toast.makeText(EditPersonalInfoActivity.this, "빈칸을 모두 채워주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -182,7 +187,7 @@ public class EditPersonalInfoActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    Toast.makeText(EditPersonalInfoActivity.this, "변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                    Toasty.info(EditPersonalInfoActivity.this, "변경되었습니다!!", Toast.LENGTH_SHORT, true).show();
 //                                    Intent intent = new Intent(EditPersonalInfoActivity.this, ProfileActivity.class);
 //                                    startActivity(intent);
                                     finish();

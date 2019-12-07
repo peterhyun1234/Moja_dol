@@ -431,41 +431,41 @@ router.post("/test", function (req, res, next) {
     var recv_uID = req.body.uID;
 
     var SQL = "SELECT p_code, title, uri, " +
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-    "count(*) AS policy_hits " +
-    "FROM stored_policy, policy, user " +
-    "WHERE " +
-    "(user.uID = '" + recv_uID + "') AND" +
-    "(p_code = s_p_code) " +
-    "GROUP BY p_code " +
-    "ORDER BY policy_hits DESC " +
-    "LIMIT 30";
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "count(*) AS policy_hits " +
+        "FROM stored_policy, policy, user " +
+        "WHERE " +
+        "(user.uID = '" + recv_uID + "') AND" +
+        "(p_code = s_p_code) " +
+        "GROUP BY p_code " +
+        "ORDER BY policy_hits DESC " +
+        "LIMIT 30";
 
     console.log("API 'policy/test' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            if (data.length == 0) {            
+            if (data.length == 0) {
                 var error_Array = new Array()
                 errorInfo = new Object();
-               
+
                 errorInfo.p_code = 0;
                 errorInfo.title = "caterogy_required";
                 errorInfo.uri = "caterogy_required";
                 errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
                 errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
                 errorInfo.policy_hits = 0;
-                
-                for(var i = 0; i < 5; i++)
+
+                for (var i = 0; i < 5; i++)
                     error_Array.push(errorInfo);
 
                 res.send(error_Array);
-             }
-             else {
+            }
+            else {
                 res.send(data);
-             }
+            }
         }
         else {
             console.log(err);
@@ -509,38 +509,38 @@ router.post("/referral", function (req, res, next) {
         "(p_code = s_p_code) " +
         "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
         "LIMIT 5";
-    
 
 
 
-        // var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
-        // "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
-        // "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-        // "(Employment_sup*user.Employment_sup_priority + " +
-        // "Startup_sup*user.Startup_sup_priority + " +
-        // "Life_welfare*user.Life_welfare_priority + " +
-        // "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
-        // "AS cg_priority, " +
-        // "(Employment_sup*mylist_priority.Employment_sup_priority + " +
-        // "Startup_sup*mylist_priority.Startup_sup_priority + " +
-        // "Life_welfare*mylist_priority.Life_welfare_priority + " +
-        // "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
-        // "AS ml_priority, " +
-        // "(Employment_sup*click_priority.Employment_sup_priority + " +
-        // "Startup_sup*click_priority.Startup_sup_priority + " +
-        // "Life_welfare*click_priority.Life_welfare_priority + " +
-        // "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
-        // "AS cl_priority " +
-        // "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
-        // "WHERE (user.uID = mylist_priority.uID) AND " +
-        // "(user.uID = click_priority.uID) AND " +
-        // "(mylist_priority.uID = click_priority.uID) AND " +
-        // "(user.uID = '" + recv_uID + "') AND " +
-        // "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) AND " +
-        // "((start_age <= user.age AND user.age <= end_age) OR (end_age is null AND start_age is null) ) AND " +
-        // "((expiration_flag = 2) OR (apply_end >= NOW())) " +
-        // "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
-        // "LIMIT 5";
+
+    // var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
+    // "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+    // "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+    // "(Employment_sup*user.Employment_sup_priority + " +
+    // "Startup_sup*user.Startup_sup_priority + " +
+    // "Life_welfare*user.Life_welfare_priority + " +
+    // "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
+    // "AS cg_priority, " +
+    // "(Employment_sup*mylist_priority.Employment_sup_priority + " +
+    // "Startup_sup*mylist_priority.Startup_sup_priority + " +
+    // "Life_welfare*mylist_priority.Life_welfare_priority + " +
+    // "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
+    // "AS ml_priority, " +
+    // "(Employment_sup*click_priority.Employment_sup_priority + " +
+    // "Startup_sup*click_priority.Startup_sup_priority + " +
+    // "Life_welfare*click_priority.Life_welfare_priority + " +
+    // "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
+    // "AS cl_priority " +
+    // "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
+    // "WHERE (user.uID = mylist_priority.uID) AND " +
+    // "(user.uID = click_priority.uID) AND " +
+    // "(mylist_priority.uID = click_priority.uID) AND " +
+    // "(user.uID = '" + recv_uID + "') AND " +
+    // "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) AND " +
+    // "((start_age <= user.age AND user.age <= end_age) OR (end_age is null AND start_age is null) ) AND " +
+    // "((expiration_flag = 2) OR (apply_end >= NOW())) " +
+    // "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
+    // "LIMIT 5";
 
     //const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
 
@@ -548,30 +548,30 @@ router.post("/referral", function (req, res, next) {
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {
-        if (!err) {           
-        if (data.length == 0) {
-            var error_Array = new Array()
-            errorInfo = new Object();
-           
-            errorInfo.p_code = 0;
-            errorInfo.title = "caterogy_required";
-            errorInfo.uri = "caterogy_required";
-            errorInfo.dor = "caterogy_required";
-            errorInfo.si = "caterogy_required";
-            errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
-            errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
-            errorInfo.cg_priority = 0;
-            errorInfo.ml_priority = 0;
-            errorInfo.cl_priority = 0;
+        if (!err) {
+            if (data.length == 0) {
+                var error_Array = new Array()
+                errorInfo = new Object();
 
-            for(var i = 0; i < 5; i++)
-                error_Array.push(errorInfo);
+                errorInfo.p_code = 0;
+                errorInfo.title = "caterogy_required";
+                errorInfo.uri = "caterogy_required";
+                errorInfo.dor = "caterogy_required";
+                errorInfo.si = "caterogy_required";
+                errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
+                errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
+                errorInfo.cg_priority = 0;
+                errorInfo.ml_priority = 0;
+                errorInfo.cl_priority = 0;
 
-            res.send(error_Array);
-         }
-         else {
-            res.send(data);
-         }
+                for (var i = 0; i < 5; i++)
+                    error_Array.push(errorInfo);
+
+                res.send(error_Array);
+            }
+            else {
+                res.send(data);
+            }
         }
         else {
             console.log(err);
@@ -592,19 +592,19 @@ router.post("/user_based_referral", function (req, res, next) {
     // 지역으로 분류하는 걸 추가해야할지..?
 
     var SQL = "SELECT p_code, title, uri, " +
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-    "count(*) AS policy_hits " +
-    "FROM user NATURAL JOIN stored_policy, policy " +
-    "WHERE " +
-    "(p_code = s_p_code) AND " +
-    "(age BETWEEN ((SELECT age FROM user WHERE uID = '"+ recv_uID +"') - " + age_gap + 
-    ") AND ((SELECT age FROM user WHERE uID = '"+ recv_uID +"') + " + age_gap + ")) AND " +
-    "(start_age <= (SELECT age FROM user WHERE uID = '"+ recv_uID +"') AND (SELECT age FROM user WHERE uID = '"+ recv_uID +"') <= end_age) AND " +
-    "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
-    "GROUP BY p_code " +
-    "ORDER BY policy_hits DESC " +
-    "LIMIT 5";
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "count(*) AS policy_hits " +
+        "FROM user NATURAL JOIN stored_policy, policy " +
+        "WHERE " +
+        "(p_code = s_p_code) AND " +
+        "(age BETWEEN ((SELECT age FROM user WHERE uID = '" + recv_uID + "') - " + age_gap +
+        ") AND ((SELECT age FROM user WHERE uID = '" + recv_uID + "') + " + age_gap + ")) AND " +
+        "(start_age <= (SELECT age FROM user WHERE uID = '" + recv_uID + "') AND (SELECT age FROM user WHERE uID = '" + recv_uID + "') <= end_age) AND " +
+        "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
+        "GROUP BY p_code " +
+        "ORDER BY policy_hits DESC " +
+        "LIMIT 5";
 
     console.log("API 'policy/user_based_referral' called");
     console.log(SQL);
@@ -621,26 +621,117 @@ router.post("/user_based_referral", function (req, res, next) {
     });
 });
 
-// test
-router.post("/tes", function (req, res, next) {
+// referral_test
+router.post("/referral_test", function (req, res, next) {
 
     var recv_uID = req.body.uID;
 
-    var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
+    var base_SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
         "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
-        "2.5 AS cg_priority, " +
-        "8.765 AS ml_priority, " +
-        "1.274 AS cl_priority " +
-        "FROM policy, knn_recommendation "
+        "5 AS cg_priority, " +
+        "5 AS ml_priority, " +
+        "5 AS cl_priority " +
+        "FROM policy, knn_recommendation ";
 
-    console.log("API 'policy/tes' called");
+    var SQL = "";
+
+    for (var i = 1; i < 6; i++) {
+        SQL = SQL + base_SQL + "WHERE (uID = '" + recv_uID + "') AND(p_code = p_code" + i + ")"
+        if (i != 5) {
+            SQL = SQL + " UNION "
+        }
+    }
+
+    console.log("API 'policy/referral_test' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            //console.log(data);
-            res.send(data);
+            if (data.length == 0) {
+                var error_Array = new Array()
+                errorInfo = new Object();
+
+                errorInfo.p_code = 0;
+                errorInfo.title = "caterogy_required";
+                errorInfo.uri = "caterogy_required";
+                errorInfo.dor = "caterogy_required";
+                errorInfo.si = "caterogy_required";
+                errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
+                errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
+                errorInfo.cg_priority = 0;
+                errorInfo.ml_priority = 0;
+                errorInfo.cl_priority = 0;
+
+                for (var i = 0; i < 5; i++)
+                    error_Array.push(errorInfo);
+
+                res.send(error_Array);
+            }
+            else {
+                res.send(data);
+            }
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+
+// user_based_referral test
+router.post("/user_based_referral_test", function (req, res, next) {
+
+    var recv_uID = req.body.uID;
+    var age_gap = 10;
+
+    var age_SQL = "(age BETWEEN ((SELECT age FROM user WHERE uID = '" + recv_uID + "') - "
+        + age_gap + ") AND ((SELECT age FROM user WHERE uID = '"
+        + recv_uID + "') + " + age_gap + ")) AND " +
+        "((start_age <= (SELECT age FROM user WHERE uID = '" + recv_uID + "') AND (SELECT age FROM user WHERE uID = '" + recv_uID + "') <= end_age) OR " +
+        "((start_age <= (SELECT age FROM user WHERE uID = '" + recv_uID + "') AND end_age is null) OR " +
+        "start_age is null AND (SELECT age FROM user WHERE uID = '" + recv_uID + "') <= end_age) OR " +
+        "(start_age is null AND end_age is null)) AND ";
+
+    var term_SQL = "((expiration_flag = 2) OR (apply_end >= NOW())) ";
+
+    var order_SQL = "ORDER BY policy_hits DESC " + "LIMIT 30";
+
+
+    var SQL = "SELECT p_code, title, uri, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "count(*) AS policy_hits " +
+        "FROM user NATURAL JOIN stored_policy, policy " +
+        "WHERE " +
+        "(p_code = s_p_code) AND " +
+        age_SQL +
+        term_SQL +
+        "GROUP BY p_code " +
+        order_SQL;
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            if (data.length == 0) {
+                var error_Array = new Array()
+                errorInfo = new Object();
+
+                errorInfo.p_code = 0;
+                errorInfo.title = "caterogy_required";
+                errorInfo.uri = "caterogy_required";
+                errorInfo.apply_start = "2015-01-01T00:00:00.000Z";
+                errorInfo.apply_end = "2015-01-01T00:00:00.000Z";
+                errorInfo.policy_hits = 0;
+
+                for (var i = 0; i < 5; i++)
+                    error_Array.push(errorInfo);
+
+                res.send(error_Array);
+            }
+            else {
+                res.send(data);
+            }
         }
         else {
             console.log(err);

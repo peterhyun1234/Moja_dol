@@ -70,7 +70,7 @@ router.post("/origin_table", function (req, res, next) {
 
     var recv_code = req.body.p_code;
 
-    var SQL = 'SELECT Ucontents FROM origin_policy WHERE p_code = ' + recv_code;
+    var SQL = "SELECT p_code, Ucontents FROM origin_policy WHERE p_code = " + recv_code;
 
     console.log("API 'policy/origin_table' called");
     console.log(SQL);
@@ -537,10 +537,10 @@ router.post("/referral", function (req, res, next) {
         // "(mylist_priority.uID = click_priority.uID) AND " +
         // "(user.uID = '" + recv_uID + "') AND " +
         // "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) AND " +
-        // "(start_age <= user.age AND user.age <= end_age) AND " +
-        // "((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW())) " +
+        // "((start_age <= user.age AND user.age <= end_age) OR (end_age is null AND start_age is null) ) AND " +
+        // "((expiration_flag = 2) OR (apply_end >= NOW())) " +
         // "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
-        // "LIMIT 30";
+        // "LIMIT 5";
 
     //const ip = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
 
@@ -607,6 +607,34 @@ router.post("/user_based_referral", function (req, res, next) {
     "LIMIT 5";
 
     console.log("API 'policy/user_based_referral' called");
+    console.log(SQL);
+
+    connection.query(SQL, function (err, data) {
+        if (!err) {
+            //console.log(data);
+            res.send(data);
+        }
+        else {
+            console.log(err);
+            res.send('error');
+        }
+    });
+});
+
+// test
+router.post("/tes", function (req, res, next) {
+
+    var recv_uID = req.body.uID;
+
+    var SQL = "SELECT p_code, title, uri, policy.dor, policy.si, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "2.5 AS cg_priority, " +
+        "8.765 AS ml_priority, " +
+        "1.274 AS cl_priority " +
+        "FROM policy, knn_recommendation "
+
+    console.log("API 'policy/tes' called");
     console.log(SQL);
 
     connection.query(SQL, function (err, data) {

@@ -48,22 +48,18 @@ router.post("/test", function (req, res, next) {
     // req.body.category : "01010" (string)
     var recv_category = req.body.category;
 
-
-    if (recv_category[0] == 1) {
-        recv_category = "11111";
+    if (recv_category.length == 0 || recv_category[0] == 1) {
+        category_SQL = " policy.p_code =  interest.p_code ";
     }
-
-    for (var i = 1; i < 5; i++) {
-        if (recv_category[i] == 1) {
-            category_SQL_temp += categoryList[i - 1] + " = 1 OR ";
+    else {
+        for (var i = 1; i < 5; i++) {
+            if (recv_category[i] == 1) {
+                category_SQL_temp += categoryList[i - 1] + " = 1 OR ";
+            }
         }
+        category_SQL_temp = category_SQL_temp.substr(0, category_SQL_temp.length - 3) + ") ";
+        category_SQL = category_SQL_temp;
     }
-    category_SQL_temp = category_SQL_temp.substr(0, category_SQL_temp.length - 3) + ") ";
-    category_SQL = category_SQL_temp;
-
-    if (recv_category.length == 0)
-        category_SQL = ' ';
-
 
 
     //5. 연령 - 

@@ -191,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(response.body().size()==5)
                 {
                     ll_no_content.setVisibility(View.VISIBLE);
-                    Toasty.error(MainActivity.this, "밑에없음!!", Toast.LENGTH_SHORT, true).show();
                 }
 
                 else
@@ -240,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 viewPager.setAdapter(adapter);
 
             }
-        }, 2000);// 0.5초 정도 딜레이를 준 후 시작
+        }, 1700);// 0.5초 정도 딜레이를 준 후 시작
 
 
 //        manager.addCommonFragment(GuideFragment.class, getBgRes(), getTitles());

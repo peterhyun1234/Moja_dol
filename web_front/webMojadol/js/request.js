@@ -1,6 +1,24 @@
 $(document).ready(function(){
+	IPcheck()
 	showrequest();
 });
+
+function IPcheck(){
+
+	$.ajax({
+		url : "http://49.236.136.213:3000/web_admin/session_certificate",
+		type : "post",
+		success : function(data) {              
+			if(data != 1){
+			  alert("로그인이 필요합니다.");
+			  $(location).attr("href", "login.html");
+			}              
+		},
+		error: function(request,status,error){
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		}  
+	});
+}
 
 function showrequest(){
 	$.ajax({

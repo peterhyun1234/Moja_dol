@@ -360,7 +360,8 @@ router.route('/views/memberinterest.html').get(
 //그렇지 않으면 순서상 라우터 이외에 다른것이 먼저 실행될 수 있다
 app.use('/', router);       //라우트 미들웨어를 등록한다
  
- 
+//var app = express(); //express서버 객체
+
 app.all('*',
     function (req, res) {
         res.status(404).send('<h1> 요청 페이지 없음 </h1>');

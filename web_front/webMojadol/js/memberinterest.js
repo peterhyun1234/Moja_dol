@@ -1,6 +1,6 @@
 $(document).ready(function(){
     IPcheck();
-   callinterst();
+	callinterst();
 });
 
 function IPcheck(){
@@ -21,7 +21,7 @@ function IPcheck(){
 }
 
 function callinterst(){
-   $.ajax({
+	$.ajax({
         url: "http://49.236.136.213:3000/user/show_all_users",
         type: "GET",
         success: function(data){
@@ -56,4 +56,5 @@ function callinterst(){
         }
     });
 }
+
 

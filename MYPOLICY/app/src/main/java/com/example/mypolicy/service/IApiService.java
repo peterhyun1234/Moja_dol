@@ -1,5 +1,6 @@
 package com.example.mypolicy.service;
 
+import com.example.mypolicy.model.AddUser;
 import com.example.mypolicy.model.Policy;
 import com.example.mypolicy.model.Preference;
 import com.example.mypolicy.model.RankingData;
@@ -150,5 +151,9 @@ public interface IApiService {
     @POST("user/my_priority")
     Call<ArrayList<Preference>> showPreference(@FieldMap HashMap<String,Object> parameters);
 
+    //회원가입시 정보 주는부분
+    @FormUrlEncoded
+    @POST("user/add_user")
+    Call<ArrayList<AddUser>> addUser(@FieldMap HashMap<String,Object> parameters);
 
 }

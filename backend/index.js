@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 var http = require('http');
 var fs = require('fs');
+
 // var firebase = require("firebase");
 // var firebase_db = require('./config/firebase.js').real;
 
@@ -81,16 +82,16 @@ var admin_web = http.createServer(function(request,response){
   var url = request.url;
   var exist_flag = true;
 
-  //console.log("url: " + url);
+  console.log("url: " + url);
 
   if(url == '/' || url.indexOf('/login') == 0){
     url = '/views/login.html';
   }
-  else if(url.indexOf('/member') == 0){
-    url = '/views/member.html';
-  }
   else if(url.indexOf('/memberinterest') == 0){
     url = '/views/memberinterest.html';
+  }
+  else if(url.indexOf('/member') == 0){
+    url = '/views/member.html';
   }
   else if(url.indexOf('/policy') == 0){
     url = '/views/policy.html';

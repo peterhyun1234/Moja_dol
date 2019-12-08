@@ -1,6 +1,6 @@
-
 var express = require('express');
 var router = express.Router();
+let {PythonShell} = require('python-shell');
 
 var connection = require('../index.js').connection;
 
@@ -45,6 +45,29 @@ router.get('/users_priority', function (req, res) {
 });
 
 router.get("/show_all_reqs", function (req, res, next) {
+
+
+    var uID = "peterhyun1234@gmail.com";
+    
+    var options = {
+        mode: 'text',
+        pythonPath: '',
+        pythonOptions: ['-u'],
+        scriptPath: 'router',
+        args: [uID]
+    };
+
+    //python shell test
+    PythonShell.run('test.py', options, function (err, results){
+        if(err)
+        {
+            throw err;
+        }
+        
+        console.log("result: " + results);
+        
+    });
+
 
     var SQL = 'SELECT * FROM request';
 

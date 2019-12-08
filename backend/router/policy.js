@@ -304,7 +304,7 @@ router.get('/before_apply_policies', function (req, res) {
         "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
         "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
         "from policy " +
-        "where (apply_start > NOW())";;
+        "where (apply_start > NOW())";
 
     console.log("API 'policy/before_apply_policies' called");
     console.log(SQL);
@@ -637,9 +637,9 @@ router.post("/referral_test", function (req, res, next) {
     var SQL = "";
 
     for (var i = 1; i < 6; i++) {
-        SQL = SQL + base_SQL + "WHERE (uID = '" + recv_uID + "') AND(p_code = p_code" + i + ")"
+        SQL = SQL + base_SQL + "WHERE (uID = '" + recv_uID + "') AND(p_code = p_code" + i + ")";
         if (i != 5) {
-            SQL = SQL + " UNION "
+            SQL = SQL + " UNION ";
         }
     }
 
@@ -706,10 +706,14 @@ router.post("/user_based_referral_test", function (req, res, next) {
         "FROM user NATURAL JOIN stored_policy, policy " +
         "WHERE " +
         "(p_code = s_p_code) AND " +
+        "((SELECT Employment_sup_priority FROM user WHERE uID = '" + recv_uID + "') is not null) AND " +
         age_SQL +
         term_SQL +
         "GROUP BY p_code " +
         order_SQL;
+
+    console.log("API 'policy/user_based_referral_test' called");
+    console.log(SQL);
 
     connection.query(SQL, function (err, data) {
         if (!err) {

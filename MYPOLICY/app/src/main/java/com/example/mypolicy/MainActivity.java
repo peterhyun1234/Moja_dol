@@ -76,10 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
     ScrollerViewPager viewPager;
-    RecyclerView mRecyclerView;
-    Button btn_more_info;
-    LinearLayout ll_no_content;
-    //    SpringIndicator springIndicator;
+     RecyclerView mRecyclerView;
+     Button btn_more_info;
+     LinearLayout ll_no_content;
+//    SpringIndicator springIndicator;
 //    PagerModelManager manager;
 //    ModelPagerAdapter adapter;
     IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         testCall.clone().enqueue(new Callback<ArrayList<Test>>() {
             @Override
             public void onResponse(Call<ArrayList<Test>> call, Response<ArrayList<Test>> response) {
-                Log.d("위에화면",""+new Gson().toJson(response.body()));
+                         Log.d("위에화면",""+new Gson().toJson(response.body()));
                 if(response.body().size()==5)
                 {
                     ll_no_content.setVisibility(View.VISIBLE);

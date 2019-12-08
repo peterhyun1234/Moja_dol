@@ -44,7 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:id="@+id/tv_name_main"
@@ -52,25 +53,20 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="30sp"
+                    android:textColor="@color/colorPrimary"
                     />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="님이 좋아하실만한 정책"
-                    android:layout_marginLeft="10dp"
                     android:textSize="30sp"
+                    android:textColor="@color/colorTextLight"
                     />
             </LinearLayout>
 
 
-            <github.chenupt.springindicator.viewpager.ScrollerViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_below="@+id/ll_001"
 
-                />
 
             <github.chenupt.springindicator.SpringIndicator xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:siTextSize="18sp"
@@ -81,9 +77,20 @@
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:layout_below="@+id/ll_001"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
-                android:layout_marginTop="20dp"
+                />
+
+            <github.chenupt.springindicator.viewpager.ScrollerViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/indicator"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 />
 
             <LinearLayout
@@ -92,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view_pager"
                 android:layout_margin="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:id="@+id/tv_name_main2"
@@ -100,18 +108,19 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="30sp"
+                    android:textColor="@color/colorPrimary"
                     />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="님에게 딱 맞는 정책!!"
                     android:textSize="30sp"
+                    android:textColor="@color/colorTextLight"
                     />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/ll_002"
@@ -119,7 +128,37 @@
                 android:paddingTop="8dp"
                 android:paddingEnd="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingBottom="8dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_no_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="invisible">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/blank"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="40dp"
+                        android:text="텅 비어있음"/>
+
+                </LinearLayout>
+
+
+
+            </RelativeLayout>
+
+
 
         </RelativeLayout>
         <!--        액티비티 레이아웃 넣는 곳          -->

@@ -116,6 +116,7 @@ public interface IApiService {
     //        2. MyList에서 각각 누르면 디테일로 들어갈때(해결)
     //        3.  Top20에서 각각 누르면 디테일로 들어갈때(해결)
     //        4. 키워드에서 디테일로 넘어갈때(해결)
+    //        5. 메임에서 클릭(해결)
     @FormUrlEncoded
     @POST("policy/click")
     Call<JSONObject> clickPolicy(@FieldMap HashMap<String,Object> parameters);
@@ -134,18 +135,20 @@ public interface IApiService {
     Call<JSONObject> senqRequest(@FieldMap HashMap<String,Object> parameters);
 
 
+    //임시 사용자 추천 점수 알고리즘 적용(딥러닝)
     @FormUrlEncoded
-    @POST("policy/test")
+    @POST("policy/referral_test")
     Call<ArrayList<Referral>> showReferral(@FieldMap HashMap<String,Object> parameters);
 
     //밑에 화면
     @FormUrlEncoded
-    @POST("policy/test")
+    @POST("policy/user_based_referral_test")
     Call<ArrayList<Test>> showTest(@FieldMap HashMap<String,Object> parameters);
 
     //저장된 점수 받아오기
     @FormUrlEncoded
     @POST("user/my_priority")
     Call<ArrayList<Preference>> showPreference(@FieldMap HashMap<String,Object> parameters);
+
 
 }

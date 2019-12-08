@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class searchDialog {
+public class searchDialog  {
     private Context context;
 
     public searchDialog(Context context)

@@ -1,12 +1,19 @@
 package com.example.mypolicy;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class versionDialog {
+import es.dmoral.toasty.Toasty;
+
+public class versionDialog  {
 
     private Context context;
 

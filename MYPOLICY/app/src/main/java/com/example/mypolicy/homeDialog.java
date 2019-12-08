@@ -2,6 +2,7 @@ package com.example.mypolicy;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -45,6 +46,7 @@ public class homeDialog  {
 
                 // 커스텀 다이얼로그를 종료한다.
                 dlg.dismiss();
+
             }
         });
 

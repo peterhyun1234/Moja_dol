@@ -4,6 +4,9 @@ var router = express.Router();
 
 var connection = require('../index.js').connection;
 
+let {PythonShell} = require('python-shell');
+
+
 router.post("/show_all_mylist", function (req, res, next) {
 
     var recv_uID = req.body.uID;
@@ -52,7 +55,7 @@ router.post("/store_in_mylist", function (req, res, next) {
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            //console.log(data);
+            // finally
             res.send(data);
         }
         else {
@@ -60,6 +63,26 @@ router.post("/store_in_mylist", function (req, res, next) {
             res.send('error');
         }
     });
+
+    var options = {
+        mode: 'text',
+        pythonPath: '/usr/bin/python3.7',
+        pythonOptions: ['-u'],
+        scriptPath: 'KNN',
+        args: [recv_uID]
+    };
+    
+    //python shell test
+    PythonShell.run('knn_base_rec.py', options, function (err, results){
+        if(err)
+        {
+            throw err;
+        }
+        
+        console.log("result: " + results);
+        
+    });
+
 });
 
 router.post("/ordered_mylist", function (req, res, next) {
@@ -122,7 +145,6 @@ router.post("/delete", function (req, res, next) {
     //절 차 
     connection.query(SQL, function (err, data) {
         if (!err) {
-            //console.log(data);
             res.send(data);
         }
         else {
@@ -130,6 +152,29 @@ router.post("/delete", function (req, res, next) {
             res.send('error');
         }
     });
+
+
+    var options = {
+        mode: 'text',
+        pythonPath: '/usr/bin/python3.7',
+        pythonOptions: ['-u'],
+        scriptPath: 'KNN',
+        args: [recv_uID]
+    };
+    
+    //python shell test
+    PythonShell.run('knn_base_rec.py', options, function (err, results){
+        if(err)
+        {
+            throw err;
+        }
+        
+        console.log("result: " + results);
+        
+    });
+
+    // finally
+
 });
 
 

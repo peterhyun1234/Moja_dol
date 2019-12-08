@@ -82,7 +82,7 @@ var admin_web = http.createServer(function(request,response){
   var url = request.url;
   var exist_flag = true;
 
-  console.log("url: " + url);
+  //console.log("url: " + url);
 
   if(url == '/' || url.indexOf('/login') == 0){
     url = '/views/login.html';

@@ -75,12 +75,12 @@ router.post("/ordered_mylist", function (req, res, next) {
     
     var ORDER_SQL = 'ORDER BY s_p_time DESC'; //default
 
-    console.log("sortingList.lenth: " + sortingList.length);
+    //console.log("sortingList.lenth: " + sortingList.length);
 
     for (var i = 0; i < sortingList.length; i++) {
-        console.log("recv_Sort_by: " + recv_Sort_by);
+        //console.log("recv_Sort_by: " + recv_Sort_by);
         if (recv_Sort_by == sortingList[i]) {
-            console.log("same: " + recv_Sort_by);
+            //console.log("same: " + recv_Sort_by);
             ORDER_SQL = "ORDER BY " + after_sortingList[i];
         }
     }

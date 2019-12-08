@@ -81,6 +81,8 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
     private Button policySaveButton;
     private String apply_Start_String="";
     private String apply_End_String="";
+    private Button btn_refresh;
+
     final HashMap<String,Object> postReviewhashMap=new HashMap<>();//댓글을 보내는
     final HashMap<String,Object> getReviewhashMap=new HashMap<>();//댓글을 보는
     final HashMap<String,Object> postSavehashMap=new HashMap<>();
@@ -117,6 +119,8 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
         policySaveButton=findViewById(R.id.btn_policy_save);
         reviewInsert=findViewById(R.id.btn_review_insert);
         imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        btn_refresh = findViewById(R.id.btn_refresh);
+        ReviewAdapter ra;
 
         final String[] eng_mon={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
         final String[] kor_mon={"1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"};
@@ -139,7 +143,8 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 
         final Call<ArrayList<Policy>> call=iApiService.showselectedPolicy(position);
         final Call<ArrayList<Review>> reviewCall=iApiService.postShowReview(getReviewhashMap);
-         final Call<JSONObject> postSaveCall=iApiService.storeinMyList(postSavehashMap);
+        final Call<JSONObject> postSaveCall=iApiService.storeinMyList(postSavehashMap);
+
 
         //각각 에 대한 상세정보 받는부분
 
@@ -149,7 +154,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                 public void onResponse(Call<ArrayList<Policy>> call, Response<ArrayList<Policy>> response) {
                     String tmp=new Gson().toJson(response.body());
 
-                    Log.d("각각정보",""+position+tmp);
+                    Log.d("각각정보22",""+position+tmp);
                     //파싱코드
                     try{
                         JSONArray jsonArray=new JSONArray(tmp);
@@ -157,8 +162,16 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                         String title=jsonObject.getString("title");
                         tv_title.setText(title);
 
-                        String contents=jsonObject.getString("contents");
-                        tv_detail.setText(contents);
+                        if(jsonObject.has("contents"))
+                        {
+                            String contents=jsonObject.getString("contents");
+                            tv_detail.setText(contents);
+                        }
+                        else
+                        {
+                            tv_detail.setText("-");
+                        }
+
 
                         String age=Integer.toString(jsonObject.getInt("start_age"));
                         if(age.equals("0"))
@@ -166,7 +179,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             tv_age_start.setText("제한없음");
                         }
                         else
-                        tv_age_start.setText(age+"살");
+                            tv_age_start.setText(age+"살");
 
                         String age_end=Integer.toString(jsonObject.getInt("end_age"));
                         if(age_end.equals("0"))
@@ -174,7 +187,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             tv_age_end.setText("제한없음");
                         }
                         else
-                        tv_age_end.setText(age_end+"살");
+                            tv_age_end.setText(age_end+"살");
 
                         String url=jsonObject.getString("uri");
                         tv_uri.setText(url);
@@ -205,7 +218,7 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
                             startSB.append(" ");
                             startSB.append(splited[1]+"일");
 
-                           tv_applyStart.setText(startSB.toString());
+                            tv_applyStart.setText(startSB.toString());
                         }
                         else {
                             tv_applyStart.setText("공고후 확인 신청 바람");
@@ -336,6 +349,48 @@ public class DetailPolicyActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
+        //댓글창 새로고침 하는 부분 - 새로고침 버튼 누르면//
+
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Log.d("댓글피코드", "ㄹㄹㄹ" + position);
+                reviewCall.clone().enqueue(new Callback<ArrayList<Review>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Review>> call, Response<ArrayList<Review>> response) {
+                        String tmp = new Gson().toJson(response.body());
+
+                        try{
+                            JSONArray jsonArray=new JSONArray(tmp);
+                            Log.d(" 메시지 길이",""+jsonArray.length());
+                            tv_review_blank.setText(Integer.toString(jsonArray.length()));
+
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        ReviewAdapter ra = new ReviewAdapter(response.body());
+                        mRecyclerView.setAdapter(ra);
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Review>> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+
+
+
+
+        //댓글창 새로고침 하는 부분 - 새로고침 버튼 누르면//
+
+
 
         //*****************************저장하는 기능*************************************//
         policySaveButton.setOnClickListener(new View.OnClickListener() {

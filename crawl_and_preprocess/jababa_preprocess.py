@@ -103,7 +103,11 @@ def parse_wave(x):
 
 def parse_date(x):
     if x in ['상시'] or x== None:
-        return None
+        
+        if x in ['상시']:
+            return datetime.datetime(1980,1,1)
+        else:
+            return None  
     elif pattern_date.search(x):
         nums = pattern_nums.findall(x)
         if len(nums) > 3:

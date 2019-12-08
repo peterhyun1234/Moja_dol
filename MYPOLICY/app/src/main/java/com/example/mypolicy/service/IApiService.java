@@ -1,10 +1,13 @@
 package com.example.mypolicy.service;
 
 import com.example.mypolicy.model.Policy;
+import com.example.mypolicy.model.Preference;
 import com.example.mypolicy.model.RankingData;
+import com.example.mypolicy.model.Referral;
 import com.example.mypolicy.model.Review;
 import com.example.mypolicy.model.SearchData;
 import com.example.mypolicy.model.StoreData;
+import com.example.mypolicy.model.Test;
 
 import org.json.JSONObject;
 
@@ -113,13 +116,39 @@ public interface IApiService {
     //        2. MyList에서 각각 누르면 디테일로 들어갈때(해결)
     //        3.  Top20에서 각각 누르면 디테일로 들어갈때(해결)
     //        4. 키워드에서 디테일로 넘어갈때(해결)
+    //        5. 메임에서 클릭(해결)
     @FormUrlEncoded
     @POST("policy/click")
     Call<JSONObject> clickPolicy(@FieldMap HashMap<String,Object> parameters);
 
     /*****===========개인정보 수정 보내기==================**********/
-//    @FormUrlEncoded
-//    @POST("user/register")
-//    Call<JSONObject> userRegister(@Field );
+    @FormUrlEncoded
+    @POST("user/register")
+    Call<JSONObject> userRegister(@Field("uID") String uID, @Field("name") String name, @Field("region") ArrayList<String> location, @Field("age") int age
+            , @Field("sex") String sex, @Field("Employment_sup_priority") int emp_point,
+                                  @Field("Startup_sup_priority") int start_point,
+                                  @Field("Life_welfare_priority")int life_point,
+                                  @Field("Residential_financial_priority")int res_point);
+
+    @FormUrlEncoded
+    @POST("request/send_req")
+    Call<JSONObject> senqRequest(@FieldMap HashMap<String,Object> parameters);
+
+
+    //임시 사용자 추천 점수 알고리즘 적용(딥러닝)
+    @FormUrlEncoded
+    @POST("policy/referral_test")
+    Call<ArrayList<Referral>> showReferral(@FieldMap HashMap<String,Object> parameters);
+
+    //밑에 화면
+    @FormUrlEncoded
+    @POST("policy/user_based_referral_test")
+    Call<ArrayList<Test>> showTest(@FieldMap HashMap<String,Object> parameters);
+
+    //저장된 점수 받아오기
+    @FormUrlEncoded
+    @POST("user/my_priority")
+    Call<ArrayList<Preference>> showPreference(@FieldMap HashMap<String,Object> parameters);
+
 
 }

@@ -4,6 +4,7 @@ $(document).ready(function(){
   
   });
   
+
   function portfolioPageSetting(){
       // 사용되는 리스트는 무조건 ID 로 선언 
       var options = {

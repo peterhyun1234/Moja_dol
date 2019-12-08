@@ -1,6 +1,25 @@
 $(document).ready(function(){
+	IPcheck();
 	showallpolicy();
 });
+
+
+function IPcheck(){
+
+	$.ajax({
+		url : "http://49.236.136.213:3000/web_admin/session_certificate",
+		type : "post",
+		success : function(data) {              
+			if(data != 1){
+			  alert("로그인이 필요합니다.");
+			  $(location).attr("href", "login.html");
+			}              
+		},
+		error: function(request,status,error){
+			alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+		}  
+	});
+}
 
 //전체 정책 받아오기
 function showallpolicy(){
@@ -32,7 +51,7 @@ function showallpolicy(){
 				  $("tbody").append(element);
 				  
 			});
-			makedatable();
+			makedatable(); //global.js에 있음
 
 		},
 		error: function(){
@@ -61,6 +80,7 @@ function click_detail_policy(me){
 function getPolicyData(p_code){
 	var apiurl = "http://49.236.136.213:3000/policy/" + p_code;
 
+	
 	//특정 정책 코드에 대한 내용들 출력하기 
 	$.ajax({
 		url: apiurl,
@@ -77,6 +97,8 @@ function getPolicyData(p_code){
 			$(".third_line").text(""); 
 			$(".expiration_flag2").text("");
 		
+			$(".expiration").text("");
+
 			$.each(data, function(idx, content){
 				if(content.p_code == p_code){ 
 
@@ -88,7 +110,7 @@ function getPolicyData(p_code){
 					var time = cut2[0];
 					var retime = date + " " + time;
 
-					if(content.apply_start != null){
+					if(content.apply_start != null && content.apply_start != undefined && content.apply_start != ""){
 						var apply_start = content.apply_start;
 						var cut1 = apply_start.split("T");
 						var startdate = cut1[0];
@@ -97,9 +119,10 @@ function getPolicyData(p_code){
 						var start = startdate + " " + starttime;
 					}else {
 						date1 = "";
+						start = "-";
 					}
 
-					if(content.apply_end != null){
+					if(content.apply_end != null && content.apply_end != undefined && content.apply_end != ""){
 						var apply_end = content.apply_end;
 						var cut2 = apply_end.split("T");
 						var enddate = cut2[0];
@@ -108,7 +131,15 @@ function getPolicyData(p_code){
 						var end = enddate + " " + endtime;
 					}else {
 						date2 = "";
+						end = "-";
 					}
+
+					if(start == "null" || start == "undefined" || start=="") start="-";
+					if(end == "null" || end == "undefined" || end =="") end="-";
+					if(content.start_age == null || content.start_age == undefined || content.start_age =="" ) content.start_age ="-";
+					if(content.end_age == null || content.end_age == undefined || content.end_age=="") content.end_age="-";
+
+					//alert(start + "+" + end + "+" + content.start_age + "+" + content.end_age );
 
 					var string = '<p class="third title">신청기간</p> '+
 								 '<div class="apply clearfix">'+
@@ -120,6 +151,9 @@ function getPolicyData(p_code){
 						
 					$(".third_line").append(string); 
 					
+					if(content.dor == null || content.dor == undefined || content.dor=="") content.dor="-";
+					if(content.si == null || content.si == undefined || content.si=="") content.si="-";
+					if(content.application_target == null || content.application_target == undefined || content.application_target=="") content.application_target="-";
 
 					//alert(retime);
 					$(".crawling_date").append(retime); // 크롤링 날짜
@@ -133,6 +167,14 @@ function getPolicyData(p_code){
 					$(".expiration_flag2").append(content.expiration_flag);
 
 					console.log("data" + content);
+
+					if(content.expiration_flag == null || content.expiration_flag == 0){
+						var flag1 = '<input type="checkbox"  unchecked data-toggle="toggle" onclick="modifyflag(this.id)" id="'+"request"+content.expiration_flag+'">';
+					}
+					else {
+						var flag1 = '<input type="checkbox"  checked data-toggle="toggle"  onclick="modifyflag(this.id)" id="'+"request"+content.expiration_flag+'">';
+					}  
+					$(".expiration").append(flag1);
 					
 				 }
 			 });
@@ -158,15 +200,21 @@ function getOriginPolicy(p_code){
 		var code = {"p_code" : p_code};
 
 		//특정 정책 코드 오리지널 테이블 가져오기
-		$(".origin_policy").text("");
+
 
 		$.ajax({
 			url: "http://49.236.136.213:3000/policy/origin_table",
 			type: "POST",
 			data: code,
 			success: function(data){
-				//alert('성공');
-				$(".origin_policy").append(data.Ucontents);				
+				$(".origin_policy").text("");
+				$.each(data, function(idx, content){
+					if(idx == 0){
+						console.log(content);
+						$(".origin_policy").append(content.Ucontents);	
+					}
+	
+				});		
 			},
 			error: function(request,status,error){
 				alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
@@ -231,12 +279,20 @@ function getPolicyCategory(p_code){
 	$(".interest_flag3").text("");
 	$(".interest_flag4").text("");
 
+
+
+
 	$.ajax({
 		url: "http://49.236.136.213:3000/interest/show_interest",
 		type: "POST",
 		data: code,
 		success: function(data){
 		//alert('성공');
+			$(".interest1").text("");
+			$(".interest2").text("");
+			$(".interest3").text("");
+			$(".interest4").text("");
+			
 			$.each(data, function(idx, data){
 				console.log("데이터 interest" + idx);
 				//console.log("datadata" + data.Startup_sup);
@@ -244,7 +300,39 @@ function getPolicyCategory(p_code){
 				$(".interest_flag2").text(data.Startup_sup);
 				$(".interest_flag3").text(data.Life_welfare);
 				$(".interest_flag4").text(data.Residential_finance);	
-				
+								
+				if(data.Employment_sup == null || data.Employment_sup == 0){
+					var flag1 = '<input type="checkbox"  unchecked data-toggle="toggle" onclick="modifyflag(this.id)" id="'+"request"+data.Employment_sup+'">';
+				}
+				else {
+					var flag1 = '<input type="checkbox"  checked data-toggle="toggle"  onclick="modifyflag(this.id)" id="'+"request"+data.Employment_sup+'">';
+				}  
+				$(".interest1").append(flag1);
+
+
+				if(data.Startup_sup == null || data.Startup_sup == 0){
+					var flag2 = '<input type="checkbox"  unchecked data-toggle="toggle" onclick="modifyflag(this.id)" id="'+"request"+data.Startup_sup+'">';
+				}
+				else {
+					var flag2 = '<input type="checkbox"  checked data-toggle="toggle"  onclick="modifyflag(this.id)" id="'+"request"+data.Startup_sup+'">';
+				}  
+				$(".interest2").append(flag2);
+
+				if(data.Life_welfare == null || data.Life_welfare == 0){
+					var flag3 = '<input type="checkbox"  unchecked data-toggle="toggle" onclick="modifyflag(this.id)" id="'+"request"+data.Life_welfare+'">';
+				}
+				else {
+					var flag3 = '<input type="checkbox"  checked data-toggle="toggle"  onclick="modifyflag(this.id)" id="'+"request"+data.Life_welfare+'">';
+				}  
+				$(".interest3").append(flag3);
+
+				if(data.Residential_finance == null || data.Residential_finance == 0){
+					var flag4 = '<input type="checkbox"  unchecked data-toggle="toggle" onclick="modifyflag(this.id)" id="'+"request"+data.Residential_finance+'">';
+				}
+				else {
+					var flag4 = '<input type="checkbox"  checked data-toggle="toggle"  onclick="modifyflag(this.id)" id="'+"request"+data.Residential_finance+'">';
+				}  
+				$(".interest4").append(flag4);
 		});
 		},
 		error: function(request,status,error){
@@ -256,6 +344,7 @@ function getPolicyCategory(p_code){
 
 // 정책 내용 수정하기
 function modifypolicy(){
+
 	//alert("수정");
 	var p_code = $(".detail_p_code").text();
 	var crawling_date = $(".crawling_date").text();
@@ -273,22 +362,24 @@ function modifypolicy(){
 	var start_age = $(".start_age").val();
 	var end_age = $(".end_age").val();
 
-
-		if(p_code == "null" || p_code == "undefined") p_code=null;
-		if(crawling_date == "null" || crawling_date == "undefined") crawling_date=null;
-		if(expiration_flag == "null" || expiration_flag == "undefined") expiration_flag=null;
-		if(application_target == "null" || application_target == "undefined" || application_target == " " || application_target == "") application_target=null;
-		if(title == "null" || title == "undefined") title=null;
-		if(contents == "null" || contents == "undefined") contents=null;
+	if(p_code == "null" || p_code == "undefined") p_code=null;
+	if(crawling_date == "null" || crawling_date == "undefined") crawling_date=null;
+	if(expiration_flag == "null" || expiration_flag == "undefined") expiration_flag=null;
+	if(application_target == "null" || application_target == "undefined" || application_target == " " || application_target == "" || application_target=="-") application_target=null;
+	if(title == "null" || title == "undefined") title=null;
+	if(contents == "null" || contents == "undefined") contents=null;
 	
-		if(uri == "null" || uri == "undefined") uri=null;
-		if(dor == "null" || dor == "undefined" || dor==" " || dor=="") dor=null;
-		if(si == "null" || si == "undefined" || si==" " || si=="") si=null;
-		if(apply_start == "null" || apply_start == "undefined") apply_start=null;
-		if(apply_end == "null" || apply_end == "undefined") apply_end=null;
-		if(start_age == "null" || start_age == "undefined") start_age=null;
-		if(end_age == "null" || end_age == "undefined") end_age=null;
-		
+	if(uri == "null" || uri == "undefined") uri=null;
+	if(dor == "null" || dor == "undefined" || dor==" " || dor=="" || dor=="-") dor=null;
+	if(si == "null" || si == "undefined" || si==" " || si=="" || si=="-") si=null;
+	if(apply_start == "null" || apply_start == "undefined" || apply_start == "-") apply_start=null;
+	if(apply_end == "null" || apply_end == "undefined" || apply_end == "-") apply_end=null;
+	if(start_age == "null" || start_age == "undefined" || start_age == "-") start_age=null;
+	if(end_age == "null" || end_age == "undefined" || end_age =="-") end_age=null;
+	
+	if($(".expiration input").is(":checked")) expiration_flag = 1;
+	else expiration_flag = 0;	
+
 	var policy = 
 		{
 			"p_code": p_code,
@@ -330,15 +421,22 @@ function modifypolicy(){
 
 
 	//정책 interest 수정
-	var Employment_Sup = $(".interest_flag1").val();
-	var Startup_sup = $(".interest_flag2").val();
-	var Life_welfare = $(".interest_flag3").val();
-	var Residential_financial = $(".interest_flag4").val();
+	var Employment_Sup;
+	var Startup_sup;
+	var Life_welfare;
+	var Residential_financial;
 
-	if(Employment_Sup == "null" || Employment_Sup == "undefined") Employment_Sup=null;
-	if(Startup_sup == "null" || Startup_sup == "undefined") Startup_sup=null;
-	if(Life_welfare == "null" || Life_welfare == "undefined") Life_welfare=null;
-	if(Residential_financial == "null" || Residential_financial == "undefined") Residential_financial=null;
+	if($(".interest1 input").is(":checked")) Employment_Sup = 1;
+	else Employment_Sup = 0;
+
+	if($(".interest2 input").is(":checked")) Startup_sup = 1;
+	else Startup_sup = 0;
+
+	if($(".interest3 input").is(":checked")) Life_welfare = 1;
+	else Life_welfare = 0;
+
+	if($(".interest4 input").is(":checked")) Residential_financial = 1;
+	else Residential_financial = 0;
 
 	var policy_interest = 
 	{
@@ -348,6 +446,8 @@ function modifypolicy(){
 		"Life_welfare": Life_welfare,
 		"Residential_finance": Residential_financial
 	};	
+	
+	//console.log(policy_interest);
 
 	$.ajax({
 		url : "http://49.236.136.213:3000/interest/modify_interest",

@@ -10,24 +10,33 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/applogo"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
+
+
         >
         <activity android:name=".SearchActivity"
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".DownloadActivity" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".ProfileActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ProfileActivity" android:windowSoftInputMode="stateHidden">
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data  android:host="activity" android:scheme="profile"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".RegisterActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".DetailPolicyActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".EditPersonalInfoActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".SearchKeywordActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".RankingActivity" android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".MainActivity" android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".CategoryEditActivity" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".EditCategoryActivity" android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".LoginActivity" android:windowSoftInputMode="stateHidden"/>
 
@@ -40,6 +49,24 @@
             </intent-filter>
         </activity>
         <meta-data android:name="com.samsung.android.icon_container.has_icon_container" android:value="true"/>
+
+        <activity android:name=".DonateActivity">
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="iamporttest"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".DonateURL">
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="iamporttest2"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

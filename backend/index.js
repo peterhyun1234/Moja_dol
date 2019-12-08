@@ -5,23 +5,126 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 var http = require('http');
 var fs = require('fs');
-var firebase = require("firebase");
-var firebase_db = require('./config/firebase.js').real;
+
+// var firebase = require("firebase");
+// var firebase_db = require('./config/firebase.js').real;
+
+// 관리자 웹화면
+
+// var aliasList = ["/login", "/member", "/memberinterest", "/policy", "/request"];
+// var pathnameList = ["/views/login.html", "/views/member.html", "/views/memberinterest.html", "/views/policy.html", "/views/request.html"];
+
+// function pathname_check(url){
+
+//   console.log("you in pathname_check");
+
+//   for(var i = 0; i < pathnameList.length; i++){
+//     if(url == pathnameList[i]){
+//       console.log("true!! pathname_check");
+//       return true;
+//     }
+//   }
+//   return false;
+// }
+
+// var admin_web = http.createServer(function(request,response){
+//     var url = request.url;
+//     var exist_flag = true;
+
+//     console.log("request.url: " + request.url);
+    
+//     if(request.url == '/'){
+//       url = '/views/login.html';
+//     }
+
+//     for(var i = 0; i < aliasList.length; i++){
+//       if(request.url == aliasList[i]){
+//         url = "/views" + aliasList[i] + ".html";
+//       }
+//     }
+
+//     console.log("url: " + url);
+
+//     exist_flag = pathname_check(url);
+
+//     if(exist_flag == true)
+//     {
+//       console.log("true url: " + url + ", flage: " + exist_flag);
+//       response.writeHead(200);
+//       response.end(fs.readFileSync(__dirname + url));
+//     }
+//     else
+//     {
+//       console.log("false url: " + url + ", flage: " + exist_flag);
+//       response.writeHead(404);
+//       response.write('404 Not found');
+//       response.end();
+//     }
+
+// });
+
+
+var pathnameList = ["/views", "/js", "/css", "/fonts", "/image"];
+
+function pathname_check(url){
+
+  for(var i = 0; i < pathnameList.length; i++){
+    if(url.indexOf(pathnameList[i]) == 0){
+      //console.log("true!! pathname_check");
+      return true;
+    }
+  }
+  return false;
+}
 
 // 관리자 웹화면
 var admin_web = http.createServer(function(request,response){
-    var url = request.url;
-    if(request.url == '/'){
-      url = '/views/login.html';
-    }
-    if(request.url == '/favicon.ico'){
-      return response.writeHead(404);
-    }
+  var url = request.url;
+  var exist_flag = true;
+
+  console.log("url: " + url);
+
+  if(url == '/' || url.indexOf('/login') == 0){
+    url = '/views/login.html';
+  }
+  else if(url.indexOf('/memberinterest') == 0){
+    url = '/views/memberinterest.html';
+  }
+  else if(url.indexOf('/member') == 0){
+    url = '/views/member.html';
+  }
+  else if(url.indexOf('/policy') == 0){
+    url = '/views/policy.html';
+  }
+  else if(url.indexOf('/request') == 0){
+    url = '/views/request.html';
+  }
+  else if(url.indexOf('/header') == 0){
+    url = '/views/header.html';
+  }
+
+  if(url == '/favicon.ico'){
+    return response.writeHead(404);
+  }
+
+  exist_flag = pathname_check(url);
+
+  if(exist_flag == true){
     response.writeHead(200);
     response.end(fs.readFileSync(__dirname + url));
- 
+  }
+  else
+  {
+      //console.log("false url: " + url + ", flag: " + exist_flag);
+      response.writeHead(404);
+      response.write('404 Not found');
+      response.end();
+  }
+
 });
+
 admin_web.listen(8000);
+console.log('admin web server listening on port 8000');
 
 var app = express();
 var fs = require('fs');
@@ -32,26 +135,12 @@ var connect = mysql_db.mysql_init();
 mysql_db.mysql_open(connect);
 exports.connection = connect;
 
-// firebase 연동
-// firebase.initializeApp({
-//   apiKey: firebase_db.apiKey,
-//   authDomain: firebase_db.authDomain,
-//   databaseURL: firebase_db.databaseURL,
-//   projectId: firebase_db.projectId,
-//   storageBucket: firebase_db.storageBucket,
-//   messagingSenderId: firebase_db.messagingSenderId,
-//   appId: firebase_db.appId
-// });
-// exports.firebase_db = firebase;
-
-
 app.set('port', process.env.PORT || 3000);
 
 // URL REST-API SERVER
 app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
-
 
 
 app.use((req, res, next) =>{
@@ -118,9 +207,15 @@ module.exports = router;
 
 const gracfulCleanJob = () => new Promise((resolve, reject) => {
   setTimeout(() => {
-      // cleaning job done
+     console.log("Disconnected from port 3000");
       resolve();
   }, 3000);
+
+  setTimeout(() => {
+    console.log("Disconnected from port 8000");
+    console.log("Please wait...");
+    resolve();
+}, 8000);
 });
 
 process.on('SIGINT', function() {

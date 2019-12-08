@@ -12,6 +12,10 @@ from sqlalchemy.exc import IntegrityError
 import datetime
 import time
 
+#from slacker import Slacker
+
+from test_slack import slack_chat
+
 PATH = "/root/airflow/dags/chromedriver"
 option_ch = webdriver.ChromeOptions()
 option_ch.add_argument('--headless')
@@ -156,6 +160,9 @@ def jababa_crawling():
     id_list = youth_id_cral(driver)
     conn = engine.connect()
     
+    
+    
+
     try:
         id_df = pd.read_sql(jababa_id,con=conn)
     
@@ -189,6 +196,8 @@ def jababa_crawling():
         pass
     
     print("data row len: "+ str(len(df)))
+
+    slack_chat('jababa_crawl len : '+str(len(df)))
     for i in range(len(df)):
         try:
 	   

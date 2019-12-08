@@ -1,28 +1,45 @@
 package com.example.mypolicy.adapter;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mypolicy.SearchActivity;
 import com.example.mypolicy.R;
-import com.example.mypolicy.model.Policy;
 import com.example.mypolicy.model.Review;
+import com.example.mypolicy.service.IApiService;
+import com.example.mypolicy.service.RestClient;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
 
-    String[] eng_mon={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-    String[] kor_mon={"1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"};
-    String[] eng_day={"Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
-    String[] kor_day={"월요일","화요일","수요일","목요일","금요일","토요일","일요일"};
+    IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
+    final HashMap<String,Object> deleteDataMap=new HashMap<>();
+    final Call<JSONObject> deleteCall=iApiService.deleteReview(deleteDataMap);
+
     String parseTime="";
+    SharedPreferences sharedPreferences;
 
     public ArrayList<Review> rList;
     public ReviewAdapter(ArrayList<Review> list) {
@@ -34,45 +51,87 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder> {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_row, parent, false);
         return new ReviewViewHolder(v);
     }
-
+    ////////////////////////////댓글 한줄에해당하는 정보들 코딩하는 부분///////////////////////////////
     @Override
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        sharedPreferences=holder.itemView.getContext().getSharedPreferences("session", Context.MODE_PRIVATE);
 
         String pattern = "yyyy/MM/dd HH시 mm분";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         parseTime=simpleDateFormat.format(rList.get(position).getReview_time());
 
-        Log.d("날짜원본",""+parseTime);
-        holder.id.setText(rList.get(position).getReview_uID());
-        holder.comment.setText(rList.get(position).getContents());
-
-       holder.time.setText(parseTime);
-        String tmp=rList.get(position).getReview_time().toString();
-
-
-        String[] words= tmp.split("\\s");
-        StringBuilder sb=new StringBuilder();
-        StringBuilder result=new StringBuilder();
-       // Log.d("뭐가나오니",""+tmp);
-        for(String wo: words)
-        {
-            Log.d("뭐가나오니",""+wo);
-            sb.append(" ");
-            sb.append(wo);
+        //sharedPreferences.getString("userEmail",null)//아이디 꺼내는 함수
+        //구현할부분
+        //rList.get(position).getReview_uID와 shared.......가 같다면 xml에 버튼이 visible하게 셋팅팅
+        String userID = sharedPreferences.getString("userEmail",null);
+        String commentID = rList.get(position).getReview_uID();
+        final long review_code=rList.get(position).getReview_code();
+        if(userID.equals(commentID)){
+            Log.d("ff","아이디같음??");
+            holder.delete_btn.setVisibility(View.VISIBLE);
         }
-//        Log.d("뭐가나오니gg",""+sb.toString()[5]);
+        else {
+            holder.delete_btn.setVisibility(View.GONE);
+        }
+        //holder.id.setText(plus);// 통신에서 받아온 아이디
+        holder.id.setText(rList.get(position).getReview_uID());// 통신에서 받아온 아이디
+        holder.comment.setText(rList.get(position).getContents());// 통신에서 받아온 코멘트
 
-        for(int i=0;i<eng_mon.length;i++)
-        {
-        if(sb.toString().contains(eng_mon[i]))
-            result.append(kor_mon[i]);
-        }
-        //result.append()
-        for(int i=0;i<eng_day.length;i++)
-        {
-            if(sb.toString().contains(eng_day[i]))
-                result.append(kor_day[i]);
-        }
+        holder.time.setText(parseTime);// 통신에서 받아온 시간 ->파싱
+
+        holder.delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                final Context context=view.getContext();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setMessage("댓글을 삭제하시겠습니까?")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                try{
+//
+                                    deleteDataMap.put("review_uID",sharedPreferences.getString("userEmail",null));
+                                    deleteDataMap.put("review_code",review_code);
+                                    deleteCall.enqueue(new Callback<JSONObject>() {
+                                        @Override
+                                        public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<JSONObject> call, Throwable t) {
+
+                                        }
+                                    });
+                                }catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+                                Toasty.error(context, "댓글삭제완료!!", Toast.LENGTH_SHORT, true).show();                Context context=view.getContext();
+                                //Intent intent=new Intent(context, SearchActivity.class);
+                                //context.startActivity(intent);
+
+                            }
+                        })
+
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+
+
+
+            }
+        });
     }
 
     @Override

@@ -1,0 +1,137 @@
+ -- policy/referral
+SELECT *
+FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority 
+WHERE 
+(user.uID = mylist_priority.uID = click_priority.uID) AND 
+(mylist_priority.uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= user.age AND user.age <= end_age) AND 
+expiration_flag <> 1
+LIMIT 10
+
+ -- policy/referral
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+(Employment_sup*user.Employment_sup_priority + 
+Startup_sup*user.Startup_sup_priority + 
+Life_welfare*user.Life_welfare_priority + 
+Residential_finance*user.Residential_financial_priority)*0.5 AS cg_priority, 
+(Employment_sup*mylist_priority.Employment_sup_priority + 
+Startup_sup*mylist_priority.Startup_sup_priority + 
+Life_welfare*mylist_priority.Life_welfare_priority + 
+Residential_finance*mylist_priority.Residential_financial_priority)*0.5 AS ml_priority, 
+(Employment_sup*click_priority.Employment_sup_priority + 
+Startup_sup*click_priority.Startup_sup_priority + 
+Life_welfare*click_priority.Life_welfare_priority + 
+Residential_finance*click_priority.Residential_financial_priority)*0.5 AS cl_priority 
+FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority 
+WHERE 
+(user.uID = mylist_priority.uID = click_priority.uID) AND 
+(mylist_priority.uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= user.age AND user.age <= end_age) AND 
+expiration_flag <> 1 
+ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC 
+LIMIT 10
+
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+(Employment_sup*user.Employment_sup_priority + 
+Startup_sup*user.Startup_sup_priority + 
+Life_welfare*user.Life_welfare_priority + 
+Residential_finance*user.Residential_financial_priority)*0.5 AS cg_priority, 
+(Employment_sup*mylist_priority.Employment_sup_priority + 
+Startup_sup*mylist_priority.Startup_sup_priority + 
+Life_welfare*mylist_priority.Life_welfare_priority + 
+Residential_finance*mylist_priority.Residential_financial_priority)*0.5 AS ml_priority, 
+(Employment_sup*click_priority.Employment_sup_priority + 
+Startup_sup*click_priority.Startup_sup_priority + 
+Life_welfare*click_priority.Life_welfare_priority + 
+Residential_finance*click_priority.Residential_financial_priority)*0.5 AS cl_priority 
+FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority 
+WHERE 
+(user.uID = mylist_priority.uID = click_priority.uID) AND 
+(user.uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= user.age AND user.age <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+ORDER BY cg_priority DESC, apply_end ASC 
+LIMIT 10
+
+
+ -- policy/user_based_referral
+ -- 나와 비슷한 또래가 my_list에 저장한 p_code중 count(*)순으로 보내기
+SELECT p_code, count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5) )
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+(start_age <= age AND age <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+() AND -- 지역이 같거나 전국인 경우
+(uID = 'peterhyun1234@gmail.com') AND 
+(start_age <= age AND age <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+(start_age <= (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') AND (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+SELECT p_code, title, uri, 
+DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, 
+DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, 
+count(*) AS policy_hits
+FROM user NATURAL JOIN stored_policy, policy  
+WHERE 
+(p_code = s_p_code) AND
+(age BETWEEN ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') - 5) AND ((SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') + 5)) AND
+(start_age <= (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') AND (SELECT age FROM user WHERE uID = 'peterhyun1234@gmail.com') <= end_age) AND 
+((expiration_flag = 2) OR (apply_start <= NOW() AND apply_end >= NOW()))
+GROUP BY p_code
+ORDER BY policy_hits DESC
+LIMIT 10
+
+DELETE FROM stored_policy WHERE s_p_code BETWEEN 0 AND 3000;
+
+
+--5. 사용자 맞춤 정책 추천 (temp/referral + temp/user_based_referral)
+
+--6. 건의사항 작성 (temp/send_req)

@@ -135,12 +135,12 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                     }
 
                     //0x뒤 두자리는 FF면 투명도1
-                    int color1[] = {0xFF80C5FF,0xFF80C5DD, 0xFF80C5BB, 0xFF80C599, 0xFF80C577 };
+                    int color1[] = {0xFF7AB4FF,0xFF6B84E8, 0xFF8581FF, 0xFF9D78FF, 0xFFBF7AFF };
                     for(int i=0;i<jsonArray.length();i++)
                     {
                         Log.d("제이슨 타이틀3",""+dayMapTitle.get("title"+i)+"   "+dayMapTitle.get("title"+i));
 
-                        mBarChart.addBar(new BarModel(dayMapTitle.get("title"+i),(float)dayMapValue.get("value"+i), color1[i]));
+                        mBarChart.addBar(new BarModel(Integer.toString(i+1)+"위",(float)dayMapValue.get("value"+i), color1[i]));
                         //0xFF56B7F1
                         if(i==4)break;
                     }
@@ -213,12 +213,12 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                             }
 
                             //맨뒤 두자리는 FF면 투명도1,FFC763
-                            int color2[] = {0xFF80C5FF,0xFF80C5DD, 0xFF80C5BB, 0xFF80C599, 0xFF80C577 };
+                            int color2[] = {0xFF7AB4FF,0xFF6B84E8, 0xFF8581FF, 0xFF9D78FF, 0xFFBF7AFF };
                             for(int i=0;i<jsonArray.length();i++)
                             {
                                 Log.d("제이슨 타이틀3",""+dayMapTitle.get("title"+i)+"   "+dayMapTitle.get("title"+i));
 
-                                mBarChart.addBar(new BarModel(dayMapTitle.get("title"+i),(float)dayMapValue.get("value"+i), color2[i]));
+                                mBarChart.addBar(new BarModel(Integer.toString(i+1)+"위",(float)dayMapValue.get("value"+i), color2[i]));
 
 
                                 if(i==4)break;
@@ -297,7 +297,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                             {
                                 Log.d("제이슨 타이틀3",""+weekMapTitle.get("title"+i)+"   "+weekMapTitle.get("title"+i));
 
-                                mBarChart.addBar(new BarModel(weekMapTitle.get("title"+i),(float)weekMapValue.get("value"+i), color3[i]));
+                                mBarChart.addBar(new BarModel(Integer.toString(i+1)+"위",(float)weekMapValue.get("value"+i), color3[i]));
 
 //                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
 //                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));
@@ -381,7 +381,7 @@ public class RankingActivity extends AppCompatActivity implements View.OnClickLi
                             {
                                 Log.d("제이슨 타이틀3",""+monthMapTitle.get("title"+i)+"   "+monthMapTitle.get("title"+i));
 
-                                mBarChart.addBar(new BarModel(monthMapTitle.get("title"+i),(float)monthMapValue.get("value"+i), color4[i]));
+                                mBarChart.addBar(new BarModel(Integer.toString(i+1)+"위",(float)monthMapValue.get("value"+i), color4[i]));
 //                                에메랄드0xFF63CBB0
 //                                mBarChart.addBar(new BarModel("야",2.7f, 0xFF56B7F1));
 //                                mBarChart.addBar(new BarModel("야",2.f,  0xFF343456));

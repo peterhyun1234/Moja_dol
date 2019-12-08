@@ -104,4 +104,50 @@ router.post("/delete_review", function (req, res, next) {
     });
  });
 
+ router.post("/delete_review", function (req, res, next) {
+   var recv_code = req.body.review_code;
+   var SQL = 'DELETE FROM review WHERE review_code = ' + recv_code ;
+
+   console.log("API 'review/delete_review' called");
+   console.log(SQL);
+   //console.log(recv_id + ", " + recv_password);
+   //절 차 
+   connection.query(SQL, function (err, data) {
+      //console.log(data);
+      if (!err) {
+         //console.log(data);
+         res.send(data);
+      }
+      else {
+         console.log(err);
+         res.send('error');
+      }
+   });
+});
+
+router.post("/delete_review_app", function (req, res, next) {
+   var recv_code = req.body.review_code;
+   var recv_uID = req.body.review_uID;
+
+   var SQL = "DELETE FROM review " +
+   "WHERE review_code = " + recv_code + " AND " +
+   "review_uID = '" + recv_uID + "'";
+
+   console.log("API 'review/delete_review_app' called");
+   console.log(SQL);
+   //console.log(recv_id + ", " + recv_password);
+   //절 차 
+   connection.query(SQL, function (err, data) {
+      //console.log(data);
+      if (!err) {
+         //console.log(data);
+         res.send(data);
+      }
+      else {
+         console.log(err);
+         res.send('error');
+      }
+   });
+});
+
 module.exports = router;

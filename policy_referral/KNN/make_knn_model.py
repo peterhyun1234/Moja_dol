@@ -4,6 +4,7 @@ from sklearn.neighbors import NearestNeighbors
 from joblib import dump
 
 from vector_list import category_diction
+from vectorize import vectorize_by_world
 
 engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/mojadol_DB00?host=localhost?port=3306", encoding='utf-8')
 
@@ -11,25 +12,25 @@ engine = create_engine("mysql+pymysql://viewer:"+"moja"+"@localhost/mojadol_DB00
 #                   '교육':['교육'],'문화':['문화'],'해외':['해외'],'융자':['융자','대출'],'정장':['정장'],'인턴십':['인턴십','멘토링'],'심리':['심리','흥미'],'프로그램':['프로그램'],'여성':['여성'],'근로자':['근로자'],'장애인':['장애인'],'통장':['통장'],'장학금':['장학금'],'면접':['면접']}
 
 
-def vectorize_by_world(df):
-    word_dict = category_diction.copy()
-    res = [0]*(4+len(word_dict))
-    key_list = list(word_dict.keys())
+#def vectorize_by_world(df):
+#    word_dict = category_diction.copy()
+#    res = [0]*(4+len(word_dict))
+#    key_list = list(word_dict.keys())
     
-    if df['Employment_sup'] == 1:
-        res[0] = 1
-    if df['Startup_sup'] == 1:
-        res[1] = 1
-    if df['Life_welfare'] == 1:
-        res[2] = 1
-    if df['Residential_finance'] == 1:
-        res[3] = 1
-    for idx in word_dict:
-         for kda in word_dict[idx]:
-                if kda in df['title']:
-                    res[4+key_list.index(idx)] = 1
-    df['vector'] = res
-    return df
+#    if df['Employment_sup'] == 1:
+#        res[0] = 1
+#    if df['Startup_sup'] == 1:
+#        res[1] = 1
+#    if df['Life_welfare'] == 1:
+#        res[2] = 1
+#    if df['Residential_finance'] == 1:
+#        res[3] = 1
+#    for idx in word_dict:
+#         for kda in word_dict[idx]:
+#                if kda in df['title']:
+#                    res[4+key_list.index(idx)] = 1
+#    df['vector'] = res
+#    return df
 
 def make_knn_model():
     conn = engine.connect()
@@ -42,7 +43,7 @@ def make_knn_model():
      
    
     policy = policy.apply(vectorize_by_world,axis =1)
-    model_knn = NearestNeighbors(metric='cosine', algorithm='brute', n_neighbors=20, n_jobs=-1)
+    model_knn = NearestNeighbors(metric='cosine', algorithm='brute')
     res_model=model_knn.fit(list(policy['vector']))
     dump(res_model,'knn.joblib')
 

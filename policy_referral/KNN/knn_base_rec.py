@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from joblib import load
 import sys
 from vector_list import category_diction
+from vectorize import vectorize_by_world
 
 import pickle
 
@@ -29,30 +30,67 @@ p_code5 bigint(20)
 )
 """
 
+category_weight = "0.5"
+mylist_weight = "0.5"
+click_weight = "0.5"
+
+def none_query_func(recv_uID):
+	return ("SELECT p_code, " +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end, " +
+        "(Employment_sup*user.Employment_sup_priority + " +
+        "Startup_sup*user.Startup_sup_priority + " +
+        "Life_welfare*user.Life_welfare_priority + " +
+        "Residential_finance*user.Residential_financial_priority)*" + category_weight + " " +
+        "AS cg_priority, " +
+        "(Employment_sup*mylist_priority.Employment_sup_priority + " +
+        "Startup_sup*mylist_priority.Startup_sup_priority + " +
+        "Life_welfare*mylist_priority.Life_welfare_priority + " +
+        "Residential_finance*mylist_priority.Residential_financial_priority)*" + mylist_weight + " " +
+        "AS ml_priority, " +
+        "(Employment_sup*click_priority.Employment_sup_priority + " +
+        "Startup_sup*click_priority.Startup_sup_priority + " +
+        "Life_welfare*click_priority.Life_welfare_priority + " +
+        "Residential_finance*click_priority.Residential_financial_priority)*" + click_weight + " " +
+        "AS cl_priority " +
+        "FROM policy NATURAL JOIN interest, user, mylist_priority, click_priority " +
+        "WHERE (user.uID = mylist_priority.uID) AND " +
+        "(user.uID = click_priority.uID) AND " +
+        "(mylist_priority.uID = click_priority.uID) AND " +
+        "(user.uID = '" + recv_uID + "') AND " +
+        "((policy.dor = '전국') OR (policy.dor = user.dor AND policy.si = '전체') OR (policy.dor = user.dor AND policy.si = user.si)) AND " +
+        "((start_age <= user.age AND user.age <= end_age) OR (end_age is null AND start_age is null) ) AND " +
+        "((expiration_flag = 2) OR (apply_end >= NOW())) " +
+        "ORDER BY (cg_priority + ml_priority + cl_priority) DESC, apply_end ASC " +
+        "LIMIT 5")
+
+
+
+
 #vectored_word = []
 
 
-def vectorize_by_world(df):
-    word_dict = category_diction.copy()
-    res = [0]*(4+len(word_dict))
-    key_list = list(word_dict.keys())
+#def vectorize_by_world(df):
+#    word_dict = category_diction.copy()
+#    res = [0]*(4+len(word_dict))
+#    key_list = list(word_dict.keys())
     
-    if df['Employment_sup'] == 1:
-        res[0] = 1
-    if df['Startup_sup'] == 1:
-        res[1] = 1
-    if df['Life_welfare'] == 1:
-        res[2] = 1
-    if df['Residential_finance'] == 1:
-        res[3] = 1
-    for idx in word_dict:
-         for kda in word_dict[idx]:
-                if kda in df['title']:
-                    res[4+key_list.index(idx)] = 1
-                    print(kda)
+#    if df['Employment_sup'] == 1:
+#        res[0] = 1
+#    if df['Startup_sup'] == 1:
+#        res[1] = 1
+#    if df['Life_welfare'] == 1:
+#        res[2] = 1
+#    if df['Residential_finance'] == 1:
+#        res[3] = 1
+#    for idx in word_dict:
+#         for kda in word_dict[idx]:
+#                if kda in df['title']:
+#                    res[4+key_list.index(idx)] = 1
+#                    print(kda)
 #                    vectored_word.append(kda)
-    df['vector'] = res
-    return df
+#    df['vector'] = res
+#    return df
 
 #def return_word_count(input_list):
 #
@@ -65,13 +103,14 @@ def vectorize_by_world(df):
 #   
 #    return res
 
+
 def predict_by_knn():
-    clf = load('knn.joblib')
+    clf = load('/root/mojadol_server/KNN/knn.joblib')
     uID = sys.argv[1]
     
 
-    with open("word_count_dict.pickle",'rb') as fw:
-        word_count_dict = pickle.load(fw)
+    #with open("/root/mojadol_server/KNN/word_count_dict.pickle",'rb') as fw:
+    #    word_count_dict = pickle.load(fw)
 
     conn = engine.connect()
 
@@ -86,8 +125,10 @@ def predict_by_knn():
     policy_ids = temp
     
     if len(temp) == 0:
-        print(str(uID))
-        return 
+        print('mylist_none')
+        
+    if len(policy_ids) == 0:
+        return   
 
     policy_df = pd.read_sql('select * from policy where p_code in ('+",".join(policy_ids) +')',con=conn)
 
@@ -108,13 +149,13 @@ def predict_by_knn():
     #        temp_comp[idx] = 1
     #    else:
     #        temp_comp[idx] = 0
-    print("compare")    
-    for idx in range(len(compare)):
-        if compare[idx] >0 and idx>4:
-            inx = list(category_diction.keys())[idx-4]
-            print(inx)
-            division = word_count_dict[inx]
-            compare[idx] = compare[idx]/division
+    #print("compare")    
+    #for idx in range(len(compare)):
+    #    if compare[idx] >0 and idx>4:
+    #        inx = list(category_diction.keys())[idx-4]
+    #        print(inx)
+    #        division = word_count_dict[inx]
+    #        compare[idx] = compare[idx]/division
         
  
     
@@ -135,17 +176,33 @@ def predict_by_knn():
         print('exist table')
         print(e)
         pass
+    print(clf.kneighbors([compare],5)[0][0]) 
+    if clf.kneighbors([compare],5)[0][0][4] != 0 and sum(compare)!=0:
 
-
-    for kda in res_neigbor:
-        for idx in kda:
-            temp_df = pd.read_sql("select p_code from policy limit "+ str(idx)+",1",con=conn)
-            rec.append(temp_df['p_code'][0])
+        for kda in res_neigbor:
+            for idx in kda:
+                temp_df = pd.read_sql("select p_code from policy where expiration_flag=2 or apply_end >= NOW() limit "+ str(idx)+",1",con=conn)
+                rec.append(temp_df['p_code'][0])
     
-    res_dict = {'uID':uID,'p_code1':rec[0],'p_code2':rec[1],'p_code3':rec[2],'p_code4':rec[3],'p_code5':rec[4]}
-    rec_df = pd.DataFrame(columns=['uID','p_code1','p_code2','p_code3','p_code4','p_code5'])
+        res_dict = {'uID':uID,'p_code1':rec[0],'p_code2':rec[1],'p_code3':rec[2],'p_code4':rec[3],'p_code5':rec[4]}
+        rec_df = pd.DataFrame(columns=['uID','p_code1','p_code2','p_code3','p_code4','p_code5'])
 
-    rec_df = rec_df.append(res_dict,ignore_index=True)
+        rec_df = rec_df.append(res_dict,ignore_index=True)
+    
+    elif clf.kneighbors([compare],5)[0][0][4] == 0 or sum(compare)==0:
+        
+        rec_pd = pd.read_sql(none_query_func(uID),con=conn)
+        #print(none_query)
+        rec_p_code = list(rec_pd['p_code'])
+        print(rec_p_code)
+        if len(rec_p_code)==0:
+            rec_p_code = [0]*5
+        res_dict = {'uID':uID,'p_code1':rec_p_code[0],'p_code2':rec_p_code[1],'p_code3':rec_p_code[2],'p_code4':rec_p_code[3],'p_code5':rec_p_code[4]}
+        rec_df = pd.DataFrame(columns=['uID','p_code1','p_code2','p_code3','p_code4','p_code5'])
+        rec_df = rec_df.append(res_dict,ignore_index=True)
+    
+
+    
 
     try:
         rec_df.to_sql(name='knn_recommendation',if_exists='append',con=conn,index=False)

@@ -58,13 +58,16 @@ def make_vector():
         pickle.dump(word_dict,fw)
     
     word_count_dict = {}    
-    for idx in category_diction.keys():
-        temp = 0
-        for kda in category_diction[idx]:
-            temp = temp + word_dict[kda]
-        word_count_dict[idx] = temp
+    for idx in category_diction.values():
+        
+        for kda in idx:
+            if kda in word_count_dict.keys():
+                word_count_dict[kda] = word_count_dict[kda] + 1
+            else:
+                word_count_dict[kda] = 1
+        
 
-    with open("word_count_dict.pickle",'wb') as fw:
+    with open("category_diction_count.pickle",'wb') as fw:
         pickle.dump(word_count_dict,fw)
 
 make_vector()    

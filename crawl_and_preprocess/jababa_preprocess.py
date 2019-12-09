@@ -61,7 +61,7 @@ pattern_age = re.compile(r"[0-9][0-9]세")
 pattern_age_num = re.compile(r"[0-9][0-9]") 
 
 pattern_age_se = re.compile(r"[0-9][0-9]\s?(?=세)")
-pattern_age_wave = re.compile(r"[0-9][0-9]\s?(?=~)")
+pattern_age_wave = re.compile(r"[0-9][0-9]\s?(?=[~-])")
 pattern_age_more = re.compile(r"[0-9][0-9]\s?세?\s?이상")
 pattern_age_less = re.compile(r"[0-9][0-9]\s?세?\s?이하")
 pattern_age_less2 = re.compile(r"[0-9][0-9]\s?세?\s?미만")
@@ -196,6 +196,14 @@ def age_parse(df):
     if len(end)>0:
         df_res['end_age'] = end[0]
     
+    if df_res['start_age']!= None and df_res['end_age']!=None:
+        if df_res['start_age'] > df_res['end_age']:
+            temp = df_res['start_age'] 
+            df_res['start_age'] = df_res['end_age']
+            df_res['end_age'] = temp   
+        elif df_res['start_age'] == df_res['end_age']:
+            df_res['start_age'] = None
+ 
     return df_res
 
 def find_location(x,local_list):

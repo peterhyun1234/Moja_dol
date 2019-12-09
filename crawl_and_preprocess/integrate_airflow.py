@@ -23,6 +23,10 @@ from com_to_policy import com_to_pol
 from unify_info import unify_row
 from update_table import change_date
 
+from make_knn_model import make_knn_model
+
+from origin_table import to_origin
+
 dag = DAG('integrate_dag', description='integrate',
           schedule_interval='0 0 * * *',
           start_date=datetime(2019, 11, 1), catchup=False)
@@ -51,6 +55,9 @@ unify_oper = PythonOperator(task_id = 'listing_unify',python_callable=unify_row,
 
 change_date_oper = PythonOperator(task_id = 'update_date',python_callable=change_date,dag =dag)
 
+make_knn_model = PythonOperator(task_id = 'KNN_model',python_callable = make_knn_model,dag=dag )
+
+make_origin_table = PythonOperator(task_id="origin_table",python_callable = to_origin, dag = dag)
 
 jababa_crawl_operator >> jababa_preprocess_operator
 
@@ -66,4 +73,8 @@ combine_table_oper >> integrate_table_oper
 
 integrate_table_oper>> policy_table_oper
 
-policy_table_oper >> [unify_oper,change_date_oper]
+policy_table_oper >> [unify_oper,change_date_oper] 
+
+[unify_oper,change_date_oper] >> make_knn_model
+
+make_knn_model >> make_origin_table

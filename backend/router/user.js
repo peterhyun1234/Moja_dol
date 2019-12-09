@@ -5,6 +5,20 @@ let { PythonShell } = require('python-shell');
 var connection = require('../index.js').connection;
 var firebase = require("firebase");
 
+var firebaseConfig = {
+    apiKey: "AIzaSyDo--9OT4OtrahZiX8pO9AzBzfCDJXzhuI",
+    authDomain: "mypolicy-d626b.firebaseapp.com",
+    databaseURL: "https://mypolicy-d626b.firebaseio.com",
+    projectId: "mypolicy-d626b",
+    storageBucket: "mypolicy-d626b.appspot.com",
+    messagingSenderId: "419848304732",
+    appId: "1:419848304732:web:920baedb134498ad02ce99"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+var db = firebase.firestore();
+
 router.get('/fire_all_users', function (req, res) {
 
     var SQL = 'SELECT * from user';
@@ -206,7 +220,82 @@ router.post("/register", function (req, res, next) {
     // finally
 });
 
+router.post('/store_user', function (req, res) {
 
+    var recv_uID = req.body.uID;
+
+    var recv_name = "";
+    var recv_dor = "";
+    var recv_si = "";
+    var recv_age = "";
+    var recv_sex = "";
+
+    console.log("API 'user/store_user' called");
+
+    //프로미스 생성
+    const promise1 = function (recv_uID) {
+        return new Promise(function (resolve, reject) {
+            if (recv_uID) {
+                db.collection("user").get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        if (doc.id == recv_uID) {
+                            recv_age = doc.data().age;
+                            recv_name = doc.data().name;
+                            recv_sex = doc.data().sex;
+                            recv_dor = doc.data().region[0];
+                            recv_si = doc.data().region[1];
+
+                            //console.log("recv_age: " + recv_age);
+                            resolve("complete");
+                        }
+                    });
+                });
+            }
+            else {
+                reject("fail");
+            }
+        });
+    }
+
+    promise1(recv_uID).then(function (result) {
+        //console.log(result);
+
+        var SQL = "INSERT INTO user " +
+            "(uID, name, dor, si, age, sex) " +
+            "VALUES(" +
+            '\'' + recv_uID + '\'' +
+            ', \'' + recv_name + '\'' +
+            ', \'' + recv_dor + '\'' +
+            ', \'' + recv_si + '\'' +
+            ', ' + recv_age +
+            ', \'' + recv_sex + '\'' + ') ' +
+            "ON DUPLICATE KEY UPDATE " +
+            "uID = '" + recv_uID + "', " +
+            "name = '" + recv_name + "', " +
+            "dor = '" + recv_dor + "', " +
+            "si = '" + recv_si + "', " +
+            "age = " + recv_age + ", " +
+            "sex = '" + recv_sex + "'";
+
+        //console.log("API 'user/store_user' called");
+        console.log(SQL);
+
+        //절 차 
+        connection.query(SQL, function (err, data) {
+            if (!err) {
+                res.send(data);
+            }
+            else {
+                console.log(err);
+                res.send('error');
+            }
+        });
+    }, function (err) {
+        console.log(err);
+        res.send("fail");
+    });
+
+});
 
 router.post("/add_user", function (req, res, next) {
 
@@ -260,7 +349,7 @@ router.post("/add_user", function (req, res, next) {
     //             var name = doc.data().name;
     //             var sex = doc.data().sex;
     //             var region = doc.data().region;
-                
+
     //             console.log("age: " + age);
     //             console.log("id: " + id);
     //             console.log("name: " + name);

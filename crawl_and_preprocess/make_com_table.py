@@ -136,14 +136,15 @@ def make_com_table():
 
 
     # jababa inner dup
-    for idx in df_j2.location.unique():
-        n=1
-        for i,row1 in df_j2.loc[df_j2.location==idx].iterrows():
-            for k,row2 in df_j2.loc[df_j2.location==idx].iloc[n:].iterrows():
-                if Overlap_coefficient(row1['token_filterd'],row2['token_filterd'])>0.5:
-                    df_integrate = df_integrate.append({'table1':'jababa_preprocess','id1':row1['id'],'table2':'jababa_preprocess','id2':row2['id']},ignore_index = True)
+    for cat in list(df_j2['category'].unique()):
+        for idx in df_j2.location.unique():
+            n=1
+            for i,row1 in df_j2.loc[(df_j2.location==idx)&(df_j2.category == cat)].iterrows():
+                for k,row2 in df_j2.loc[(df_j2.location==idx)&(df_j2.category == cat)].iloc[n:].iterrows():
+                    if Overlap_coefficient(row1['token_filterd'],row2['token_filterd'])>0.5:
+                        df_integrate = df_integrate.append({'table1':'jababa_preprocess','id1':row1['id'],'table2':'jababa_preprocess','id2':row2['id']},ignore_index = True)
     
-            n=n+1 
+                n=n+1 
 
 
     df_integrate['listing']= 0 

@@ -4,7 +4,7 @@ var router = express.Router();
 
 var connection = require('../index.js').connection;
 
-let {PythonShell} = require('python-shell');
+let { PythonShell } = require('python-shell');
 
 
 router.post("/show_all_mylist", function (req, res, next) {
@@ -34,68 +34,80 @@ router.post("/store_in_mylist", function (req, res, next) {
 
     var recv_uID = req.body.uID;
     var recv_s_p_code = req.body.s_p_code;
-    //var recv_date = req.body.s_p_time;
-    //var temp_date;
 
-    //if (recv_date != null) {
-        //temp_date = recv_date;
-        //recv_date = '\'' + temp_date + '\'';
-    //}
 
-    var SQL = 'INSERT INTO stored_policy (uID, s_p_code, s_p_time) SELECT ' +
-        '\'' + recv_uID + '\'' +
-        ', ' + recv_s_p_code +
-        ', ' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' +
-	' FROM DUAL WHERE 0 = (SELECT count(*) FROM stored_policy WHERE uID = ' +
-        '\'' + recv_uID + '\'' + ' AND '+
-    's_p_code = ' + recv_s_p_code + ')';
-    
     console.log("API 'my_list/store_in_mylist' called");
-    console.log(SQL);
-    //절 차 
-    connection.query(SQL, function (err, data) {
-        if (!err) {
-            // finally
-            res.send(data);
-        }
-        else {
-            console.log(err);
-            res.send('error');
-        }
+
+
+
+
+    const promise1 = function (recv_uID) {
+        return new Promise(function (resolve, reject) {
+            if (recv_uID) {
+                var SQL = 'INSERT INTO stored_policy (uID, s_p_code, s_p_time) SELECT ' +
+                    '\'' + recv_uID + '\'' +
+                    ', ' + recv_s_p_code +
+                    ', ' + 'DATE_SUB(NOW(), INTERVAL -9 HOUR)' +
+                    ' WHERE NOT EXISTS (SELECT s_p_code FROM stored_policy WHERE uID = ' +
+                    '\'' + recv_uID + '\'' + ' AND ' +
+                    's_p_code = ' + recv_s_p_code + ')';
+
+                console.log(SQL);
+                //절 차 
+                connection.query(SQL, function (err, data) {
+                    if (!err) {
+                        // finally
+                        res.send(data);
+                        resolve("complete");
+                    }
+                    else {
+                        console.log(err);
+                        res.send('error');
+                    }
+                });
+            }
+            else {
+                reject("fail");
+            }
+        });
+    }
+
+    promise1(recv_uID).then(function (result) {
+
+        var options = {
+            mode: 'text',
+            pythonPath: '/usr/bin/python3.7',
+            pythonOptions: ['-u'],
+            scriptPath: 'KNN',
+            args: [recv_uID]
+        };
+
+        PythonShell.run('knn_base_rec.py', options, function (err, results) {
+            if (err) {
+                throw err;
+            }
+            console.log("result: " + results);
+        });
+
+    }, function (err) {
+        console.log(err);
+        res.send("fail");
     });
 
-    var options = {
-        mode: 'text',
-        pythonPath: '/usr/bin/python3.7',
-        pythonOptions: ['-u'],
-        scriptPath: 'KNN',
-        args: [recv_uID]
-    };
-    
-    //python shell test
-    PythonShell.run('knn_base_rec.py', options, function (err, results){
-        if(err)
-        {
-            throw err;
-        }
-        
-        console.log("result: " + results);
-        
-    });
 
 });
 
 router.post("/ordered_mylist", function (req, res, next) {
 
     var recv_uID = req.body.uID;
-    var recv_Sort_by = req.body.Sort_by; 
+    var recv_Sort_by = req.body.Sort_by;
     // my List 정렬 기준 두가지 (type: String)
     // 1. "저장날짜순"
     // 2. "지원날짜순"
 
     var sortingList = ["저장날짜순", "지원날짜순"];
     var after_sortingList = ["s_p_time DESC", "apply_end is null ASC, apply_end ASC"];
-    
+
     var ORDER_SQL = 'ORDER BY s_p_time DESC'; //default
 
     //console.log("sortingList.lenth: " + sortingList.length);
@@ -108,13 +120,13 @@ router.post("/ordered_mylist", function (req, res, next) {
         }
     }
 
-    var SQL = 'SELECT p_code, title, '+
-    "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " + 
-    "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
-    'from stored_policy, policy ' + 
-    'where p_code = s_p_code ' + 
-    'AND uID = \'' + recv_uID + '\' ' + 
-    ORDER_SQL;
+    var SQL = 'SELECT p_code, title, ' +
+        "DATE_SUB(apply_start, INTERVAL -9 HOUR) AS apply_start, " +
+        "DATE_SUB(apply_end, INTERVAL -9 HOUR) AS apply_end " +
+        'from stored_policy, policy ' +
+        'where p_code = s_p_code ' +
+        'AND uID = \'' + recv_uID + '\' ' +
+        ORDER_SQL;
 
     console.log("API 'my_list/ordered_mylist' called");
     console.log(SQL);
@@ -136,44 +148,59 @@ router.post("/delete", function (req, res, next) {
     var recv_uID = req.body.uID;
     var recv_s_p_code = req.body.s_p_code;
 
-    var SQL = 'DELETE FROM stored_policy where ' +
-        'uID = \'' + recv_uID + '\' AND ' +
-    's_p_code = ' + recv_s_p_code;
 
-    console.log("API 'my_list/delete' called");    
-    console.log(SQL);
-    //절 차 
-    connection.query(SQL, function (err, data) {
-        if (!err) {
-            res.send(data);
-        }
-        else {
-            console.log(err);
-            res.send('error');
-        }
+    console.log("API 'my_list/delete' called");
+
+
+    const promise1 = function (recv_uID) {
+        return new Promise(function (resolve, reject) {
+            if (recv_uID) {
+                var SQL = 'DELETE FROM stored_policy where ' +
+                    'uID = \'' + recv_uID + '\' AND ' +
+                    's_p_code = ' + recv_s_p_code ;
+
+
+                console.log(SQL);
+                 
+                connection.query(SQL, function (err, data) {
+                    if (!err) {
+                        res.send(data);
+                        resolve("complete");
+                    }
+                    else {
+                        console.log(err);
+                        res.send('error');
+                    }
+                });
+
+            }
+            else {
+                reject("fail");
+            }
+        });
+    }
+
+    promise1(recv_uID).then(function (result) {
+
+        var options = {
+            mode: 'text',
+            pythonPath: '/usr/bin/python3.7',
+            pythonOptions: ['-u'],
+            scriptPath: 'KNN',
+            args: [recv_uID]
+        };
+
+        PythonShell.run('knn_base_rec.py', options, function (err, results) {
+            if (err) {
+                throw err;
+            }
+            console.log("result: " + results);
+        });
+
+    }, function (err) {
+        console.log(err);
+        res.send("fail");
     });
-
-
-    var options = {
-        mode: 'text',
-        pythonPath: '/usr/bin/python3.7',
-        pythonOptions: ['-u'],
-        scriptPath: 'KNN',
-        args: [recv_uID]
-    };
-    
-    //python shell test
-    PythonShell.run('knn_base_rec.py', options, function (err, results){
-        if(err)
-        {
-            throw err;
-        }
-        
-        console.log("result: " + results);
-        
-    });
-
-    // finally
 
 });
 

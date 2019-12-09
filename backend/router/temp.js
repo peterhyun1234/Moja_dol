@@ -38,39 +38,41 @@ router.get('/ttt', function (req, res) {
                 recv_sex = doc.data().sex;
                 recv_dor = doc.data().region[0];
                 recv_si = doc.data().region[1];
+
+                //console.log("recv_age: " + recv_age);
+                var SQL = "INSERT INTO user " +
+                    "(uID, name, dor, si, age, sex) " +
+                    "VALUES(" +
+                    '\'' + recv_uID + '\'' +
+                    ', \'' + recv_name + '\'' +
+                    ', \'' + recv_dor + '\'' +
+                    ', \'' + recv_si + '\'' +
+                    ', ' + recv_age +
+                    ', \'' + recv_sex + '\'' + ') ' +
+                    "ON DUPLICATE KEY UPDATE " +
+                    "uID = '" + recv_uID + "', " +
+                    "name = '" + recv_name + "', " +
+                    "dor = '" + recv_dor + "', " +
+                    "si = '" + recv_si + "', " +
+                    "age = " + recv_age + ", " +
+                    "sex = '" + recv_sex + "'";
+
+                console.log("API 'temp/ttt' called");
+                console.log(SQL);
+
+                //절 차 
+                connection.query(SQL, function (err, data) {
+                    if (!err) {
+                        res.send(data);
+                    }
+                    else {
+                        console.log(err);
+                        res.send('error');
+                    }
+                });
+
             }
         });
-    });
-
-    var SQL = "INSERT INTO user " +
-        "(uID, name, dor, si, age, sex) " +
-        "VALUES(" +
-        '\'' + recv_uID + '\'' +
-        ', \'' + recv_name + '\'' +
-        ', \'' + recv_dor + '\'' +
-        ', \'' + recv_si + '\'' +
-        ', ' + recv_age +
-        ', \'' + recv_sex + '\'' + ') ' +
-        "ON DUPLICATE KEY UPDATE " +
-        "uID = '" + recv_uID + "', " +
-        "name = '" + recv_name + "', " +
-        "dor = '" + recv_dor + "', " +
-        "si = '" + recv_si + "', " +
-        "age = " + recv_age + ", " +
-        "sex = '" + recv_sex + "'";
-
-    console.log("API 'temp/ttt' called");
-    console.log(SQL);
-
-    //절 차 
-    connection.query(SQL, function (err, data) {
-        if (!err) {
-            res.send(data);
-        }
-        else {
-            console.log(err);
-            res.send('error');
-        }
     });
 });
 

@@ -184,7 +184,15 @@ def age_parse(df):
     
     if len(end)>0:
         df_res['end_age'] = end[0]
-    
+
+    if df_res['start_age']!=None and df_res['end_age']!=None:
+        if df_res['start_age']>df_res['end_age']:
+            temp = df_res['start_age'] 
+            df_res['start_age'] = df_res['end_age'] 
+            df_res['end_age'] = temp  
+        elif df_res['start_age']==df_res['end_age']:
+            df_res['start_age']=None
+
     return df_res
 
 def find_date_type(string,flag=1):
@@ -309,7 +317,7 @@ def refine_string_to_date_time(x,flag,year=None,month=None,day=None):
             temp = int(idx)
             if temp == 0:
                 pass
-            elif temp > 12 and y == None:
+            elif temp > 12 and y == None and m == None:
                 y = temp
             elif m==None and temp<13:
                 m = temp
@@ -429,7 +437,10 @@ def date_list_parse(df_in):
     else:
         df['start_date'] = df['res_date'][0][0]
         df['end_date'] = df['res_date'][0][1]
-        
+    
+    if df['start_date'] == df['end_date']:
+        df['start_date'] = None
+    
     return df
 
 def preprocess_local_youth():

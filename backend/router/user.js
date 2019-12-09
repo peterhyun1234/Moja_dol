@@ -161,61 +161,85 @@ router.post("/register", function (req, res, next) {
     }
 
 
-    var SQL = 'INSERT INTO user VALUES(' +
-        '\'' + recv_uID + '\'' +
-        ', \'' + recv_name + '\'' +
-        ', \'' + recv_region_arr[0] + '\'' +
-        ', \'' + recv_region_arr[1] + '\'' +
-        ', ' + recv_age +
-        ', ' + recv_Employment_sup_priority +
-        ', ' + recv_Startup_sup_priority +
-        ', ' + recv_Life_welfare_priority +
-        ', ' + recv_Residential_financial_priority +
-        ', \'' + recv_sex + '\'' + ') ' +
-        "ON DUPLICATE KEY UPDATE " +
-        "uID = '" + recv_uID + "', " +
-        "name = '" + recv_name + "', " +
-        "dor = '" + recv_region_arr[0] + "', " +
-        "si = '" + recv_region_arr[1] + "', " +
-        "age = " + recv_age + ", " +
-        "Employment_sup_priority = " + recv_Employment_sup_priority + ", " +
-        "Startup_sup_priority = " + recv_Startup_sup_priority + ", " +
-        "Life_welfare_priority = " + recv_Life_welfare_priority + ", " +
-        "Residential_financial_priority = " + recv_Residential_financial_priority + ", " +
-        "sex = '" + recv_sex + "'";
 
     console.log("API 'user/register' called");
-    console.log(SQL);
 
-    //절 차 
-    connection.query(SQL, function (err, data) {
-        if (!err) {
-            res.send(data);
-        }
-        else {
-            console.log(err);
-            res.send('error');
-        }
+
+    const promise1 = function (recv_uID) {
+        return new Promise(function (resolve, reject) {
+            if (recv_uID) {
+
+                var SQL = 'INSERT INTO user VALUES(' +
+                '\'' + recv_uID + '\'' +
+                ', \'' + recv_name + '\'' +
+                ', \'' + recv_region_arr[0] + '\'' +
+                ', \'' + recv_region_arr[1] + '\'' +
+                ', ' + recv_age +
+                ', ' + recv_Employment_sup_priority +
+                ', ' + recv_Startup_sup_priority +
+                ', ' + recv_Life_welfare_priority +
+                ', ' + recv_Residential_financial_priority +
+                ', \'' + recv_sex + '\'' + ') ' +
+                "ON DUPLICATE KEY UPDATE " +
+                "uID = '" + recv_uID + "', " +
+                "name = '" + recv_name + "', " +
+                "dor = '" + recv_region_arr[0] + "', " +
+                "si = '" + recv_region_arr[1] + "', " +
+                "age = " + recv_age + ", " +
+                "Employment_sup_priority = " + recv_Employment_sup_priority + ", " +
+                "Startup_sup_priority = " + recv_Startup_sup_priority + ", " +
+                "Life_welfare_priority = " + recv_Life_welfare_priority + ", " +
+                "Residential_financial_priority = " + recv_Residential_financial_priority + ", " +
+                "sex = '" + recv_sex + "'";
+        
+            console.log(SQL);
+        
+            //절 차 
+            connection.query(SQL, function (err, data) {
+                if (!err) {
+                    res.send(data);
+                }
+                else {
+                    console.log(err);
+                    res.send('error');
+                }
+            });
+
+            }
+            else {
+                reject("fail");
+            }
+        });
+    }
+
+    promise1(recv_uID).then(function (result) {
+
+        var options = {
+            mode: 'text',
+            pythonPath: '/usr/bin/python3.7',
+            pythonOptions: ['-u'],
+            scriptPath: 'KNN',
+            args: [recv_uID]
+        };
+
+        PythonShell.run('knn_base_rec.py', options, function (err, results) {
+            if (err) {
+                throw err;
+            }
+            console.log("result: " + results);
+        });
+
+    }, function (err) {
+        console.log(err);
+        res.send("fail");
     });
 
 
-    var options = {
-        mode: 'text',
-        pythonPath: '/usr/bin/python3.7',
-        pythonOptions: ['-u'],
-        scriptPath: 'KNN',
-        args: [recv_uID]
-    };
 
-    //python shell test
-    PythonShell.run('knn_base_rec.py', options, function (err, results) {
-        if (err) {
-            throw err;
-        }
 
-        console.log("result: " + results);
 
-    });
+
+
 
     // finally
 });

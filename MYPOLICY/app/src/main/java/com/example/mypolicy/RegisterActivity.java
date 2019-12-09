@@ -13,13 +13,11 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.mypolicy.model.AddUser;
-import com.example.mypolicy.service.IApiService;
-import com.example.mypolicy.service.RestClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,12 +31,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONObject;
-
 import es.dmoral.toasty.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -50,11 +43,6 @@ public class RegisterActivity extends AppCompatActivity {
     Button btn_cancel, btn_join;
     LinearLayout ll;
     InputMethodManager imm;
-
-    IApiService iApiService=new RestClient("http://49.236.136.213:3000/").getApiService();
-    final HashMap<String,Object> AddUserMap=new HashMap<>();
-    final Call<ArrayList<AddUser>> addCall=iApiService.addUser(AddUserMap);
-
 
     String userEmail, userPW, userName, userAge, userSex;
     String region_do, region_si;
@@ -83,6 +71,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         ll = findViewById(R.id.ll_register);
         imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+
+
 
         userAge = ""; region_do = ""; region_si = ""; userSex = "";
         sp_age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -168,12 +158,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userEmail = et_userEmail.getText().toString();
                 userPW = et_userPW.getText().toString();
                 userName = et_userName.getText().toString();
+
+
 
                 if(userEmail.isEmpty()||userPW.isEmpty()||userName.isEmpty()){
                     Toast.makeText(RegisterActivity.this, "빈칸을 모두 채워주세요", Toast.LENGTH_SHORT).show();
@@ -202,25 +196,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
 
-                    Log.d("저어엉보",""+userEmail+ "  "+userName+ "  "+userAge+ "  "+userSex+"   "+region_do+ "  "+ region_si);
-                    AddUserMap.put("uID",userEmail);
-                    AddUserMap.put("name",userName);
-                    AddUserMap.put("dor",region_do);
-                    AddUserMap.put("si",region_si);
-                    AddUserMap.put("age",userAge);
-                    AddUserMap.put("sex",userSex);
-                    addCall.enqueue(new Callback<ArrayList<AddUser>>() {
-                        @Override
-                        public void onResponse(Call<ArrayList<AddUser>> call, Response<ArrayList<AddUser>> response) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<ArrayList<AddUser>> call, Throwable t) {
-
-                        }
-                    });
                 }
+
 
 
             }

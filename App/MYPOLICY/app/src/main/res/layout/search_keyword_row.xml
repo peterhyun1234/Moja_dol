@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="3dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryLight"/>
+                <TextView
+                    android:id="@+id/tv_search_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="취업지원"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryLight"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="#"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryLight"/>
+                <TextView
+                    android:id="@+id/tv_search_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="서울시 강남구"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryLight"/>
+                <TextView
+                    android:id="@+id/tv_search_match_score"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="매치스코어"
+                    android:visibility="invisible"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_search_pcode"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="피코드"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_search_policy_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="청년지원 프로젝트"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="시작날짜 : "
+                    android:textColor="@color/colorTextLight" />
+
+                <TextView
+                    android:id="@+id/tv_search_apply_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="2019년 10월 1일"
+                    android:textColor="@color/colorTextLight" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="종료날짜 : "
+                    android:textColor="@color/colorTextLight" />
+
+                <TextView
+                    android:id="@+id/tv_search_apply_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="2019년 12월 1일"
+                    android:textColor="@color/colorTextLight" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_below="@id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/barDeep"/>
+
+</RelativeLayout>

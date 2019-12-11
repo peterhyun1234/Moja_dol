@@ -21,6 +21,7 @@ function IPcheck(){
 }
 
 function showrequest(){
+	var number = 1;
 	$.ajax({
 		url: "http://49.236.136.213:3000/request/show_all_reqs",
 		type: "POST",
@@ -46,7 +47,7 @@ function showrequest(){
 				}             
 				  
 				var element = '<tr>' +
-							  '<td>' + content.req_code + '</td>'+
+							  '<td>' + number + '</td>'+
 							  '<td>' + content.req_uID + '</td>'+
 							  '<td>' + content.req_category + '</td>'+
 							  '<td>' + retime + '</td>'+
@@ -56,7 +57,7 @@ function showrequest(){
 		  
 				$("tbody").append(element);
 		  
-
+				number++;
 			});
 			makedatable();
 

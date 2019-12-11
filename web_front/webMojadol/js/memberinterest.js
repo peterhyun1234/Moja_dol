@@ -31,6 +31,10 @@ function callinterst(){
                 //alert(idx + ":"+content.name);
 
                 if(content.sex == undefined) content.sex = "-";
+                if(content.Employment_sup_priority == null) content.Employment_sup_priority = "-";
+                if(content.Startup_sup_priority == null) content.Startup_sup_priority = "-";
+                if(content.Life_welfare_priority == null) content.Life_welfare_priority = "-";
+                if(content.Residential_financial_priority == null) content.Residential_financial_priority = "-";
                 //if(content.region == undefined) content.region = "-";
                 //console.log(content.region);
                 var element = '<tr>' +

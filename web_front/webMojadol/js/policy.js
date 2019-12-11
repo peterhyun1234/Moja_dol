@@ -228,7 +228,8 @@ function getPolicyComment(p_code){
 	//alert("댓글");
 	
 	var code = {"p_code" : p_code};
-
+ 
+	var number = 1;
 	//특정 정책 코드 댓글 가져오기 
 	$.ajax({
 		url: "http://49.236.136.213:3000/review/selected_review",
@@ -249,14 +250,14 @@ function getPolicyComment(p_code){
 				//alert(retime);
 		
 				var string = '<li class="review_list  clearfix">'+
-							'<p class="review_code">' + content.review_code + '</p>'+
+							'<p class="review_code">' + number + '</p>'+
 							'<p class="review_uID">' + content.review_uID + '</p>'+
 							'<p class="contents">' + content.contents + '</p>'+
 							'<p class="req_time">' + retime + '</p>'+
 							'<p class="deletebtn"><input type="button" id="'+ content.p_code+'" class="delete_btn" value="삭제" onclick="delete_review(this)"/></p>'+
 							'</li>';
 				$(".review_listBox.bottom").append(string); 
-
+				number++;
 			});
 		},
 		error: function(request,status,error){

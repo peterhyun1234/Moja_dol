@@ -15,6 +15,8 @@
 
 
 ## 2. Android application
+![앱2](https://user-images.githubusercontent.com/46476398/94428616-ed877b00-01cb-11eb-956b-fe57304790ae.png)
+
 ![앱](https://user-images.githubusercontent.com/46476398/94428343-87025d00-01cb-11eb-8e8b-365ad882e9f3.png)
 
     Check SdkVersion 16

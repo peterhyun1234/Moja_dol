@@ -10,6 +10,7 @@
 
 ### 1.3. Burn Down Chart
 ![번다운차트](https://user-images.githubusercontent.com/46476398/94428349-88338a00-01cb-11eb-9c8e-6a67af4c00b3.png)
+    
     각 Iteration은 2주, scrum은 매일 진행함
 
 
